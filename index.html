@@ -200,31 +200,21 @@
             Нашли баг или краш? Пишите в бота: <span id="bot-name">@username</span>
         </a>
     </div>
-
-    <!-- ДВИЖОК ЭФФЕКТОВ И ПАНЕЛЬ НАСТРОЕК САЙТА -->
     <script>
-        /* ==========================================================================
-           ⚙️ ПАНЕЛЬ НАСТРОЕК NATRIUM (МЕНЯЙ ВСЁ ТУТ В ТРИ КЛИКА)
-           ========================================================================== */
         const CONFIG = {
-            title: "Natrium",                                    // Главное название
-            subtitle: "Сборка-каркас на Minecraft, состоящая из полной оптимизации", // Твой слоган
-            version: "1.20.1",                                   // Версия на карточке
-            fileType: "Модпак .mrpack",                          // Подпись формата файла
+            title: "Natrium",
+            subtitle: "Сборка-каркас на Minecraft, состоящая из полной оптимизации",
+            version: "1.20.1",
+            fileType: "Модпак .mrpack",
             
-            // Настройка скачивания (Пока тестируешь на компе — оставь "natrium.mrpack")
-            // Когда зальешь в репозиторий GitHub, замени на полную интернет-ссылку
-            downloadUrl: "natrium.mrpack",                       
-            downloadFileName: "Natrium_1.20.1.mrpack",           // Как файл назовется у игрока при скачивании
+            downloadUrl: "natrium.mrpack",
+            downloadFileName: "Natrium_1.20.1.mrpack",
             
-            // Настройка Telegram-бота
-            botUsername: "@JavaFixerTEXbot",                     // Юзернейм для текста
-            botUrl: "https://t.me/JavaFixerTEXbot"               // Реальная ссылка на переход
+            botUsername: "@JavaFixerTEXbot",
+            botUrl: "https://t.me",
+            faviconUrl: "logo.png"
         };
 
-        /* ==========================================================================
-           АВТОМАТИЧЕСКАЯ ПОДСТАНОВКА НАСТРОЕК НА САЙТ
-           ========================================================================== */
         document.getElementById('site-title').innerText = CONFIG.title;
         document.getElementById('site-subtitle').innerText = CONFIG.subtitle;
         document.getElementById('card-version').innerText = CONFIG.version;
@@ -238,13 +228,15 @@
         bLink.href = CONFIG.botUrl;
         document.getElementById('bot-name').innerText = CONFIG.botUsername;
 
-        /* ==========================================================================
-           ДВИЖОК ИНТЕРАКТИВНОЙ ВОДЫ И ЛЕТАЮЩИХ ЧАСТИЦ
-           ========================================================================== */
+        const fav = document.createElement('link');
+        fav.rel = 'icon';
+        fav.href = CONFIG.faviconUrl;
+        document.head.appendChild(fav);
+
         const canvas = document.getElementById('atom-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
-        const mouse = { x: null, y: null, radius: 140 }; // Радиус обтекания мышки
+        const mouse = { x: null, y: null, radius: 140 };
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -275,6 +267,7 @@
                     if (distance < mouse.radius) {
                         let force = (mouse.radius - distance) / mouse.radius;
                         let angle = Math.atan2(dy, dx);
+                        
                         let targetX = this.baseX - Math.cos(angle) * force * 35;
                         let targetY = this.baseY - Math.sin(angle) * force * 35;
 
@@ -286,35 +279,23 @@
                 this.x += (this.baseX - this.x) * 0.08;
                 this.y += (this.baseY - this.y) * 0.08;
             }
-
             draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fillStyle = Math.random() > 0.5 ? 'rgba(255, 180, 0, 0.35)' : 'rgba(255, 85, 0, 0.25)';
                 ctx.fill();
             }
         }
-
         function initParticles() {
             particles = [];
             const count = Math.floor((canvas.width * canvas.height) / 9000);
-            for (let i = 0; i < count; i++) {
-                particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
-            }
+            for (let i = 0; i < count; i++) particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
         }
-
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let p of particles) {
-                p.update();
-                p.draw();
-            }
+            for (let p of particles) { p.update(); p.draw(); }
             requestAnimationFrame(animate);
         }
-
-        resizeCanvas();
-        animate();
+        resizeCanvas(); animate();
     </script>
 </body>
 </html>
-
