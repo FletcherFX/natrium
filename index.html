@@ -282,8 +282,8 @@
         }
         window.addEventListener('resize', resizeCanvas);
         window.addEventListener('mousemove', (e) => { 
-            mouse.x = e.pageX; mouse.y = e.pageY;
-            if (sparks.length < 45) sparks.push(new Spark(e.pageX, e.pageY));
+            mouse.x = e.clientX; mouse.y = e.clientY;
+            if (sparks.length < 45) sparks.push(new Spark(e.clientX, e.clientY));
         });
         window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
 
