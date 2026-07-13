@@ -334,7 +334,7 @@
 
     <!-- Виджет времени и кнопка рулетки -->
     <div class="time-widget" id="realtime-widget">Загрузка времени...</div>
-    <button class="btn-roulette-trigger" onclick="openRouletteModal()">🎰 Испытать удачу</button>
+    <button class="btn-roulette-trigger" onclick="openRouletteModal()">Испытать удачу</button>
 
     <canvas id="atom-canvas"></canvas>
 
@@ -369,7 +369,7 @@
     <div class="modal-overlay" id="roulette-modal">
         <div class="modal-window" style="max-width: 550px;">
             <div class="modal-header">
-                <div class="modal-title">🎰 Рулетка версий <span>NATRIUM</span></div>
+                <div class="modal-title">Рулетка версий <span>NATRIUM</span></div>
                 <button class="modal-close" onclick="closeRouletteModal()">&times;</button>
             </div>
             
@@ -396,10 +396,20 @@
         // Виджет реального времени устройства
         function updateTime() {
             const now = new Date();
+            const hours = now.getHours();
             const timeStr = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             const offsetHours = -now.getTimezoneOffset() / 60;
             const zoneStr = offsetHours >= 0 ? `+${offsetHours}` : `${offsetHours}`;
+            
             document.getElementById('realtime-widget').innerHTML = `Время: <span>${timeStr}</span> (GMT${zoneStr})`;
+
+            let greeting = "Доброй ночи.";
+            if (hours >= 6 && hours < 12) greeting = "Доброе утро.";
+            else if (hours >= 12 && hours < 18) greeting = "Добрый день.";
+            else if (hours >= 18 && hours < 24) greeting = "Добрый вечер.";
+
+            const baseSubtitle = NATRIUM_CONFIG.texts.subtitle;
+            document.getElementById('site-subtitle').innerHTML = `<span style="color: #ffaa00; font-weight: 700;">${greeting}</span><br style="margin-bottom: 6px;">${baseSubtitle}`;
         }
         setInterval(updateTime, 1000); updateTime();
 
@@ -666,7 +676,6 @@
 
         function renderSite() {
             document.getElementById('site-title').innerText = NATRIUM_CONFIG.texts.title;
-            document.getElementById('site-subtitle').innerText = NATRIUM_CONFIG.texts.subtitle;
 
             const versionsContainer = document.getElementById('versions-container');
             versionsContainer.innerHTML = NATRIUM_CONFIG.versions.map(v => `
