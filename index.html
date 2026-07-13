@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NATRIUM</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- Прописали хвостик ?v=5 для жесткого сброса кэша браузера -->
+    <link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
 
@@ -15,94 +16,47 @@
             <img src="logo.png" alt="NATRIUM" class="logo" id="site-logo">
         </div>
 
-        <h1 id="site-title">Загрузка...</h1>
-        <div class="subtitle" id="site-subtitle">Загрузка...</div>
+        <h1 id="site-title">Natrium</h1>
+        <div class="subtitle" id="site-subtitle">Сборка-каркас на Minecraft, состоящая из полной оптимизации</div>
 
-        <!-- ТРЕХКАРТОЧНЫЙ РЯД (Канал - Скачивание - Чат) -->
+        <!-- 3 КАРТОЧКИ В РЯД -->
         <div class="cards-grid">
             
-            <!-- Левая карточка: ТГ Канал -->
-            <a href="#" target="_blank" class="card info-card" id="tg-channel">
+            <!-- Левая карточка: Канал -->
+            <a href="https://t.me" target="_blank" class="card info-card">
                 <span class="card-title">Telegram</span>
                 <span class="card-desc">Наш официальный канал с новостями проекта</span>
-                <div class="btn-card-action">Перейти: <span id="channel-name">@username</span></div>
+                <div class="btn-card-action">Перейти: <span>@JavaFixer</span></div>
             </a>
 
             <!-- Центральная карточка: Скачивание -->
             <div class="card main-card">
-                <span class="version-tag" id="card-version">0.0.0</span>
-                <span class="file-type" id="card-type">Загрузка...</span>
-                <a href="#" download class="btn-download" id="download-link">Скачать сборку</a>
+                <span class="version-tag">1.20.1</span>
+                <span class="file-type">Модпак .mrpack</span>
+                <a href="natrium.mrpack" download="Natrium_1.20.1.mrpack" class="btn-download">Скачать сборку</a>
             </div>
 
-            <!-- Правая карточка: ТГ Чат -->
-            <a href="#" target="_blank" class="card info-card" id="tg-chat">
+            <!-- Правая карточка: Чат -->
+            <a href="https://t.meChat" target="_blank" class="card info-card">
                 <span class="card-title">Community</span>
                 <span class="card-desc">Наш уютный чат для общения игроков</span>
-                <div class="btn-card-action">Войти: <span id="chat-name">@username</span></div>
+                <div class="btn-card-action">Войти: <span>@JavaFixerChat</span></div>
             </a>
 
         </div>
 
         <!-- Нижняя кнопка техподдержки -->
-        <a href="#" target="_blank" class="bot-support" id="tg-bot">
-            Нашли баг или краш? Пишите в бота: <span id="bot-name">@username</span>
+        <a href="https://t.meTEXbot" target="_blank" class="bot-support">
+            Нашли баг или краш? Пишите в бота: <span>@JavaFixerTEXbot</span>
         </a>
     </div>
 
+    <!-- ВЕСЬ ДВИЖОК ЭФФЕКТОВ БЕЗ ЛИШНИХ НАСТРОЕК -->
     <script>
-        /* ==========================================================================
-           ⚙️ ПАНЕЛЬ НАСТРОЕК NATRIUM (МЕНЯЙ ВСЁ ТУТ В ТРИ КЛИКА)
-           ========================================================================== */
-        const CONFIG = {
-            title: "Natrium",
-            subtitle: "Сборка-каркас на Minecraft, состоящая из полной оптимизации",
-            version: "1.20.1",
-            fileType: "Модпак .mrpack",
-            
-            downloadUrl: "natrium.mrpack",
-            downloadFileName: "Natrium_1.20.1.mrpack",
-            
-            channelUser: "@JavaFixer",
-            channelUrl: "https://t.me",
-            
-            chatUser: "@JavaFixerChat",
-            chatUrl: "https://t.meChat",
-            
-            botUser: "@JavaFixerTEXbot",
-            botUrl: "https://t.meTEXbot",
-            
-            faviconUrl: "favicon.png?v=4"
-        };
-
-        /* ==========================================================================
-           АВТОМАТИЧЕСКАЯ ПОДСТАНОВКА НАСТРОЕК
-           ========================================================================== */
-        document.getElementById('site-title').innerText = CONFIG.title;
-        document.getElementById('site-subtitle').innerText = CONFIG.subtitle;
-        document.getElementById('card-version').innerText = CONFIG.version;
-        document.getElementById('card-type').innerText = CONFIG.fileType;
-        
-        const dlLink = document.getElementById('download-link');
-        dlLink.href = CONFIG.downloadUrl;
-        dlLink.setAttribute('download', CONFIG.downloadFileName);
-        
-        document.getElementById('tg-channel').href = CONFIG.channelUrl;
-        document.getElementById('channel-name').innerText = CONFIG.channelUser;
-        
-        document.getElementById('tg-chat').href = CONFIG.chatUrl;
-        document.getElementById('chat-name').innerText = CONFIG.chatUser;
-        
-        document.getElementById('tg-bot').href = CONFIG.botUrl;
-        document.getElementById('bot-name').innerText = CONFIG.botUser;
-
         const fav = document.createElement('link');
-        fav.rel = 'icon'; fav.href = CONFIG.faviconUrl;
+        fav.rel = 'icon'; fav.href = 'favicon.png?v=5';
         document.head.appendChild(fav);
 
-        /* ==========================================================================
-           ДВИЖОК ЧАСТИЦ (ВОДА + НЕОНОВЫЙ ШЛЕЙФ ИСКР)
-           ========================================================================== */
         const canvas = document.getElementById('atom-canvas');
         const ctx = canvas.getContext('2d');
         let particles = []; let sparks = []; 
