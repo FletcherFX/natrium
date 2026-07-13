@@ -82,7 +82,6 @@
             margin-bottom: 50px;
             text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
-
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -113,12 +112,25 @@
             box-shadow: 0 30px 60px rgba(255, 85, 0, 0.15);
         }
 
-        .version-tag {
-            font-size: 2.2rem; font-weight: 800; color: #ffffff; margin-bottom: 5px; display: block; text-align: center; line-height: 1.2;
+        .card-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffcc00 0%, #ff5500 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+            display: block;
+            text-align: center;
         }
 
-        .version-tag, .file-type, .btn-download, .btn-mods {
-            transition: none;
+        .card-version {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #94a3b8;
+            margin-top: -5px;
+            margin-bottom: 15px;
+            display: block;
+            letter-spacing: 1px;
         }
 
         .file-type {
@@ -272,7 +284,7 @@
         window.addEventListener('resize', resizeCanvas);
         window.addEventListener('mousemove', (e) => { 
             mouse.x = e.pageX; mouse.y = e.pageY;
-            if (sparks.length < 40) sparks.push(new Spark(e.pageX, e.pageY));
+            if (sparks.length < 45) sparks.push(new Spark(e.pageX, e.pageY));
         });
         window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
 
@@ -309,15 +321,22 @@
 
         class Spark {
             constructor(x, y) {
-                this.x = x; this.y = y; this.size = Math.random() * 3 + 2;
-                this.speedX = (Math.random() - 0.5) * 1.5; this.speedY = (Math.random() - 0.5) * 1.5;
+                this.x = x; this.y = y; this.size = Math.random() * 2.5 + 1.5;
+                this.speedX = (Math.random() - 0.5) * 2.2; 
+                this.speedY = (Math.random() - 0.5) * 2.2;
                 this.alpha = 1; 
             }
-            update() { this.x += this.speedX; this.y += this.speedY; this.alpha -= 0.02; }
+            update() { 
+                this.x += this.speedX; 
+                this.y += this.speedY; 
+                this.speedX *= 0.96;
+                this.speedY *= 0.96;
+                this.alpha -= 0.018; 
+            }
             draw() {
                 ctx.save(); ctx.globalAlpha = this.alpha; ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.shadowBlur = 10; ctx.shadowColor = '#ffaa00'; ctx.fillStyle = '#ffcc00';
+                ctx.shadowBlur = 12; ctx.shadowColor = '#ff8800'; ctx.fillStyle = '#ffbb00';
                 ctx.fill(); ctx.restore();
             }
         }
@@ -348,7 +367,6 @@
             },
             versions: [
                 {
-                    tag: "1.20.1 — NATRIUM",
                     fileType: "Модпак .mrpack",
                     link: "natrium.mrpack",
                     fileName: "Natrium_1.20.1.mrpack"
@@ -409,9 +427,9 @@
             const versionsContainer = document.getElementById('versions-container');
             versionsContainer.innerHTML = NATRIUM_CONFIG.versions.map(v => `
                 <div class="card">
-                    <span class="version-tag" style="font-size: 2.8rem; font-weight: 900; background: linear-gradient(135deg, #ffcc00 0%, #ff5500 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px;">NATRIUM</span>
-                    <span style="font-size: 1.3rem; font-weight: 700; color: #94a3b8; margin-top: -5px; margin-bottom: 15px; display: block; letter-spacing: 1px;">Версия 1.20.1</span>
-                    <span class="file-type" style="margin-bottom: 25px;">${v.fileType}</span>
+                    <span class="card-title">NATRIUM</span>
+                    <span class="card-version">Версия 1.20.1</span>
+                    <span class="file-type">${v.fileType}</span>
                     <a href="${v.link}" download="${v.fileName}" class="btn-download">Скачать сборку</a>
                     <button class="btn-mods" onclick="openModsModal()">Список модов</button>
                 </div>
@@ -432,3 +450,10 @@
                 </div>
             `).join('');
         }
+
+        renderSite();
+        resizeCanvas(); 
+        animate();
+    </script>
+</body>
+</html>
