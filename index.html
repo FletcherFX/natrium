@@ -64,7 +64,6 @@
         .logo {
             width: 100%; height: 100%; object-fit: cover;
         }
-
         h1 {
             font-size: clamp(3.5rem, 8vw, 5.5rem);
             font-weight: 900;
@@ -85,12 +84,13 @@
             margin-bottom: 50px;
             text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
+
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
             width: 100%;
-            max-width: 340px;
+            max-width: 740px; /* Расширили, чтобы 1.20.1 и 1.16.5 встали в один ряд */
             margin-bottom: 50px;
             justify-content: center;
         }
@@ -125,6 +125,7 @@
             display: block;
             text-align: center;
         }
+
         .card-version {
             font-size: 1.3rem;
             font-weight: 700;
@@ -138,7 +139,6 @@
         .file-type {
             color: #ffaa00; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px; display: block;
         }
-
         .btn-download {
             display: inline-flex; align-items: center; justify-content: center; width: 100%;
             background: linear-gradient(135deg, #ffcc00 0%, #ff6600 100%);
@@ -208,7 +208,7 @@
         .modal-overlay.active .modal-window { transform: scale(1); }
 
         .modal-header {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;
         }
 
         .modal-title { font-size: 1.8rem; font-weight: 800; color: #ffffff; }
@@ -221,6 +221,29 @@
         }
 
         .modal-close:hover { background: rgba(255, 85, 0, 0.2); border-color: rgba(255, 85, 0, 0.4); color: #ffffff; }
+
+        /* Строка умного поиска модов */
+        .search-container {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 170, 0, 0.2);
+            border-radius: 14px;
+            padding: 14px 20px;
+            color: #ffffff;
+            font-size: 1rem;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .search-input:focus {
+            border-color: rgba(255, 170, 0, 0.6);
+            box-shadow: 0 0 15px rgba(255, 170, 0, 0.15);
+        }
 
         .mods-list {
             overflow-y: auto; padding-right: 10px; flex: 1;
@@ -237,6 +260,7 @@
             display: flex; flex-direction: column; gap: 4px;
         }
 
+        .mod-item.hidden { display: none !important; }
         .mod-item:hover { background: rgba(255,170,0,0.02); border-color: rgba(255,170,0,0.15); }
         .mod-name { font-weight: 700; color: #ffcc00; font-size: 1.1rem; }
         .mod-desc { color: #94a3b8; font-size: 0.9rem; line-height: 1.4; }
@@ -265,6 +289,9 @@
                 <div class="modal-title">Моды сборки <span>NATRIUM</span></div>
                 <button class="modal-close" onclick="closeModsModal()">&times;</button>
             </div>
+            <div class="search-container">
+                <input type="text" class="search-input" id="mods-search" placeholder="Поиск мода (например: содиум, феррите кор)..." oninput="filterMods()">
+            </div>
             <div class="mods-list" id="modal-mods-list"></div>
         </div>
     </div>
@@ -290,7 +317,6 @@
             if (sparks.length < 45) sparks.push(new Spark(e.clientX, e.clientY));
         });
         window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
-
         class Particle {
             constructor(x, y) {
                 this.x = x; this.y = y; this.baseX = x; this.baseY = y;
@@ -354,7 +380,6 @@
             }
         }
 
-
         function initParticles() {
             particles = [];
             const count = Math.floor((canvas.width * canvas.height) / 9000);
@@ -364,13 +389,18 @@
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let p of particles) { p.update(); p.draw(); }
-            for (let i = 0; i < sparks.length; i++) {
+            for (let i = sparks.length - 1; i >= 0; i--) {
                 sparks[i].update(); sparks[i].draw();
-                if (sparks[i].alpha <= 0) { sparks.splice(i, 1); i--; }
+                if (sparks[i].alpha <= 0) { sparks.splice(i, 1); }
             }
             requestAnimationFrame(animate);
         }
-        function openModsModal() { document.getElementById('mods-modal').classList.add('active'); }
+
+        function openModsModal() { 
+            document.getElementById('mods-search').value = '';
+            filterMods();
+            document.getElementById('mods-modal').classList.add('active'); 
+        }
         function closeModsModal() { document.getElementById('mods-modal').classList.remove('active'); }
         window.addEventListener('click', (e) => { const m = document.getElementById('mods-modal'); if(e.target === m) closeModsModal(); });
 
@@ -381,9 +411,16 @@
             },
             versions: [
                 {
+                    versionNum: "1.20.1",
                     fileType: "Модпак .mrpack",
-                    link: "natrium.mrpack",
+                    link: "./natrium.mrpack",
                     fileName: "Natrium_1.20.1.mrpack"
+                },
+                {
+                    versionNum: "1.16.5",
+                    fileType: "Модпак .mrpack",
+                    link: "./natrium_two.mrpack",
+                    fileName: "Natrium_two.mrpack"
                 }
             ],
             socials: [
@@ -391,7 +428,7 @@
                 { text: "Наш Telegram-чат:", span: "@JavaFixerChat", url: "https://t.meChat" },
                 { text: "Нашли баг или краш? Пишите в бота:", span: "@JavaFixerTEXbot", url: "https://t.meTEXbot" }
             ],
-mods: [
+            mods: [
                 { name: "Sodium", desc: "Главный движок оптимизации графики и рендеринга чанков в Майнкрафте." },
                 { name: "Lithium", desc: "Ультимативная оптимизация физики, ИИ мобов и механик игрового мира." },
                 { name: "Indium", desc: "Адаптер для поддержки сторонних графических модов на движке Sodium." },
@@ -426,7 +463,6 @@ mods: [
                 { name: "Mod Menu", desc: "Удобный и чистый интерфейс для просмотра и настройки установленных модов." },
                 { name: "YetAnotherConfigLib", desc: "Современная библиотека слоев конфигурации, необходимая для графических утилит." },
                 { name: "Spark", desc: "Профайлер производительности для отслеживания скачков процессорного времени и лагов чанков." },
-                { name: "Borderless Mining", desc: "Перевод игры в режим полноэкранного окна без рамок для удобного переключения окон." },
                 { name: "Let Me Despawn", desc: "Улучшает очистку ненужных мобов на расстоянии, освобождая тики процессора." },
                 { name: "Not Enough Crashes", desc: "Позволяет игре не вылетать при ошибке, а просто возвращать в меню." },
                 { name: "PacketFixer", desc: "Исправляет вылеты при передаче слишком больших пакетов данных на серверах." },
@@ -434,6 +470,44 @@ mods: [
                 { name: "cupboard", desc: "Оптимизированное фоновое ядро-библиотека для ускорения работы скриптов." }
             ]
         };
+
+        // Кастомные правила для русскоязычного поиска (умный транслит)
+        const SMART_TRANSLIT = {
+            "содиум": "sodium", "натриум": "sodium", "судиум": "sodium",
+            "литиум": "lithium", "индиум": "indium",
+            "ферритекор": "ferritecore", "феррите кор": "ferritecore", "ферите коре": "ferritecore", "феритекор": "ferritecore",
+            "модернфикс": "modernfix", "криптон": "krypton", "атлант": "athena", "афина": "athena",
+            "айрис": "iris", "ирис": "iris", "спарк": "spark", "мод меню": "mod menu", "модменю": "mod menu",
+            "клот": "cloth", "клампс": "clumps", "дебагифай": "debugify"
+        };
+
+        function filterMods() {
+            let query = document.getElementById('mods-search').value.toLowerCase().trim();
+            
+            // Проверка по словарю транслита
+            if (SMART_TRANSLIT[query]) {
+                query = SMART_TRANSLIT[query];
+            } else {
+                for (let rusKey in SMART_TRANSLIT) {
+                    if (rusKey.includes(query) && query.length > 2) {
+                        query = SMART_TRANSLIT[rusKey];
+                        break;
+                    }
+                }
+            }
+
+            const items = document.querySelectorAll('.mod-item');
+            items.forEach(item => {
+                const name = item.querySelector('.mod-name').innerText.toLowerCase();
+                const desc = item.querySelector('.mod-desc').innerText.toLowerCase();
+                
+                if (name.includes(query) || desc.includes(query)) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        }
 
         function renderSite() {
             document.getElementById('site-title').innerText = NATRIUM_CONFIG.texts.title;
@@ -443,7 +517,7 @@ mods: [
             versionsContainer.innerHTML = NATRIUM_CONFIG.versions.map(v => `
                 <div class="card">
                     <span class="card-title">NATRIUM</span>
-                    <span class="card-version">Версия 1.20.1</span>
+                    <span class="card-version">Версия ${v.versionNum}</span>
                     <span class="file-type">${v.fileType}</span>
                     <a href="${v.link}" download="${v.fileName}" class="btn-download">Скачать сборку</a>
                     <button class="btn-mods" onclick="openModsModal()">Список модов</button>
