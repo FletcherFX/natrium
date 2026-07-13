@@ -1,319 +1,110 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NATRIUM</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.4s, box-shadow 0.4s;
+        .modal-search-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+            width: 100%;
         }
 
-        body {
-            background-color: #050506;
+        .modal-search {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 170, 0, 0.2);
+            border-radius: 12px;
+            padding: 12px 16px;
             color: #ffffff;
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow-x: hidden;
-            position: relative;
-            padding: 40px 20px;
-        }
-
-        #atom-canvas {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .main-wrapper {
-            text-align: center;
-            max-width: 1100px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 2;
-        }
-
-        .logo-container {
-            position: relative;
-            margin-bottom: 25px;
-            width: 160px;
-            height: 160px;
-            border-radius: 38px;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
-        }
-
-        .logo-container:hover {
-            transform: scale(1.06) rotate(2deg);
-            box-shadow: 0 0 40px rgba(255, 140, 0, 0.6);
-        }
-
-        .logo {
-            width: 100%; height: 100%; object-fit: cover;
-        }
-
-        h1 {
-            font-size: clamp(3.5rem, 8vw, 5.5rem);
-            font-weight: 900;
-            letter-spacing: 8px;
-            margin-bottom: 12px;
-            background: linear-gradient(135deg, #ffcc00 0%, #ff5500 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 4px 20px rgba(255, 85, 0, 0.4));
-            text-transform: uppercase;
-        }
-
-        .subtitle {
-            color: #94a3b8;
-            font-size: clamp(1.1rem, 3vw, 1.35rem);
-            max-width: 600px;
-            line-height: 1.6;
-            margin-bottom: 50px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        }
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            width: 100%;
-            max-width: 340px;
-            margin-bottom: 50px;
-            justify-content: center;
-        }
-
-        .card {
-            background: rgba(16, 16, 20, 0.9);
-            border: 2px solid rgba(255, 183, 0, 0.2);
-            border-radius: 28px;
-            padding: 40px 30px;
-            position: relative;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(255, 183, 0, 0.5);
-            box-shadow: 0 30px 60px rgba(255, 85, 0, 0.15);
-        }
-
-        .card-title {
-            font-size: 2.8rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #ffcc00 0%, #ff5500 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 2px;
-            display: block;
-            text-align: center;
-        }
-
-        .card-version {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #94a3b8;
-            margin-top: -5px;
-            margin-bottom: 15px;
-            display: block;
-            letter-spacing: 1px;
-        }
-
-        .file-type {
-            color: #ffaa00; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px; display: block;
-        }
-
-        .btn-download {
-            display: inline-flex; align-items: center; justify-content: center; width: 100%;
-            background: linear-gradient(135deg, #ffcc00 0%, #ff6600 100%);
-            color: #080809; text-decoration: none; padding: 16px 32px; border-radius: 14px;
-            font-size: 1.1rem; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 12px;
-            box-shadow: 0 8px 25px rgba(255, 85, 0, 0.3);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .btn-download:hover { transform: scale(1.03); box-shadow: 0 12px 35px rgba(255, 85, 0, 0.5); }
-
-        .btn-mods {
-            display: inline-flex; align-items: center; justify-content: center; width: 100%;
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 170, 0, 0.3);
-            color: #ffaa00; text-decoration: none; padding: 12px 24px; border-radius: 12px;
-            font-size: 0.95rem; font-weight: 700; cursor: pointer;
-            transition: background-color 0.2s, border-color 0.2s, color 0.2s;
-        }
-
-        .btn-mods:hover { background: rgba(255, 170, 0, 0.1); border-color: rgba(255, 170, 0, 0.6); color: #ffffff; }
-
-        .bottom-links {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .pill-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background-color: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 14px 26px;
-            border-radius: 30px;
-            color: #94a3b8;
-            text-decoration: none;
+            font-family: inherit;
             font-size: 0.95rem;
-            font-weight: 500;
-            backdrop-filter: blur(5px);
-            position: relative;
-            z-index: 3;
-            width: 100%;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        .pill-button span { color: #ffcc00; font-weight: 700; margin-left: 5px; }
-        .pill-button:hover { background-color: rgba(255, 183, 0, 0.04); border-color: rgba(255, 183, 0, 0.3); color: #ffffff; }
-
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(3, 3, 4, 0.7); backdrop-filter: blur(20px);
-            z-index: 100; display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        .modal-search:focus {
+            border-color: rgba(255, 170, 0, 0.6);
+            box-shadow: 0 0 15px rgba(255, 136, 0, 0.2);
         }
 
-        .modal-overlay.active { opacity: 1; pointer-events: auto; }
-
-        .modal-window {
-            background: rgba(18, 18, 24, 0.95); border: 2px solid rgba(255, 170, 0, 0.25);
-            border-radius: 32px; width: 90%; max-width: 650px; max-height: 80vh;
-            padding: 35px; display: flex; flex-direction: column; box-shadow: 0 30px 70px rgba(0,0,0,0.8);
-            transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        .modal-search::placeholder {
+            color: #4b5563;
         }
 
-        .modal-overlay.active .modal-window { transform: scale(1); }
-
-        .modal-header {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+        .mod-item.hidden {
+            display: none !important;
         }
-
-        .modal-title { font-size: 1.8rem; font-weight: 800; color: #ffffff; }
-        .modal-title span { color: #ffaa00; }
-
-        .modal-close {
-            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
-            color: #94a3b8; font-size: 1.5rem; width: 40px; height: 40px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;
-        }
-
-        .modal-close:hover { background: rgba(255, 85, 0, 0.2); border-color: rgba(255, 85, 0, 0.4); color: #ffffff; }
-
-        .mods-list {
-            overflow-y: auto; padding-right: 10px; flex: 1;
-        }
-
-        .mods-list::-webkit-scrollbar { width: 6px; }
-        .mods-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
-        .mods-list::-webkit-scrollbar-thumb { background: rgba(255, 170, 0, 0.3); border-radius: 10px; }
-        .mods-list::-webkit-scrollbar-thumb:hover { background: rgba(255, 170, 0, 0.6); }
-
-        .mod-item {
-            background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03);
-            padding: 14px 18px; border-radius: 14px; margin-bottom: 10px;
-            display: flex; flex-direction: column; gap: 4px;
-        }
-
-        .mod-item:hover { background: rgba(255,170,0,0.02); border-color: rgba(255,170,0,0.15); }
-        .mod-name { font-weight: 700; color: #ffcc00; font-size: 1.1rem; }
-        .mod-desc { color: #94a3b8; font-size: 0.9rem; line-height: 1.4; }
-    </style>
-</head>
-<body>
-
-    <canvas id="atom-canvas"></canvas>
-
-    <div class="main-wrapper">
-        <div class="logo-container">
-            <img src="logo.webp" alt="NATRIUM" class="logo" id="site-logo">
-        </div>
-
-        <h1 id="site-title"></h1>
-        <div class="subtitle" id="site-subtitle"></div>
-
-        <div class="cards-grid" id="versions-container"></div>
-
-        <div class="bottom-links" id="socials-container"></div>
-    </div>
-
     <div class="modal-overlay" id="mods-modal">
         <div class="modal-window">
             <div class="modal-header">
                 <div class="modal-title">Моды сборки <span>NATRIUM</span></div>
                 <button class="modal-close" onclick="closeModsModal()">&times;</button>
             </div>
+            <div class="modal-search-wrapper">
+                <input type="text" id="mod-search-input" class="modal-search" placeholder="Поиск мода по названию или описанию..." oninput="filterMods()">
+            </div>
             <div class="mods-list" id="modal-mods-list"></div>
         </div>
     </div>
 
     <script>
-        const fav = document.createElement('link');
-        fav.rel = 'icon'; fav.href = 'favicon.png?v=5';
-        document.head.appendChild(fav);
-
         const canvas = document.getElementById('atom-canvas');
         const ctx = canvas.getContext('2d');
-        let particles = []; let sparks = []; 
+        let particles = [];
+        let sparks = [];
         const mouse = { x: null, y: null, radius: 140 };
 
         function resizeCanvas() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
             initParticles();
         }
         window.addEventListener('resize', resizeCanvas);
-        window.addEventListener('mousemove', (e) => { 
-            mouse.x = e.pageX; mouse.y = e.pageY;
-            if (sparks.length < 45) sparks.push(new Spark(e.pageX, e.pageY));
+        
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            if (sparks.length < 45) {
+                sparks.push(new Spark(e.clientX, e.clientY));
+            }
         });
-        window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
+        
+        window.addEventListener('mouseout', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
 
         class Particle {
             constructor(x, y) {
-                this.x = x; this.y = y; this.baseX = x; this.baseY = y;
+                this.x = x;
+                this.y = y;
+                this.baseX = x;
+                this.baseY = y;
                 this.size = Math.random() * 2 + 1;
-                this.speedX = (Math.random() - 0.5) * 0.4; this.speedY = (Math.random() - 0.5) * 0.4;
+                this.speedX = (Math.random() - 0.5) * 0.4;
+                this.speedY = (Math.random() - 0.5) * 0.4;
             }
             update() {
-                this.baseX += this.speedX; this.baseY += this.speedY;
+                this.baseX += this.speedX;
+                this.baseY += this.speedY;
                 if (this.baseX < 0 || this.baseX > canvas.width) this.speedX *= -1;
                 if (this.baseY < 0 || this.baseY > canvas.height) this.speedY *= -1;
+
+                let targetX = this.baseX;
+                let targetY = this.baseY;
+
                 if (mouse.x != null && mouse.y != null) {
-                    let dx = mouse.x - this.baseX; let dy = mouse.y - this.baseY;
+                    let dx = mouse.x - this.baseX;
+                    let dy = mouse.y - this.baseY;
                     let distance = Math.hypot(dx, dy);
                     if (distance < mouse.radius) {
                         let force = (mouse.radius - distance) / mouse.radius;
                         let angle = Math.atan2(dy, dx);
-                        let targetX = this.baseX - Math.cos(angle) * force * 35;
-                        let targetY = this.baseY - Math.sin(angle) * force * 35;
-                        this.x += (targetX - this.x) * 0.1; this.y += (targetY - this.y) * 0.1;
-                        return;
+                        targetX = this.baseX - Math.cos(angle) * force * 45;
+                        targetY = this.baseY - Math.sin(angle) * force * 45;
                     }
                 }
-                this.x += (this.baseX - this.x) * 0.08; this.y += (this.baseY - this.y) * 0.08;
+                this.x += (targetX - this.x) * 0.08;
+                this.y += (targetY - this.y) * 0.08;
             }
             draw() {
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fillStyle = Math.random() > 0.5 ? 'rgba(255, 180, 0, 0.25)' : 'rgba(255, 85, 0, 0.15)';
                 ctx.fill();
             }
@@ -321,104 +112,93 @@
 
         class Spark {
             constructor(x, y) {
-                this.x = x; this.y = y; this.size = Math.random() * 2.5 + 1.5;
-                this.speedX = (Math.random() - 0.5) * 2.2; 
-                this.speedY = (Math.random() - 0.5) * 2.2;
-                this.alpha = 1; 
+                this.x = x;
+                this.y = y;
+                this.maxSize = Math.random() * 3 + 2;
+                this.size = this.maxSize;
+                this.speedX = (Math.random() - 0.5) * 2.5;
+                this.speedY = (Math.random() - 0.5) * 2.5;
+                this.alpha = 1;
+                this.life = 1;
+                this.decay = Math.random() * 0.015 + 0.012;
             }
-            update() { 
-                this.x += this.speedX; 
-                this.y += this.speedY; 
-                this.speedX *= 0.96;
-                this.speedY *= 0.96;
-                this.alpha -= 0.018; 
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.speedX *= 0.97;
+                this.speedY *= 0.97;
+                this.life -= this.decay;
+                this.alpha = this.life;
+                this.size = this.maxSize * this.life;
+                if (this.size < 0) this.size = 0;
             }
             draw() {
-                ctx.save(); ctx.globalAlpha = this.alpha; ctx.beginPath();
+                if (this.alpha <= 0) return;
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.shadowBlur = 12; ctx.shadowColor = '#ff8800'; ctx.fillStyle = '#ffbb00';
-                ctx.fill(); ctx.restore();
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = '#ff8800';
+                ctx.fillStyle = '#ffbb00';
+                ctx.fill();
+                ctx.restore();
             }
         }
-
         function initParticles() {
             particles = [];
             const count = Math.floor((canvas.width * canvas.height) / 9000);
-            for (let i = 0; i < count; i++) particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
+            }
         }
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let p of particles) { p.update(); p.draw(); }
+            for (let p of particles) {
+                p.update();
+                p.draw();
+            }
             for (let i = 0; i < sparks.length; i++) {
-                sparks[i].update(); sparks[i].draw();
-                if (sparks[i].alpha <= 0) { sparks.splice(i, 1); i--; }
+                sparks[i].update();
+                sparks[i].draw();
+                if (sparks[i].life <= 0) {
+                    sparks.splice(i, 1);
+                    i--;
+                }
             }
             requestAnimationFrame(animate);
         }
 
-        function openModsModal() { document.getElementById('mods-modal').classList.add('active'); }
-        function closeModsModal() { document.getElementById('mods-modal').classList.remove('active'); }
-        window.addEventListener('click', (e) => { const m = document.getElementById('mods-modal'); if(e.target === m) closeModsModal(); });
-        const NATRIUM_CONFIG = {
-            texts: {
-                title: "NATRIUM",
-                subtitle: "Сборка-каркас на Minecraft, состоящая из полной оптимизации"
-            },
-            versions: [
-                {
-                    fileType: "Модпак .mrpack",
-                    link: "natrium.mrpack",
-                    fileName: "Natrium_1.20.1.mrpack"
+        function openModsModal() {
+            document.getElementById('mod-search-input').value = '';
+            filterMods();
+            document.getElementById('mods-modal').classList.add('active');
+        }
+
+        function closeModsModal() {
+            document.getElementById('mods-modal').classList.remove('active');
+        }
+
+        window.addEventListener('click', (e) => {
+            const m = document.getElementById('mods-modal');
+            if (e.target === m) closeModsModal();
+        });
+
+        function filterMods() {
+            const query = document.getElementById('mod-search-input').value.toLowerCase().trim();
+            const items = document.querySelectorAll('#modal-mods-list .mod-item');
+            
+            items.forEach(item => {
+                const name = item.querySelector('.mod-name').textContent.toLowerCase();
+                const desc = item.querySelector('.mod-desc').textContent.toLowerCase();
+                if (name.includes(query) || desc.includes(query)) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
                 }
-            ],
-            socials: [
-                { text: "Наш Telegram-канал:", span: "@JavaFixer", url: "https://t.me" },
-                { text: "Наш Telegram-чат:", span: "@JavaFixerChat", url: "https://t.meChat" },
-                { text: "Нашли баг или краш? Пишите в бота:", span: "@JavaFixerTEXbot", url: "https://t.meTEXbot" }
-            ],
-            mods: [
-                { name: "Almanac", desc: "Улучшенная интеграция и управление внутриигровой документацией." },
-                { name: "Alternate Current", desc: "Глубокая оптимизация алгоритмов редстоуна, снижающая лаги от схем." },
-                { name: "Athena", desc: "Инструмент для создания комплексных, динамических и соединенных текстур." },
-                { name: "Bad Packets", desc: "Служебный API для безопасной и чистой синхронизации сетевых пакетов." },
-                { name: "BadOptimizations", desc: "Патчи, убирающие микрофризы и глупые просчеты в стандартном коде игры." },
-                { name: "Cloth Config v11", desc: "Стабильный и быстрый конфигурационный экран для настроек модов." },
-                { name: "Clumps", desc: "Объединяет сферы опыта в один объект, убирая жесткие лаги на фермах мобов." },
-                { name: "CCME", desc: "Многопоточный движок обработки чанков. Ускоряет генерацию и загрузку мира." },
-                { name: "Connectivity Mod", desc: "Оптимизация сетевых соединений для уменьшения таймаутов на серверах." },
-                { name: "Crash Assistant", desc: "Помощник при крашах, предоставляющий чистые логи для диагностики ошибок." },
-                { name: "Debugify", desc: "Комплексное исправление сотен ванильных багов Mojang без потери FPS." },
-                { name: "Dynamic FPS", desc: "Снижает нагрузку на видеокарту до минимума, когда игра свернута." },
-                { name: "Enhanced Block Entities", desc: "Переводит рендеринг сундуков и блоков на движок Sodium, поднимая FPS." },
-                { name: "EntityCulling", desc: "Пропускает рендеринг модов и существ, которых ты не видишь за стенами." },
-                { name: "Fabric API", desc: "Основная библиотека-ядро для совместимости и работы модов." },
-                { name: "FastAnim", desc: "Оптимизация просчета анимаций сущностей, разгружающая центральный процессор." },
-                { name: "FerriteCore", desc: "Экстремальное сокращение потребления оперативной памяти за счет сжатия данных." },
-                { name: "Gpu memory leak fix mod", desc: "Патч, полностью блокирующий утечки памяти в видеокарте." },
-                { name: "ImmediatelyFast", desc: "Глобальное ускорение рендеринга шрифтов, HUD, частиц и плоских элементов." },
-                { name: "Indium", desc: "Адаптер для поддержки сторонних графических модов на движке Sodium." },
-                { name: "Iris", desc: "Самый быстрый и современный движок шейдеров с полной поддержкой Sodium." },
-                { name: "Krypton", desc: "Оптимизация сетевого стека, снижающая пинг и нагрузку на трафик." },
-                { name: "Language Reload", desc: "Моментальное переключение языков в игре без долгой зависшей загрузки." },
-                { name: "Let Me Despawn", desc: "Улучшает очистку ненужных мобов на расстоянии, освобождая тики процессора." },
-                { name: "Lithium", desc: "Ультимативная оптимизация физики, ИИ мобов и механик игрового мира." },
-                { name: "Memory Leak Fix", desc: "Автоматическое вычисление и зачистка утечек RAM в клиенте игры." },
-                { name: "Mod Menu", desc: "Удобный и чистый интерфейс для просмотра и настройки установленных модов." },
-                { name: "Model Gap Fix", desc: "Исправляет уродливые микро-щели в кастомных 3D моделях и предметах." },
-                { name: "ModernFix", desc: "Революционная оптимизация структур данных, ускоряющая запуск игры в разы." },
-                { name: "More Culling", desc: "Дополнительное жесткое отсечение рендеринга невидимых граней блоков." },
-                { name: "Not Enough Crashes", desc: "Позволяет игре не вылетать при ошибке, а просто возвращать в меню." },
-                { name: "PacketFixer", desc: "Исправляет вылеты при передаче слишком больших пакетов данных на серверах." },
-                { name: "Reese's Sodium Options", desc: "Удобный и красивый интерфейс для расширенных графических настроек." },
-                { name: "Sodium", desc: "Главный движок оптимизации графики и рендеринга чанков в Майнкрафте." },
-                { name: "Sodium Extra", desc: "Дополнительные тумблеры оптимизации (анимации, частицы, облака)." },
-                { name: "ThreadTweak", desc: "Умное перераспределение приоритетов потоков процессора под нужды игры." },
-                { name: "Very Many Players", desc: "Оптимизация сетевого кода для плавной игры на серверах с кучей игроков." },
-                { name: "YetAnotherConfigLib", desc: "Современная библиотека слоев конфигурации, необходимая для графических утилит." },
-                { name: "cupboard", desc: "Оптимизированное фоновое ядро-библиотека для ускорения работы скриптов." }
-            ]
-        };
+            });
+        }
 
         function renderSite() {
             document.getElementById('site-title').innerText = NATRIUM_CONFIG.texts.title;
@@ -457,3 +237,63 @@
     </script>
 </body>
 </html>
+        const NATRIUM_CONFIG = {
+            texts: {
+                title: "NATRIUM",
+                subtitle: "Сборка-каркас на Minecraft, состоящая из полной оптимизации"
+            },
+            versions: [
+                {
+                    fileType: "Модпак .mrpack",
+                    link: "natrium.mrpack",
+                    fileName: "Natrium_1.20.1.mrpack"
+                }
+            ],
+            socials: [
+                { text: "Наш Telegram-канал:", span: "@JavaFixer", url: "https://t.me" },
+                { text: "Наш Telegram-чат:", span: "@JavaFixerChat", url: "https://t.meChat" },
+                { text: "Нашли баг или краш? Пишите в бота:", span: "@JavaFixerTEXbot", url: "https://t.meTEXbot" }
+            ],
+            mods: [
+                { name: "Sodium", desc: "Главный движок оптимизации графики и рендеринга чанков в Майнкрафте." },
+                { name: "Lithium", desc: "Ультимативная оптимизация физики, ИИ мобов и механик игрового мира." },
+                { name: "Indium", desc: "Адаптер для поддержки сторонних графических модов на движке Sodium." },
+                { name: "FerriteCore", desc: "Экстремальное сокращение потребления оперативной памяти за счет сжатия данных." },
+                { name: "ModernFix", desc: "Революционная оптимизация структур данных, ускоряющая запуск игры в разы." },
+                { name: "Krypton", desc: "Оптимизация сетевого стека, снижающая пинг и нагрузку на трафик." },
+                { name: "ImmediatelyFast", desc: "Глобальное ускорение рендеринга шрифтов, HUD, частиц и плоских элементов." },
+                { name: "ThreadTweak", desc: "Умное перераспределение приоритетов потоков процессора под нужды игры." },
+                { name: "More Culling", desc: "Дополнительное жесткое отсечение рендеринга невидимых граней блоков." },
+                { name: "Enhanced Block Entities", desc: "Переводит рендеринг сундуков и блоков на движок Sodium, поднимая FPS." },
+                { name: "Memory Leak Fix", desc: "Автоматическое вычисление и зачистка утечек RAM в клиенте игры." },
+                { name: "Language Reload", desc: "Моментальное переключение языков в игре без долгой зависшей загрузки." },
+                { name: "Reese's Sodium Options", desc: "Удобный и красивый интерфейс для расширенных графических настроек." },
+                { name: "Sodium Extra", desc: "Дополнительные тумблеры оптимизации (анимации, частицы, облака)." },
+                { name: "Model Gap Fix", desc: "Исправляет уродливые микро-щели в кастомных 3D моделях и предметах." },
+                { name: "Almanac", desc: "Улучшенная интеграция и управление внутриигровой документацией." },
+                { name: "Alternate Current", desc: "Глубокая оптимизация алгоритмов редстоуна, снижающая лаги от схем." },
+                { name: "Athena", desc: "Инструмент для создания комплексных, динамических и соединенных текстур." },
+                { name: "Bad Packets", desc: "Служебный API для безопасной и чистой синхронизации сетевых пакетов." },
+                { name: "BadOptimizations", desc: "Патчи, убирающие микрофризы и глупые просчеты в стандартном коде игры." }
+                { name: "Cloth Config v11", desc: "Стабильный и быстрый конфигурационный экран для настроек модов." },
+                { name: "Clumps", desc: "Объединяет сферы опыта в один объект, убирая жесткие лаги на фермах мобов." },
+                { name: "CCME", desc: "Многопоточный движок обработки чанков. Ускоряет генерацию и загрузку мира." },
+                { name: "Connectivity Mod", desc: "Оптимизация сетевого соединений для уменьшения таймаутов на серверах." },
+                { name: "Crash Assistant", desc: "Помощник при крашах, предоставляющий чистые логи для диагностики ошибок." },
+                { name: "Debugify", desc: "Комплексное исправление сотен ванильных багов Mojang без потери FPS." },
+                { name: "Dynamic FPS", desc: "Снижает нагрузку на видеокарту до минимума, когда игра свернута." },
+                { name: "Fabric API", desc: "Основная библиотека-ядро для совместимости и работы модов на платформе Fabric." },
+                { name: "FastAnim", desc: "Оптимизация просчета анимаций сущностей, разгружающая центральный процессор." },
+                { name: "Gpu memory leak fix mod", desc: "Патч, полностью блокирующий утечки памяти в видеокарте." },
+                { name: "Iris", desc: "Самый быстрый и современный движок шейдеров с полной поддержкой Sodium." },
+                { name: "Mod Menu", desc: "Удобный и чистый интерфейс для просмотра и настройки установленных модов." },
+                { name: "YetAnotherConfigLib", desc: "Современная библиотека слоев конфигурации, необходимая для графических утилит." },
+                { name: "Spark", desc: "Профайлер производительности для отслеживания скачков процессорного времени и лагов чанков." },
+                { name: "Borderless Mining", desc: "Перевод игры в режим полноэкранного окна без рамок для удобного переключения окон." },
+                { name: "Let Me Despawn", desc: "Улучшает очистку ненужных мобов на расстоянии, освобождая тики процессора." },
+                { name: "Not Enough Crashes", desc: "Позволяет игре не вылетать при ошибке, а просто возвращать в меню." },
+                { name: "PacketFixer", desc: "Исправляет вылеты при передаче слишком больших пакетов данных на серверах." },
+                { name: "Very Many Players", desc: "Оптимизация сетевого кода для плавной игры на серверах с кучей игроков." },
+                { name: "cupboard", desc: "Оптимизированное фоновое ядро-библиотека для ускорения работы скриптов." }
+            ]
+        };
