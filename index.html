@@ -675,25 +675,27 @@
         }
 
         function renderSite() {
-            document.getElementById('site-title').innerText = NATRIUM_CONFIG.texts.title;
-
             const versionsContainer = document.getElementById('versions-container');
-            versionsContainer.innerHTML = NATRIUM_CONFIG.versions.map(v => `
-                <div class="card">
-                    <span class="card-title">NATRIUM</span>
-                    <span class="card-version">Версия ${v.versionNum}</span>
-                    <span class="file-type">${v.fileType}</span>
-                    <a href="${v.link}" download="${v.fileName}" class="btn-download">Скачать сборку</a>
-                    <button class="btn-mods" onclick="openModsModal('${v.versionNum}')">Список модов</button>
-                </div>
-            `).join('');
+            if (versionsContainer) {
+                versionsContainer.innerHTML = NATRIUM_CONFIG.versions.map(v => `
+                    <div class="card">
+                        <span class="card-title">NATRIUM</span>
+                        <span class="card-version">Версия ${v.versionNum}</span>
+                        <span class="file-type">${v.fileType}</span>
+                        <a href="${v.link}" download="${v.fileName}" class="btn-download">Скачать сборку</a>
+                        <button class="btn-mods" onclick="openModsModal('${v.versionNum}')">Список модов</button>
+                    </div>
+                `).join('');
+            }
 
             const socialsContainer = document.getElementById('socials-container');
-            socialsContainer.innerHTML = NATRIUM_CONFIG.socials.map(s => `
-                <a href="${s.url}" target="_blank" class="pill-button">
-                    ${s.text} <span>${s.span}</span>
-                </a>
-            `).join('');
+            if (socialsContainer) {
+                socialsContainer.innerHTML = NATRIUM_CONFIG.socials.map(s => `
+                    <a href="${s.url}" target="_blank" class="pill-button">
+                        ${s.text} <span>${s.span}</span>
+                    </a>
+                `).join('');
+            }
         }
 
         renderSite();
