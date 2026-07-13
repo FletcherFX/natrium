@@ -396,7 +396,17 @@
             requestAnimationFrame(animate);
         }
 
-        function openModsModal() { 
+        function openModsModal(versionKey) { 
+            const targetMods = versionKey === '1.16.5' ? NATRIUM_CONFIG.mods1_16_5 : NATRIUM_CONFIG.mods1_20_1;
+            const modalModsList = document.getElementById('modal-mods-list');
+            
+            modalModsList.innerHTML = targetMods.map(m => `
+                <div class="mod-item">
+                    <div class="mod-name">${m.name}</div>
+                    <div class="mod-desc">${m.desc}</div>
+                </div>
+            `).join('');
+
             document.getElementById('mods-search').value = '';
             filterMods();
             document.getElementById('mods-modal').classList.add('active'); 
