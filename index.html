@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NATRIUM</title>
-    <link rel="icon" type="image/png" href="favicon.png?v=5">
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.4s, box-shadow 0.4s;
         }
 
         body {
@@ -27,11 +27,8 @@
         }
 
         #atom-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1;
             pointer-events: none;
         }
@@ -54,7 +51,6 @@
             border-radius: 38px;
             overflow: hidden;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
-            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s;
         }
 
         .logo-container:hover {
@@ -63,9 +59,7 @@
         }
 
         .logo {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            width: 100%; height: 100%; object-fit: cover;
         }
 
         h1 {
@@ -88,7 +82,6 @@
             margin-bottom: 50px;
             text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
-
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -111,7 +104,6 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.4s, box-shadow 0.4s;
         }
 
         .card:hover {
@@ -130,11 +122,10 @@
             display: block;
             text-align: center;
         }
-
         .card-version {
-            color: #94a3b8;
             font-size: 1.3rem;
             font-weight: 700;
+            color: #94a3b8;
             margin-top: -5px;
             margin-bottom: 15px;
             display: block;
@@ -142,61 +133,29 @@
         }
 
         .file-type {
-            color: #ffaa00;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 25px;
-            display: block;
+            color: #ffaa00; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px; display: block;
         }
 
         .btn-download {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
+            display: inline-flex; align-items: center; justify-content: center; width: 100%;
             background: linear-gradient(135deg, #ffcc00 0%, #ff6600 100%);
-            color: #080809;
-            text-decoration: none;
-            padding: 16px 32px;
-            border-radius: 14px;
-            font-size: 1.1rem;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
+            color: #080809; text-decoration: none; padding: 16px 32px; border-radius: 14px;
+            font-size: 1.1rem; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 12px;
             box-shadow: 0 8px 25px rgba(255, 85, 0, 0.3);
-            transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .btn-download:hover {
-            transform: scale(1.03);
-            box-shadow: 0 12px 35px rgba(255, 85, 0, 0.5);
-        }
+        .btn-download:hover { transform: scale(1.03); box-shadow: 0 12px 35px rgba(255, 85, 0, 0.5); }
 
         .btn-mods {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 170, 0, 0.3);
-            color: #ffaa00;
-            text-decoration: none;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+            display: inline-flex; align-items: center; justify-content: center; width: 100%;
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 170, 0, 0.3);
+            color: #ffaa00; text-decoration: none; padding: 12px 24px; border-radius: 12px;
+            font-size: 0.95rem; font-weight: 700; cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s, color 0.2s;
         }
 
-        .btn-mods:hover {
-            background: rgba(255, 170, 0, 0.1);
-            border-color: rgba(255, 170, 0, 0.6);
-            color: #ffffff;
-            transform: translateY(-2px);
-        }
+        .btn-mods:hover { background: rgba(255, 170, 0, 0.1); border-color: rgba(255, 170, 0, 0.6); color: #ffffff; }
 
         .bottom-links {
             display: flex;
@@ -204,7 +163,6 @@
             gap: 12px;
             width: 100%;
             max-width: 500px;
-            margin-top: 20px;
         }
 
         .pill-button {
@@ -223,129 +181,62 @@
             position: relative;
             z-index: 3;
             width: 100%;
-            transition: background-color 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
         }
 
-        .pill-button span {
-            color: #ffcc00;
-            font-weight: 700;
-            margin-left: 5px;
-        }
-
-        .pill-button:hover {
-            background-color: rgba(255, 183, 0, 0.04);
-            border-color: rgba(255, 183, 0, 0.3);
-            color: #ffffff;
-            transform: translateY(-2px);
-        }
+        .pill-button span { color: #ffcc00; font-weight: 700; margin-left: 5px; }
+        .pill-button:hover { background-color: rgba(255, 183, 0, 0.04); border-color: rgba(255, 183, 0, 0.3); color: #ffffff; }
 
         .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(3, 3, 4, 0.7);
-            backdrop-filter: blur(20px);
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 3, 4, 0.7); backdrop-filter: blur(20px);
+            z-index: 100; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
 
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
         .modal-window {
-            background: rgba(18, 18, 24, 0.95);
-            border: 2px solid rgba(255, 170, 0, 0.25);
-            border-radius: 32px;
-            width: 90%;
-            max-width: 650px;
-            max-height: 80vh;
-            padding: 35px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 30px 70px rgba(0,0,0,0.8);
-            transform: scale(0.95);
-            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            background: rgba(18, 18, 24, 0.95); border: 2px solid rgba(255, 170, 0, 0.25);
+            border-radius: 32px; width: 90%; max-width: 650px; max-height: 80vh;
+            padding: 35px; display: flex; flex-direction: column; box-shadow: 0 30px 70px rgba(0,0,0,0.8);
+            transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        .modal-overlay.active .modal-window {
-            transform: scale(1);
-        }
+        .modal-overlay.active .modal-window { transform: scale(1); }
 
         .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
         }
 
-        .modal-title {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: #ffffff;
-        }
-
-        .modal-title span {
-            color: #ffaa00;
-        }
+        .modal-title { font-size: 1.8rem; font-weight: 800; color: #ffffff; }
+        .modal-title span { color: #ffaa00; }
 
         .modal-close {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #94a3b8;
-            font-size: 1.5rem;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+            color: #94a3b8; font-size: 1.5rem; width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;
         }
 
-        .modal-close:hover {
-            background: rgba(255, 85, 0, 0.2);
-            border-color: rgba(255, 85, 0, 0.4);
-            color: #ffffff;
+        .modal-close:hover { background: rgba(255, 85, 0, 0.2); border-color: rgba(255, 85, 0, 0.4); color: #ffffff; }
+
+        .mods-list {
+            overflow-y: auto; padding-right: 10px; flex: 1;
         }
 
-        .modal-search-wrapper {
-            position: relative;
-            margin-bottom: 20px;
-            width: 100%;
-        }
-        .modal-search {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 170, 0, 0.2);
-            border-radius: 12px;
-            padding: 12px 16px;
-            color: #ffffff;
-            font-family: inherit;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-        .modal-search:focus {
-            border-color: rgba(255, 170, 0, 0.6);
-            box-shadow: 0 0 15px rgba(255, 136, 0, 0.2);
-        }
-        .modal-search::placeholder {
-            color: #4b5563;
-        }
-        .mod-item.hidden {
-            display: none !important;
+        .mods-list::-webkit-scrollbar { width: 6px; }
+        .mods-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
+        .mods-list::-webkit-scrollbar-thumb { background: rgba(255, 170, 0, 0.3); border-radius: 10px; }
+        .mods-list::-webkit-scrollbar-thumb:hover { background: rgba(255, 170, 0, 0.6); }
+
+        .mod-item {
+            background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03);
+            padding: 14px 18px; border-radius: 14px; margin-bottom: 10px;
+            display: flex; flex-direction: column; gap: 4px;
         }
 
+        .mod-item:hover { background: rgba(255,170,0,0.02); border-color: rgba(255,170,0,0.15); }
+        .mod-name { font-weight: 700; color: #ffcc00; font-size: 1.1rem; }
+        .mod-desc { color: #94a3b8; font-size: 0.9rem; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -371,76 +262,57 @@
                 <div class="modal-title">Моды сборки <span>NATRIUM</span></div>
                 <button class="modal-close" onclick="closeModsModal()">&times;</button>
             </div>
-            <div class="modal-search-wrapper">
-                <input type="text" id="mod-search-input" class="modal-search" placeholder="Поиск мода по названию..." oninput="filterMods()">
-            </div>
             <div class="mods-list" id="modal-mods-list"></div>
         </div>
     </div>
 
     <script>
+        const fav = document.createElement('link');
+        fav.rel = 'icon'; fav.href = 'favicon.png?v=5';
+        document.head.appendChild(fav);
+
         const canvas = document.getElementById('atom-canvas');
         const ctx = canvas.getContext('2d');
-        let particles = [];
-        let sparks = [];
+        let particles = []; let sparks = []; 
         const mouse = { x: null, y: null, radius: 140 };
 
         function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             initParticles();
         }
         window.addEventListener('resize', resizeCanvas);
-        
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-            if (sparks.length < 45) {
-                sparks.push(new Spark(e.clientX, e.clientY));
-            }
+        window.addEventListener('mousemove', (e) => { 
+            mouse.x = e.pageX; mouse.y = e.pageY;
+            if (sparks.length < 45) sparks.push(new Spark(e.pageX, e.pageY));
         });
-        
-        window.addEventListener('mouseout', () => {
-            mouse.x = null;
-            mouse.y = null;
-        });
+        window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
 
         class Particle {
             constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.baseX = x;
-                this.baseY = y;
+                this.x = x; this.y = y; this.baseX = x; this.baseY = y;
                 this.size = Math.random() * 2 + 1;
-                this.speedX = (Math.random() - 0.5) * 0.4;
-                this.speedY = (Math.random() - 0.5) * 0.4;
+                this.speedX = (Math.random() - 0.5) * 0.4; this.speedY = (Math.random() - 0.5) * 0.4;
             }
             update() {
-                this.baseX += this.speedX;
-                this.baseY += this.speedY;
+                this.baseX += this.speedX; this.baseY += this.speedY;
                 if (this.baseX < 0 || this.baseX > canvas.width) this.speedX *= -1;
                 if (this.baseY < 0 || this.baseY > canvas.height) this.speedY *= -1;
-
-                let targetX = this.baseX;
-                let targetY = this.baseY;
-
                 if (mouse.x != null && mouse.y != null) {
-                    let dx = mouse.x - this.baseX;
-                    let dy = mouse.y - this.baseY;
+                    let dx = mouse.x - this.baseX; let dy = mouse.y - this.baseY;
                     let distance = Math.hypot(dx, dy);
                     if (distance < mouse.radius) {
                         let force = (mouse.radius - distance) / mouse.radius;
                         let angle = Math.atan2(dy, dx);
-                        targetX = this.baseX - Math.cos(angle) * force * 45;
-                        targetY = this.baseY - Math.sin(angle) * force * 45;
+                        let targetX = this.baseX - Math.cos(angle) * force * 35;
+                        let targetY = this.baseY - Math.sin(angle) * force * 35;
+                        this.x += (targetX - this.x) * 0.1; this.y += (targetY - this.y) * 0.1;
+                        return;
                     }
                 }
-                this.x += (targetX - this.x) * 0.08;
-                this.y += (targetY - this.y) * 0.08;
+                this.x += (this.baseX - this.x) * 0.08; this.y += (this.baseY - this.y) * 0.08;
             }
             draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fillStyle = Math.random() > 0.5 ? 'rgba(255, 180, 0, 0.25)' : 'rgba(255, 85, 0, 0.15)';
                 ctx.fill();
             }
@@ -448,160 +320,45 @@
 
         class Spark {
             constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.maxSize = Math.random() * 3 + 2;
-                this.size = this.maxSize;
-                this.speedX = (Math.random() - 0.5) * 2.5;
-                this.speedY = (Math.random() - 0.5) * 2.5;
-                this.alpha = 1;
-                this.life = 1;
-                this.decay = Math.random() * 0.015 + 0.012;
+                this.x = x; this.y = y; this.size = Math.random() * 2.5 + 1.5;
+                this.speedX = (Math.random() - 0.5) * 2.2; 
+                this.speedY = (Math.random() - 0.5) * 2.2;
+                this.alpha = 1; 
             }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.speedX *= 0.97;
-                this.speedY *= 0.97;
-                this.life -= this.decay;
-                this.alpha = this.life;
-                this.size = this.maxSize * this.life;
-                if (this.size < 0) this.size = 0;
+            update() { 
+                this.x += this.speedX; 
+                this.y += this.speedY; 
+                this.speedX *= 0.96;
+                this.speedY *= 0.96;
+                this.alpha -= 0.018; 
             }
             draw() {
-                if (this.alpha <= 0) return;
-                ctx.save();
-                ctx.globalAlpha = this.alpha;
-                ctx.beginPath();
+                ctx.save(); ctx.globalAlpha = this.alpha; ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.shadowBlur = 15;
-                ctx.shadowColor = '#ff8800';
-                ctx.fillStyle = '#ffbb00';
-                ctx.fill();
-                ctx.restore();
+                ctx.shadowBlur = 12; ctx.shadowColor = '#ff8800'; ctx.fillStyle = '#ffbb00';
+                ctx.fill(); ctx.restore();
             }
         }
 
         function initParticles() {
             particles = [];
             const count = Math.floor((canvas.width * canvas.height) / 9000);
-            for (let i = 0; i < count; i++) {
-                particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
-            }
+            for (let i = 0; i < count; i++) particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
         }
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let p of particles) {
-                p.update();
-                p.draw();
-            }
+            for (let p of particles) { p.update(); p.draw(); }
             for (let i = 0; i < sparks.length; i++) {
-                sparks[i].update();
-                sparks[i].draw();
-                if (sparks[i].life <= 0) {
-                    sparks.splice(i, 1);
-                    i--;
-                }
+                sparks[i].update(); sparks[i].draw();
+                if (sparks[i].alpha <= 0) { sparks.splice(i, 1); i--; }
             }
             requestAnimationFrame(animate);
         }
-        function openModsModal() {
-            document.getElementById('mod-search-input').value = '';
-            filterMods();
-            document.getElementById('mods-modal').classList.add('active');
-        }
+        function openModsModal() { document.getElementById('mods-modal').classList.add('active'); }
+        function closeModsModal() { document.getElementById('mods-modal').classList.remove('active'); }
+        window.addEventListener('click', (e) => { const m = document.getElementById('mods-modal'); if(e.target === m) closeModsModal(); });
 
-        function closeModsModal() {
-            document.getElementById('mods-modal').classList.remove('active');
-        }
-
-        window.addEventListener('click', (e) => {
-            const m = document.getElementById('mods-modal');
-            if (e.target === m) closeModsModal();
-        });
-
-        function filterMods() {
-            const input = document.getElementById('mod-search-input').value.toLowerCase().trim();
-            if (!input) {
-                document.querySelectorAll('#modal-mods-list .mod-item').forEach(item => item.classList.remove('hidden'));
-                return;
-            }
-
-            const enLayout = "qwertyuiop[]asdfghjkl;'zxcvbnm,.";
-            const ruLayout = "йцукенгшщзхъфывапролджэячсмитьбю";
-            
-            let switchedInput = "";
-            for (let char of input) {
-                const idx = ruLayout.indexOf(char);
-                if (idx !== -1) {
-                    switchedInput += enLayout[idx];
-                } else {
-                    switchedInput += char;
-                }
-            }
-
-            const translitMap = {
-                'содиум': 'sodium', 'литиум': 'lithium', 'индиум': 'indium', 'ферриткор': 'ferritecore',
-                'модернфикс': 'modernfix', 'криптон': 'krypton', 'иммедиатлифаст': 'immediatelyfast',
-                'тредтвик': 'threadtweak', 'моркаллинг': 'more culling', 'энхансед': 'enhanced',
-                'меморилик': 'memory leak', 'лэнгвидж': 'language', 'ризис': 'reese', 'натриум': 'natrium',
-                'атлант': 'athena', 'бедпатч': 'bad packets', 'бедоптимизейшн': 'badoptimizations',
-                'клот': 'cloth', 'клампс': 'clumps', 'ццме': 'ccme', 'конективити': 'connectivity',
-                'айрис': 'iris', 'спарк': 'spark'
-            };
-
-            const items = document.querySelectorAll('#modal-mods-list .mod-item');
-            items.forEach(item => {
-                const name = item.querySelector('.mod-name').textContent.toLowerCase();
-                const desc = item.querySelector('.mod-desc').textContent.toLowerCase();
-                
-                let isMatch = name.includes(input) || desc.includes(input) || name.includes(switchedInput);
-                
-                for (let rusKeyword in translitMap) {
-                    if (input.includes(rusKeyword) && name.includes(translitMap[rusKeyword])) {
-                        isMatch = true;
-                    }
-                }
-                
-                if (isMatch) {
-                    item.classList.remove('hidden');
-                } else {
-                    item.classList.add('hidden');
-                }
-            });
-        }
-
-        function renderSite() {
-            document.getElementById('site-title').innerText = NATRIUM_CONFIG.texts.title;
-            document.getElementById('site-subtitle').innerText = NATRIUM_CONFIG.texts.subtitle;
-
-            const versionsContainer = document.getElementById('versions-container');
-            versionsContainer.innerHTML = NATRIUM_CONFIG.versions.map(v => `
-                <div class="card">
-                    <span class="card-title">NATRIUM</span>
-                    <span class="card-version">Версия 1.20.1</span>
-                    <span class="file-type">${v.fileType}</span>
-                    <a href="${v.link}" download="${v.fileName}" class="btn-download">Скачать сборку</a>
-                    <button class="btn-mods" onclick="openModsModal()">Список модов</button>
-                </div>
-            `).join('');
-
-            const socialsContainer = document.getElementById('socials-container');
-            socialsContainer.innerHTML = NATRIUM_CONFIG.socials.map(s => `
-                <a href="${s.url}" target="_blank" class="pill-button">
-                    ${s.text} <span>${s.span}</span>
-                </a>
-            `).join('');
-
-            const modalModsList = document.getElementById('modal-mods-list');
-            modalModsList.innerHTML = NATRIUM_CONFIG.mods.map(m => `
-                <div class="mod-item">
-                    <div class="mod-name">${m.name}</div>
-                    <div class="mod-desc">${m.desc}</div>
-                </div>
-            `).join('');
-        }
         const NATRIUM_CONFIG = {
             texts: {
                 title: "NATRIUM",
@@ -663,76 +420,6 @@
             ]
         };
 
-        renderSite();
-        function openModsModal() {
-            document.getElementById('mod-search-input').value = '';
-            filterMods();
-            document.getElementById('mods-modal').classList.add('active');
-        }
-
-        function closeModsModal() {
-            document.getElementById('mods-modal').classList.remove('active');
-        }
-
-        window.addEventListener('click', (e) => {
-            const m = document.getElementById('mods-modal');
-            if (e.target === m) closeModsModal();
-        });
-
-        function filterMods() {
-            const input = document.getElementById('mod-search-input').value.toLowerCase().trim();
-            if (!input) {
-                document.querySelectorAll('#modal-mods-list .mod-item').forEach(item => item.classList.remove('hidden'));
-                return;
-            }
-
-            const enLayout = "qwertyuiop[]asdfghjkl;'zxcvbnm,.";
-            const ruLayout = "йцукенгшщзхъфывапролджэячсмитьбю";
-            
-            let switchedLayout = "";
-            for (let char of input) {
-                const ruIdx = ruLayout.indexOf(char);
-                const enIdx = enLayout.indexOf(char);
-                if (ruIdx !== -1) {
-                    switchedLayout += enLayout[ruIdx];
-                } else if (enIdx !== -1) {
-                    switchedLayout += ruLayout[enIdx];
-                } else {
-                    switchedLayout += char;
-                }
-            }
-
-            const translitMap = {
-                'содиум': 'sodium', 'литиум': 'lithium', 'индиум': 'indium', 'ферриткор': 'ferritecore',
-                'модернфикс': 'modernfix', 'криптон': 'krypton', 'иммедиатлифаст': 'immediatelyfast',
-                'тредтвик': 'threadtweak', 'моркаллинг': 'more culling', 'энхансед': 'enhanced',
-                'меморилик': 'memory leak', 'лэнгвидж': 'language', 'ризис': 'reese', 'натриум': 'natrium',
-                'атлант': 'athena', 'бедпатч': 'bad packets', 'бедоптимизейшн': 'badoptimizations',
-                'клот': 'cloth', 'клампс': 'clumps', 'ццме': 'ccme', 'конективити': 'connectivity',
-                'айрис': 'iris', 'спарк': 'spark', 'альманак': 'almanac', 'дебагифай': 'debugify'
-            };
-
-            const items = document.querySelectorAll('#modal-mods-list .mod-item');
-            items.forEach(item => {
-                const name = item.querySelector('.mod-name').textContent.toLowerCase();
-                const desc = item.querySelector('.mod-desc').textContent.toLowerCase();
-                
-                let isMatch = name.includes(input) || desc.includes(input) || name.includes(switchedLayout) || desc.includes(switchedLayout);
-                
-                for (let rusKeyword in translitMap) {
-                    if ((input.includes(rusKeyword) || switchedLayout.includes(rusKeyword)) && name.includes(translitMap[rusKeyword])) {
-                        isMatch = true;
-                    }
-                }
-                
-                if (isMatch) {
-                    item.classList.remove('hidden');
-                } else {
-                    item.classList.add('hidden');
-                }
-            });
-        }
-
         function renderSite() {
             document.getElementById('site-title').innerText = NATRIUM_CONFIG.texts.title;
             document.getElementById('site-subtitle').innerText = NATRIUM_CONFIG.texts.subtitle;
@@ -765,7 +452,7 @@
         }
 
         renderSite();
-                resizeCanvas(); 
+        resizeCanvas(); 
         animate();
     </script>
 </body>
