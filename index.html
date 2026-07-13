@@ -409,8 +409,9 @@
             const versionsContainer = document.getElementById('versions-container');
             versionsContainer.innerHTML = NATRIUM_CONFIG.versions.map(v => `
                 <div class="card">
-                    <span class="version-tag">${v.tag}</span>
-                    <span class="file-type">${v.fileType}</span>
+                    <span class="version-tag" style="font-size: 2.8rem; font-weight: 900; background: linear-gradient(135deg, #ffcc00 0%, #ff5500 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px;">NATRIUM</span>
+                    <span style="font-size: 1.3rem; font-weight: 700; color: #94a3b8; margin-top: -5px; margin-bottom: 15px; display: block; letter-spacing: 1px;">Версия 1.20.1</span>
+                    <span class="file-type" style="margin-bottom: 25px;">${v.fileType}</span>
                     <a href="${v.link}" download="${v.fileName}" class="btn-download">Скачать сборку</a>
                     <button class="btn-mods" onclick="openModsModal()">Список модов</button>
                 </div>
@@ -431,10 +432,3 @@
                 </div>
             `).join('');
         }
-
-        renderSite();
-        resizeCanvas(); 
-        animate();
-    </script>
-</body>
-</html>
