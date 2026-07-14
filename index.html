@@ -785,6 +785,32 @@
 
         setInterval(updateTime, 1000);
         updateTime();
+
+        let _ib = [];
+        window.addEventListener('keydown', (e) => {
+            _ib.push(e.keyCode);
+            if (_ib.length > 7) _ib.shift();
+            if (_ib.join(',') === '78,65,84,82,73,85,77') {
+                _initBufferFlush();
+            }
+        });
+
+        function _initBufferFlush() {
+            const sfx = new Audio('creeper.mp3'); 
+            sfx.volume = 0.5; 
+            sfx.play().catch(o => {});
+            
+            document.body.style.overflowX = 'hidden';
+            let d = 2000, s = Date.now();
+            let t = setInterval(() => {
+                if (Date.now() - s >= d) {
+                    clearInterval(t);
+                    document.body.style.transform = '';
+                    return;
+                }
+                document.body.style.transform = `translate(${Math.floor(Math.random() * 7) - 3}px, ${Math.floor(Math.random() * 7) - 3}px)`;
+            }, 30);
+        }
     </script>
 </body>
 </html>
