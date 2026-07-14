@@ -137,7 +137,7 @@
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
             width: 100%;
-            max-width: 740px;
+            max-width: 1100px;
             margin-bottom: 50px;
             justify-content: center;
         }
@@ -524,12 +524,47 @@
             texts: { title: "NATRIUM", subtitle: "Сборка-каркас на Minecraft, состоящая из полной оптимизации" },
             versions: [
                 { versionNum: "1.20.1", fileType: "Модпак .mrpack", link: "./Natrium_1.20.1.mrpack", fileName: "Natrium_1.20.1.mrpack" },
+                { versionNum: "26.1", fileType: "Модпак .mrpack", link: "./Natrium_26.1.mrpack", fileName: "Natrium_26.1.mrpack" },
                 { versionNum: "1.16.5", fileType: "Модпак .mrpack", link: "./Natrium_1.16.5.mrpack", fileName: "Natrium_1.16.5.mrpack" }
             ],
             socials: [
                 { text: "Наш Telegram-канал:", span: "@JavaFixer", url: "https://t.me/JavaFixer" },
                 { text: "Наш Telegram-чат:", span: "@JavaFixerChat", url: "https://t.me/JavaFixerChat" },
                 { text: "Нашли баг или краш? Пишите в бота:", span: "@JavaFixerTEXbot", url: "https://t.me/JavaFixerTEXbot" }
+            ],
+            mods26_1: [
+                { name: "Alternate Current", desc: "Глубокая оптимизация алгоритмов редстоуна." },
+                { name: "Bad Packets", desc: "Служебный API для безопасной синхронизации пакетов." },
+                { name: "BadOptimizations", desc: "Патчи, убирающие микрофризы." },
+                { name: "Cloth Config v26.1", desc: "Стабильный конфигурационный экран." },
+                { name: "Clumps", desc: "Объединяет сферы опыта, убирая лаги на фермах." },
+                { name: "Connectivity Mod", desc: "Оптимизация сетевых соединений." },
+                { name: "Dynamic FPS", desc: "Снижает нагрузку на GPU при свернутой игре." },
+                { name: "EntityCulling", desc: "Пропускает рендеринг невидимых мобов." },
+                { name: "Fabric API", desc: "Библиотека-ядро." },
+                { name: "Fabric Language Kotlin", desc: "Поддержка языка Kotlin для модов." },
+                { name: "FerriteCore", desc: "Экстремальное сокращение потребления ОЗУ." },
+                { name: "Gpu memory leak fix mod", desc: "Блокировка утечек памяти в видеокарте." },
+                { name: "ImmediatelyFast", desc: "Ускорение рендеринга шрифтов и частиц." },
+                { name: "Iris", desc: "Движок шейдеров с поддержкой Sodium." },
+                { name: "Krypton", desc: "Оптимизация сетевого стека." },
+                { name: "Language Reload", desc: "Моментальное переключение языков." },
+                { name: "Lithium", desc: "Оптимизация физики и ИИ мобов." },
+                { name: "Mod Menu", desc: "Интерфейс просмотра модов." },
+                { name: "ModernFix", desc: "Ускорение запуска игры в разы." },
+                { name: "More Culling", desc: "Отсечение рендеринга невидимых граней." },
+                { name: "Mouse Tweaks", desc: "Улучшенное управление мышью в инвентаре." },
+                { name: "No Chat Reports", desc: "Блокировка репортов и телеметрии чата." },
+                { name: "Packet Fixer", desc: "Исправляет вылеты от больших пакетов данных." },
+                { name: "Placeholder API", desc: "API для использования плейсхолдеров." },
+                { name: "Reese's Sodium Options", desc: "Интерфейс для настроек Sodium." },
+                { name: "Smooth Boot", desc: "Оптимизация нагрузки на процессор при запуске." },
+                { name: "Sodium", desc: "Главный движок оптимизации." },
+                { name: "Sodium Extra", desc: "Дополнительные тумблеры оптимизации." },
+                { name: "Stutterfix", desc: "Устранение статтеров и микролагов." },
+                { name: "Very Many Players", desc: "Оптимизация для серверов с кучей игроков." },
+                { name: "YetAnotherConfigLib", desc: "Библиотека слоев конфигурации." },
+                { name: "cupboard", desc: "Оптимизированное фоновое ядро." }
             ],
             mods1_20_1: [
                 { name: "Almanac", desc: "Улучшенная интеграция и управление внутриигровой документацией." },
@@ -611,7 +646,11 @@
         };
 
         function openModsModal(versionKey) { 
-            const targetMods = versionKey === '1.16.5' ? NATRIUM_CONFIG.mods1_16_5 : NATRIUM_CONFIG.mods1_20_1;
+            let targetMods;
+            if (versionKey === '1.16.5') targetMods = NATRIUM_CONFIG.mods1_16_5;
+            else if (versionKey === '26.1') targetMods = NATRIUM_CONFIG.mods26_1;
+            else targetMods = NATRIUM_CONFIG.mods1_20_1;
+
             const modalModsList = document.getElementById('modal-mods-list');
             modalModsList.innerHTML = targetMods.map(m => `
                 <div class="mod-item">
