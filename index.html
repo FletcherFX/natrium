@@ -633,21 +633,30 @@
             ]
         };
 
-        const SMART_TRANSLIT = {
-            "содиум": "sodium", "натриум": "sodium", "судиум": "sodium",
-            "литиум": "lithium", "индиум": "indium",
-            "ферритекор": "ferritecore", "феррите кор": "ferritecore", "ферите коре": "ferritecore", "феритекор": "ferritecore",
-            "модернфикс": "modernfix", "криптон": "krypton", "атлант": "athena", "афина": "athena",
-            "айрис": "iris", "ирис": "iris", "спарк": "spark", "мод меню": "mod menu", "модменю": "mod menu",
-            "клот": "cloth", "клампс": "clumps", "дебагифай": "debugify",
-            "энтити": "entityculling", "энтити калинг": "entityculling", "фосфор": "phosphor"
-        };
+const SMART_TRANSLIT = {
+    "содиум": "sodium", "натриум": "sodium", "судиум": "sodium", "содиум экстра": "sodium extra", "натриум экстра": "sodium extra",
+    "литиум": "lithium", "индиум": "indium",
+    "ферритекор": "ferritecore", "феррите кор": "ferritecore", "ферите коре": "ferritecore", "феритекор": "ferritecore", "феррит": "ferritecore",
+    "модернфикс": "modernfix", "модерн фикс": "modernfix", "криптон": "krypton", "атлант": "athena", "афина": "athena",
+    "айрис": "iris", "ирис": "iris", "спарк": "spark", "мод меню": "mod menu", "модменю": "mod menu",
+    "клот": "cloth", "клот конфиг": "cloth config v11", "клампс": "clumps", "дебагифай": "debugify",
+    "энтити": "entityculling", "энтити калинг": "entityculling", "энтитикалинг": "entityculling", "куллинг": "entityculling", "фосфор": "phosphor",
+    "лейзи дфу": "lazydfu", "лейзидфу": "lazydfu", "lazy dfu": "lazydfu", "дфу": "lazydfu", "dfu": "lazydfu", "лези дфу": "lazydfu", "лезидфу": "lazydfu", "лазу дфу": "lazydfu", "лазудфу": "lazydfu", "лайзи дфу": "lazydfu",
+    "динамик фпс": "dynamic fps", "динамикфпс": "dynamic fps", "энхансед блок": "enhanced block entities",
+    "мемори лик": "memory leak fix", "меморилик": "memory leak fix", "пакет фиксер": "packet fixer", "пакетфиксер": "packet fixer", "packetfixer": "packet fixer",
+    "бордерлес": "borderless mining", "альт каррент": "alternate current", "бед пакетс": "bad packets", "бедпакетс": "bad packets",
+    "бед оптимизейшнс": "badoptimizations", "бедоптимизейшнс": "badoptimizations", "бед оптимизаци": "badoptimizations", "конкурент чанк": "concurrent chunk management engine", "ссме": "concurrent chunk management engine", "ccme": "concurrent chunk management engine",
+    "коннективити": "connectivity mod", "фастаним": "fastanim", "фаст аним": "fastanim", "гпу мемори": "gpu memory leak fix mod", "имедиатлифаст": "immediatelyfast",
+    "имедиатли фаст": "immediatelyfast", "иммидиатли": "immediatelyfast", "ленгвидж релоад": "language reload", "мор куллинг": "more culling", "моркуллинг": "more culling",
+    "нот инаф крашес": "not enough crashes", "рис содиум": "reese's sodium options", "тред твик": "threadtweak", "тредтвик": "threadtweak",
+    "вери мени плеерс": "very many players", "вмп": "very many players", "vmp": "very many players", "капборд": "cupboard"
+};
 
-        function openModsModal(versionKey) { 
-            let targetMods;
-            if (versionKey === '1.16.5') targetMods = NATRIUM_CONFIG.mods1_16_5;
-            else if (versionKey === '26.1') targetMods = NATRIUM_CONFIG.mods26_1;
-            else targetMods = NATRIUM_CONFIG.mods1_20_1;
+function openModsModal(versionKey) { 
+    let targetMods;
+    if (versionKey === '1.16.5') targetMods = NATRIUM_CONFIG.mods1_16_5;
+    else if (versionKey === '26.1') targetMods = NATRIUM_CONFIG.mods26_1;
+    else targetMods = NATRIUM_CONFIG.mods1_20_1;
 
             const modalModsList = document.getElementById('modal-mods-list');
             modalModsList.innerHTML = targetMods.map(m => `
