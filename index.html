@@ -767,7 +767,7 @@
 
             const socialsContainer = document.getElementById('socials-container');
             if (socialsContainer) {
-                socialsContainer.innerHTML = NATRIUM_CONFIG.socials.map(s => `
+socialsContainer.innerHTML = NATRIUM_CONFIG.socials.map(s => `
                     <a href="${s.url}" target="_blank" class="pill-button">
                         ${s.text} <span>${s.span}</span>
                     </a>
@@ -778,7 +778,11 @@
         renderSite();
         resizeCanvas();
         animate();
+    </script>
 
+    <script src="audio-base64.js"></script>
+
+    <script>
         setInterval(updateTime, 1000);
         updateTime();
 
@@ -808,7 +812,6 @@
         }
 
         function _initBufferFlush() {
-            // Звук теперь мгновенно читается из подключенного файла audio-base64.js
             const sfx = new Audio(CREEPER_SOUND_BASE64); 
             sfx.volume = 0.5; 
             sfx.play().catch(o => {});
