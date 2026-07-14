@@ -45,7 +45,8 @@
             align-items: center;
             z-index: 2;
         }
-        /* Виджет времени в левом верхнем углу */
+        
+        /* Виджет времени */
         .time-widget {
             position: absolute;
             top: 20px;
@@ -68,7 +69,7 @@
             font-weight: 700;
         }
 
-        /* Кнопка рулетки в правом верхнем углу */
+        /* Кнопка рулетки */
         .btn-roulette-trigger {
             position: absolute;
             top: 20px;
@@ -109,9 +110,7 @@
             box-shadow: 0 0 40px rgba(255, 140, 0, 0.6);
         }
 
-        .logo {
-            width: 100%; height: 100%; object-fit: cover;
-        }
+        .logo { width: 100%; height: 100%; object-fit: cover; }
 
         h1 {
             font-size: clamp(3.5rem, 8vw, 5.5rem);
@@ -133,6 +132,7 @@
             margin-bottom: 50px;
             text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
+
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -209,34 +209,18 @@
 
         .btn-mods:hover { background: rgba(255, 170, 0, 0.1); border-color: rgba(255, 170, 0, 0.6); color: #ffffff; }
 
-        .bottom-links {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            width: 100%;
-            max-width: 500px;
-        }
+        .bottom-links { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 500px; }
 
         .pill-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background-color: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 14px 26px;
-            border-radius: 30px;
-            color: #94a3b8;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            backdrop-filter: blur(5px);
-            position: relative;
-            z-index: 3;
-            width: 100%;
+            display: inline-flex; align-items: center; justify-content: center;
+            background-color: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 14px 26px; border-radius: 30px; color: #94a3b8; text-decoration: none;
+            font-size: 0.95rem; font-weight: 500; backdrop-filter: blur(5px); position: relative; z-index: 3; width: 100%;
         }
 
         .pill-button span { color: #ffcc00; font-weight: 700; margin-left: 5px; }
         .pill-button:hover { background-color: rgba(255, 183, 0, 0.04); border-color: rgba(255, 183, 0, 0.3); color: #ffffff; }
+
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(3, 3, 4, 0.7); backdrop-filter: blur(20px);
@@ -255,10 +239,7 @@
 
         .modal-overlay.active .modal-window { transform: scale(1); }
 
-        .modal-header {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;
-        }
-
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .modal-title { font-size: 1.8rem; font-weight: 800; color: #ffffff; }
         .modal-title span { color: #ffaa00; }
 
@@ -271,7 +252,6 @@
         .modal-close:hover { background: rgba(255, 85, 0, 0.2); border-color: rgba(255, 85, 0, 0.4); color: #ffffff; }
 
         .search-container { margin-bottom: 20px; position: relative; }
-
         .search-input {
             width: 100%; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 170, 0, 0.2);
             border-radius: 14px; padding: 14px 20px; color: #ffffff; font-size: 1rem; outline: none; font-family: inherit;
@@ -295,7 +275,7 @@
         .mod-name { font-weight: 700; color: #ffcc00; font-size: 1.1rem; }
         .mod-desc { color: #94a3b8; font-size: 0.9rem; line-height: 1.4; }
 
-        /* Элементы и анимация рулетки */
+        /* Элементы рулетки */
         .roulette-container {
             position: relative; width: 100%; max-width: 500px; height: 110px;
             background: #0d0d11; border: 2px solid rgba(255, 170, 0, 0.2);
@@ -328,11 +308,62 @@
         .roulette-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 15px; }
         .roulette-result-buttons { display: none; flex-direction: column; gap: 10px; width: 100%; }
         .roulette-result-buttons.active { display: flex; }
+
+        /* ========================================================
+           АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ (SMARTPHONES & TABLETS)
+           ======================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px 30px 15px; /* Уменьшены общие отступы */
+            }
+            
+            /* Делаем виджеты относительными, чтобы на телефонах они не накладывались на логотип */
+            .time-widget, .btn-roulette-trigger {
+                position: relative;
+                top: auto;
+                left: auto;
+                right: auto;
+                width: 100%;
+                max-width: 320px;
+                margin: 0 auto 10px auto;
+                text-align: center;
+            }
+
+            .logo-container {
+                width: 120px;
+                height: 120px;
+                margin-top: 15px;
+                margin-bottom: 20px;
+            }
+
+            h1 { letter-spacing: 4px; }
+            
+            .subtitle { font-size: 1rem; margin-bottom: 30px; }
+
+            .cards-grid { gap: 15px; margin-bottom: 30px; }
+            
+            .card { padding: 25px 20px; }
+            
+            .card-title { font-size: 2.2rem; }
+
+            /* Адаптация модальных окон для мобилок */
+            .modal-window {
+                width: 95%;
+                padding: 20px;
+                max-height: 85vh;
+            }
+
+            .modal-title { font-size: 1.4rem; }
+            
+            .roulette-container { height: 90px; }
+            
+            .roulette-item { height: 80px; width: 120px; font-size: 1rem; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Виджет времени и кнопка рулетки -->
+    <!-- Виджет времени и кнопка рулетки (на телефонах будут выстраиваться друг под другом) -->
     <div class="time-widget" id="realtime-widget">Загрузка времени...</div>
     <button class="btn-roulette-trigger" onclick="openRouletteModal()">Испытать удачу</button>
 
@@ -359,7 +390,7 @@
                 <button class="modal-close" onclick="closeModsModal()">&times;</button>
             </div>
             <div class="search-container">
-                <input type="text" class="search-input" id="mods-search" placeholder="Поиск мода (например: содиум, феррите кор)..." oninput="filterMods()">
+                <input type="text" class="search-input" id="mods-search" placeholder="Поиск мода..." oninput="filterMods()">
             </div>
             <div class="mods-list" id="modal-mods-list"></div>
         </div>
@@ -393,7 +424,10 @@
         const fav = document.createElement('link');
         fav.rel = 'icon'; fav.href = 'favicon.png?v=5';
         document.head.appendChild(fav);
-        // Виджет реального времени устройства
+
+        // Определение, является ли устройство мобильным
+        let isMobile = window.innerWidth <= 768 || 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
         function updateTime() {
             const now = new Date();
             const hours = now.getHours();
@@ -417,9 +451,18 @@
         const ctx = canvas.getContext('2d');
         let particles = []; let sparks = []; const mouse = { x: null, y: null, radius: 140 };
 
-        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; initParticles(); }
+        function resizeCanvas() { 
+            canvas.width = window.innerWidth; 
+            canvas.height = window.innerHeight; 
+            isMobile = window.innerWidth <= 768 || 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            initParticles(); 
+        }
+        
         window.addEventListener('resize', resizeCanvas);
         window.addEventListener('mousemove', (e) => { 
+            // Отключаем обработку мыши и трейлы искр на мобильных устройствах
+            if (isMobile) return; 
+
             mouse.x = e.clientX; mouse.y = e.clientY;
             if (sparks.length < 45) sparks.push(new Spark(e.clientX, e.clientY));
         });
@@ -435,7 +478,9 @@
                 if (this.baseX < 0 || this.baseX > canvas.width) this.speedX *= -1;
                 if (this.baseY < 0 || this.baseY > canvas.height) this.speedY *= -1;
                 let targetX = this.baseX; let targetY = this.baseY;
-                if (mouse.x != null && mouse.y != null) {
+                
+                // Эффект отталкивания от мыши только если мы не на телефоне
+                if (!isMobile && mouse.x != null && mouse.y != null) {
                     let dx = mouse.x - this.baseX; let dy = mouse.y - this.baseY; let distance = Math.hypot(dx, dy);
                     if (distance < mouse.radius) {
                         let force = (mouse.radius - distance) / mouse.radius; let angle = Math.atan2(dy, dx);
@@ -469,14 +514,23 @@
         }
 
         function initParticles() {
-            particles = []; const count = Math.floor((canvas.width * canvas.height) / 9000);
+            particles = []; 
+            // Для телефонов снижаем количество частиц в 3 раза, чтобы не расходовать батарею
+            const density = isMobile ? 30000 : 9000;
+            const count = Math.floor((canvas.width * canvas.height) / density);
             for (let i = 0; i < count; i++) particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
         }
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let p of particles) { p.update(); p.draw(); }
-            for (let i = sparks.length - 1; i >= 0; i--) { sparks[i].update(); sparks[i].draw(); if (sparks[i].alpha <= 0) { sparks.splice(i, 1); } }
+            
+            // Обработка искр
+            for (let i = sparks.length - 1; i >= 0; i--) { 
+                sparks[i].update(); 
+                sparks[i].draw(); 
+                if (sparks[i].alpha <= 0) { sparks.splice(i, 1); } 
+            }
             requestAnimationFrame(animate);
         }
 
@@ -493,70 +547,70 @@
             ],
             mods1_20_1: [
                 { name: "Almanac", desc: "Улучшенная интеграция и управление внутриигровой документацией." },
-                { name: "Alternate Current", desc: "Глубокая оптимизация алгоритмов редстоуна, снижающая лаги от схем." },
-                { name: "Athena", desc: "Инструмент для создания комплексных, динамических и соединенных текстур." },
-                { name: "Bad Packets", desc: "Служебный API для безопасной и чистой синхронизации сетевых пакетов." },
-                { name: "BadOptimizations", desc: "Патчи, убирающие микрофризы и глупые просчеты в стандартном коде игры." },
-                { name: "Cloth Config v11", desc: "Стабильный и быстрый конфигурационный экран для настроек модов." },
-                { name: "Clumps", desc: "Объединяет сферы опыта в один объект, убирая жесткие лаги на фермах мобов." },
-                { name: "Concurrent Chunk Management Engine", desc: "Многопоточный движок обработки чанков. Ускоряет генерацию и загрузку мира." },
-                { name: "Connectivity Mod", desc: "Оптимизация сетевых соединений для уменьшения таймаутов на серверах." },
-                { name: "Crash Assistant", desc: "Помощник при крашах, предоставляющий чистые логи для диагностики ошибок." },
-                { name: "Debugify", desc: "Комплексное исправление сотен ванильных багов Mojang без потери FPS." },
-                { name: "Dynamic FPS", desc: "Снижает нагрузку на видеокарту до минимума, когда игра свернута." },
-                { name: "Enhanced Block Entities", desc: "Переводит рендеринг сундуков и блоков на движок Sodium, поднимая FPS." },
-                { name: "EntityCulling", desc: "Пропускает рендеринг невидимых мобов и сундуков за стенами, колоссально разгружая видеокарту." },
-                { name: "Fabric API", desc: "Основная библиотека-ядро для совместимости и работы модов на платформе Fabric." },
-                { name: "FastAnim", desc: "Оптимизация просчета анимаций сущностей, разгружающая центральный процессор." },
-                { name: "FerriteCore", desc: "Экстремальное сокращение потребления оперативной памяти за счет сжатия данных." },
-                { name: "Gpu memory leak fix mod", desc: "Патч, полностью блокирующий утечки памяти в видеокарте." },
-                { name: "ImmediatelyFast", desc: "Глобальное ускорение рендеринга шрифтов, HUD, частиц и плоских элементов." },
-                { name: "Indium", desc: "Адаптер для поддержки сторонних графических модов на движке Sodium." },
-                { name: "Iris", desc: "Самый быстрый и современный движок шейдеров с полной поддержкой Sodium." },
-                { name: "Krypton", desc: "Оптимизация сетевого стека, снижающая пинг и нагрузку на трафик." },
-                { name: "Language Reload", desc: "Моментальное переключение языков в игре без долгой зависшей загрузки." },
-                { name: "Let Me Despawn", desc: "Улучшает очистку ненужных мобов на расстоянии, освобождая тики процессора." },
-                { name: "Lithium", desc: "Ультимативная оптимизация физики, ИИ мобов и механик игрового мира." },
-                { name: "Memory Leak Fix", desc: "Автоматическое вычисление и зачистка утечек RAM в клиенте игры." },
-                { name: "Mod Menu", desc: "Удобный и чистый интерфейс для просмотра и настройки установленных модов." },
-                { name: "Model Gap Fix", desc: "Исправляет уродливые микро-щели в кастомных 3D моделях и предметах." },
-                { name: "ModernFix", desc: "Революционная оптимизация структур данных, ускоряющая запуск игры в разы." },
-                { name: "More Culling", desc: "Дополнительное жесткое отсечение рендеринга невидимых граней блоков." },
-                { name: "Not Enough Crashes", desc: "Позволяет игре не вылетать при ошибке, а просто возвращать в меню." },
-                { name: "PacketFixer", desc: "Исправляет вылеты при передаче слишком больших пакетов данных на серверах." },
-                { name: "Reese's Sodium Options", desc: "Удобный и красивый интерфейс для расширенных графических настроек." },
-                { name: "Sodium", desc: "Главный движок оптимизации графики и рендеринга чанков в Майнкрафте." },
-                { name: "Sodium Extra", desc: "Дополнительные тумблеры оптимизации (анимации, частицы, облака)." },
-                { name: "ThreadTweak", desc: "Умное перераспределение приоритетов потоков процессора под нужды игры." },
-                { name: "Very Many Players", desc: "Оптимизация сетевого кода для плавной игры на серверах с кучей игроков." },
-                { name: "YetAnotherConfigLib", desc: "Современная библиотека слоев конфигурации, необходимая для графических утилит." },
-                { name: "cupboard", desc: "Оптимизированное фоновое ядро-библиотека для ускорения работы скриптов." }
+                { name: "Alternate Current", desc: "Глубокая оптимизация алгоритмов редстоуна." },
+                { name: "Athena", desc: "Инструмент для создания комплексных, динамических текстур." },
+                { name: "Bad Packets", desc: "Служебный API для безопасной синхронизации пакетов." },
+                { name: "BadOptimizations", desc: "Патчи, убирающие микрофризы." },
+                { name: "Cloth Config v11", desc: "Стабильный конфигурационный экран." },
+                { name: "Clumps", desc: "Объединяет сферы опыта, убирая лаги на фермах." },
+                { name: "Concurrent Chunk Management Engine", desc: "Многопоточный движок обработки чанков." },
+                { name: "Connectivity Mod", desc: "Оптимизация сетевых соединений." },
+                { name: "Crash Assistant", desc: "Помощник при крашах." },
+                { name: "Debugify", desc: "Комплексное исправление сотен багов." },
+                { name: "Dynamic FPS", desc: "Снижает нагрузку на GPU при свернутой игре." },
+                { name: "Enhanced Block Entities", desc: "Переводит рендеринг сундуков на Sodium." },
+                { name: "EntityCulling", desc: "Пропускает рендеринг невидимых мобов." },
+                { name: "Fabric API", desc: "Библиотека-ядро." },
+                { name: "FastAnim", desc: "Оптимизация просчета анимаций." },
+                { name: "FerriteCore", desc: "Экстремальное сокращение потребления ОЗУ." },
+                { name: "Gpu memory leak fix mod", desc: "Блокировка утечек памяти в видеокарте." },
+                { name: "ImmediatelyFast", desc: "Ускорение рендеринга шрифтов и частиц." },
+                { name: "Indium", desc: "Адаптер для Sodium." },
+                { name: "Iris", desc: "Движок шейдеров с поддержкой Sodium." },
+                { name: "Krypton", desc: "Оптимизация сетевого стека." },
+                { name: "Language Reload", desc: "Моментальное переключение языков." },
+                { name: "Let Me Despawn", desc: "Очистка ненужных мобов на расстоянии." },
+                { name: "Lithium", desc: "Оптимизация физики и ИИ мобов." },
+                { name: "Memory Leak Fix", desc: "Зачистка утечек RAM." },
+                { name: "Mod Menu", desc: "Интерфейс просмотра модов." },
+                { name: "Model Gap Fix", desc: "Исправляет щели в 3D моделях." },
+                { name: "ModernFix", desc: "Ускорение запуска игры в разы." },
+                { name: "More Culling", desc: "Отсечение рендеринга невидимых граней." },
+                { name: "Not Enough Crashes", desc: "Не дает вылетать при ошибке." },
+                { name: "PacketFixer", desc: "Исправляет вылеты от больших пакетов данных." },
+                { name: "Reese's Sodium Options", desc: "Интерфейс для настроек Sodium." },
+                { name: "Sodium", desc: "Главный движок оптимизации." },
+                { name: "Sodium Extra", desc: "Дополнительные тумблеры оптимизации." },
+                { name: "ThreadTweak", desc: "Умное перераспределение потоков CPU." },
+                { name: "Very Many Players", desc: "Оптимизация для серверов с кучей игроков." },
+                { name: "YetAnotherConfigLib", desc: "Библиотека слоев конфигурации." },
+                { name: "cupboard", desc: "Оптимизированное фоновое ядро." }
             ],
             mods1_16_5: [
-                { name: "Alternate Current", desc: "Глубокая оптимизация алгоритмов редстоуна, снижающая лаги от схем." },
-                { name: "Borderless Mining", desc: "Перевод игры в режим полноэкранного окна без рамок для удобного переключения окон." },
-                { name: "CleanCut", desc: "Позволяет бить мобов сквозь траву, паутину и другие несплошные блоки." },
-                { name: "Crash Assistant", desc: "Помощник при крашах, предоставляющий чистые логи для диагностики ошибок." },
-                { name: "Cull Leaves", desc: "Оптимизация рендеринга листвы деревьев, увеличивающая FPS в лесных биомах." },
-                { name: "Dynamic FPS", desc: "Снижает нагрузку на видеокарту до минимума, когда игра свернута." },
-                { name: "Enhanced Block Entities", desc: "Переводит рендеринг сундуков и блоков на движок Sodium, поднимая FPS." },
-                { name: "EntityCulling-Fabric", desc: "Пропускает рендеринг невидимых мобов и сундуков за стенами, разгружая видеокарту." },
-                { name: "Fabric API", desc: "Основная библиотека-ядро для совместимости и работы модов на платформе Fabric." },
-                { name: "FerriteCore", desc: "Экстремальное сокращение потребления оперативной памяти за счет сжатия данных." },
-                { name: "Indium", desc: "Адаптер для поддержки сторонних графических модов на движке Sodium." },
-                { name: "Iris", desc: "Самый быстрый и современный движок шейдеров с полной поддержкой Sodium." },
-                { name: "Krypton", desc: "Оптимизация сетевого стека, снижающая пинг и нагрузку на трафик." },
-                { name: "LazyDFU", desc: "Оптимизация DataFixerUpper, ускоряющая запуск игры и снижающая потребление RAM на старте." },
-                { name: "Let Me Despawn", desc: "Улучшает очистку ненужных мобов на расстоянии, освобождая тики процессора." },
-                { name: "Lithium", desc: "Ультимативная оптимизация физики, ИИ мобов и механик игрового мира." },
-                { name: "Memory Leak Fix", desc: "Автоматическое вычисление и зачистка утечек RAM в клиенте игры." },
-                { name: "Mod Menu", desc: "Удобный и чистый интерфейс для просмотра и настройки установленных модов." },
-                { name: "ModernFix", desc: "Революционная оптимизация структур данных, ускоряющая запуск игры в разы." },
-                { name: "Packet Fixer", desc: "Исправляет вылеты при передаче слишком больших пакетов данных на серверах." },
-                { name: "Phosphor", desc: "Оптимизация ванильного движка освещения, уменьшающая фризы при генерации чанков." },
-                { name: "Reese's Sodium Options", desc: "Удобный и красивый интерфейс для расширенных графических настроек." },
-                { name: "Sodium", desc: "Главный движок оптимизации графики и рендеринга чанков в Майнкрафте." },
-                { name: "Sodium Extra", desc: "Дополнительные тумблеры оптимизации (анимации, частицы, облака)." }
+                { name: "Alternate Current", desc: "Оптимизация алгоритмов редстоуна." },
+                { name: "Borderless Mining", desc: "Окно без рамок." },
+                { name: "CleanCut", desc: "Удары сквозь траву." },
+                { name: "Crash Assistant", desc: "Логи крашей." },
+                { name: "Cull Leaves", desc: "Оптимизация рендеринга листвы." },
+                { name: "Dynamic FPS", desc: "Снижает нагрузку при свернутой игре." },
+                { name: "Enhanced Block Entities", desc: "Рендеринг сундуков на Sodium." },
+                { name: "EntityCulling-Fabric", desc: "Пропускает рендеринг мобов за стенами." },
+                { name: "Fabric API", desc: "Базовая библиотека." },
+                { name: "FerriteCore", desc: "Сокращение потребления ОЗУ." },
+                { name: "Indium", desc: "Поддержка графики на Sodium." },
+                { name: "Iris", desc: "Движок шейдеров." },
+                { name: "Krypton", desc: "Снижение пинга." },
+                { name: "LazyDFU", desc: "Ускоряет запуск игры." },
+                { name: "Let Me Despawn", desc: "Очистка мобов на расстоянии." },
+                { name: "Lithium", desc: "Оптимизация механик." },
+                { name: "Memory Leak Fix", desc: "Зачистка утечек RAM." },
+                { name: "Mod Menu", desc: "Меню модов." },
+                { name: "ModernFix", desc: "Ускорение структур данных." },
+                { name: "Packet Fixer", desc: "Фикс вылетов при больших пакетах." },
+                { name: "Phosphor", desc: "Оптимизация света." },
+                { name: "Reese's Sodium Options", desc: "Расширенные графические настройки." },
+                { name: "Sodium", desc: "Движок оптимизации." },
+                { name: "Sodium Extra", desc: "Доп. настройки оптимизации." }
             ]
         };
 
@@ -609,7 +663,6 @@
             });
         }
 
-        // Логика работы рулетки версий
         let isSpinning = false;
         function openRouletteModal() {
             document.getElementById('roulette-result-ui').classList.remove('active');
@@ -618,7 +671,6 @@
             tape.style.transition = 'none';
             tape.style.transform = 'translateX(0px)';
             
-            // Генерируем 35 случайных элементов для эффекта бесконечной ленты
             let tapeHTML = '';
             for (let i = 0; i < 35; i++) {
                 const isMain = Math.random() > 0.5;
@@ -642,21 +694,17 @@
             tape.style.transition = 'none';
             tape.style.transform = 'translateX(0px)';
             
-            // Принудительно заставляем браузер сбросить анимацию
             tape.offsetHeight; 
             
-            // Выбираем финальный выигрышный элемент (индекс от 25 до 29, чтобы прокрутка была долгой)
             const winIndex = Math.floor(Math.random() * 5) + 25;
             const targetItem = tape.children[winIndex];
             const isVersion1_20_1 = targetItem.classList.contains('v1_20_1');
             
-            // Рассчитываем точную координату остановки по центру маркера рулетки
-            const itemWidth = 150; // 140px ширина + 10px отступы
-            const containerWidth = Math.min(window.innerWidth * 0.9, 500);
+            const itemWidth = isMobile ? 130 : 150; // На мобилках элемент 120px + 10px margin
+            const containerWidth = document.querySelector('.roulette-container').offsetWidth;
             const centerOffset = containerWidth / 2 - itemWidth / 2;
             const targetX = -(winIndex * itemWidth) + centerOffset;
             
-            // Запуск красивой и плавной кинетической прокрутки
             tape.style.transition = 'transform 4.5s cubic-bezier(0.1, 0.8, 0.1, 1)';
             tape.style.transform = `translateX(${targetX}px)`;
             
@@ -701,7 +749,6 @@
         resizeCanvas();
         animate();
 
-        // Запускаем часы только здесь, когда весь конфиг уже железно загружен в память!
         setInterval(updateTime, 1000);
         updateTime();
     </script>
