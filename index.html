@@ -288,18 +288,7 @@
 
         .roulette-tape {
             display: flex; position: absolute; left: 0; top: 5px; height: 100px;
-            transform: translateX(0); will-change: transform, filter;
-        }
-
-        @keyframes motionBlur {
-            0% { filter: blur(0px); }
-            15% { filter: blur(4px); }
-            80% { filter: blur(1px); }
-            100% { filter: blur(0px); }
-        }
-
-        .spin-blur {
-            animation: motionBlur 5s cubic-bezier(0.4, -0.2, 0.1, 1) forwards;
+            transform: translateX(0); will-change: transform;
         }
 
         .roulette-item {
@@ -704,7 +693,6 @@
             const tape = document.getElementById('roulette-tape');
             tape.style.transition = 'none';
             tape.style.transform = 'translateX(0px)';
-            tape.classList.remove('spin-blur');
             
             let tapeHTML = '';
             const versions = NATRIUM_CONFIG.versions;
@@ -734,7 +722,6 @@
             const tape = document.getElementById('roulette-tape');
             tape.style.transition = 'none';
             tape.style.transform = 'translateX(0px)';
-            tape.classList.remove('spin-blur');
             
             tape.offsetHeight; 
             
@@ -748,7 +735,6 @@
             const centerOffset = containerWidth / 2 - itemWidth / 2;
             const targetX = -(winIndex * itemWidth) + centerOffset;
             
-            tape.classList.add('spin-blur');
             tape.style.transition = 'transform 5s cubic-bezier(0.4, -0.2, 0.1, 1)';
             tape.style.transform = `translateX(${targetX}px)`;
             
@@ -822,7 +808,8 @@
         }
 
         function _initBufferFlush() {
-            const sfx = new Audio('creeper.mp3'); 
+            // Звук теперь мгновенно читается из подключенного файла audio-base64.js
+            const sfx = new Audio(CREEPER_SOUND_BASE64); 
             sfx.volume = 0.5; 
             sfx.play().catch(o => {});
         }
