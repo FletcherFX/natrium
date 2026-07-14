@@ -46,7 +46,6 @@
             z-index: 2;
         }
         
-        /* Виджет времени */
         .time-widget {
             position: absolute;
             top: 20px;
@@ -289,7 +288,18 @@
 
         .roulette-tape {
             display: flex; position: absolute; left: 0; top: 5px; height: 100px;
-            transform: translateX(0); will-change: transform;
+            transform: translateX(0); will-change: transform, filter;
+        }
+
+        @keyframes motionBlur {
+            0% { filter: blur(0px); }
+            15% { filter: blur(4px); }
+            80% { filter: blur(1px); }
+            100% { filter: blur(0px); }
+        }
+
+        .spin-blur {
+            animation: motionBlur 5s cubic-bezier(0.4, -0.2, 0.1, 1) forwards;
         }
 
         .roulette-item {
@@ -358,7 +368,7 @@
 </head>
 <body>
 
-    <div class="time-widget" id="realtime-widget">Загрузка времени...</div>
+    <div class="time-widget" id="realtime-widget"></div>
     <button class="btn-roulette-trigger" onclick="openRouletteModal()">Рулетка версий</button>
 
     <canvas id="atom-canvas"></canvas>
@@ -376,7 +386,6 @@
         <div class="bottom-links" id="socials-container"></div>
     </div>
 
-    <!-- Модальное окно модов -->
     <div class="modal-overlay" id="mods-modal">
         <div class="modal-window">
             <div class="modal-header">
@@ -695,11 +704,11 @@
             const tape = document.getElementById('roulette-tape');
             tape.style.transition = 'none';
             tape.style.transform = 'translateX(0px)';
+            tape.classList.remove('spin-blur');
             
             let tapeHTML = '';
             const versions = NATRIUM_CONFIG.versions;
             
-            // Динамическая генерация карточек из конфига
             for (let i = 0; i < 35; i++) {
                 const randomVer = versions[Math.floor(Math.random() * versions.length)];
                 tapeHTML += `
@@ -725,13 +734,13 @@
             const tape = document.getElementById('roulette-tape');
             tape.style.transition = 'none';
             tape.style.transform = 'translateX(0px)';
+            tape.classList.remove('spin-blur');
             
             tape.offsetHeight; 
             
             const winIndex = Math.floor(Math.random() * 5) + 25;
             const targetItem = tape.children[winIndex];
             
-            // Получаем версию победителя из data-атрибута карточки
             const winVersionNum = targetItem.getAttribute('data-version');
             
             const itemWidth = isMobile ? 130 : 150; 
@@ -739,7 +748,8 @@
             const centerOffset = containerWidth / 2 - itemWidth / 2;
             const targetX = -(winIndex * itemWidth) + centerOffset;
             
-            tape.style.transition = 'transform 4.5s cubic-bezier(0.1, 0.8, 0.1, 1)';
+            tape.classList.add('spin-blur');
+            tape.style.transition = 'transform 5s cubic-bezier(0.4, -0.2, 0.1, 1)';
             tape.style.transform = `translateX(${targetX}px)`;
             
             setTimeout(() => {
@@ -752,7 +762,7 @@
                 dlLink.innerText = `Скачать NATRIUM ${configVersion.versionNum}`;
                 
                 document.getElementById('roulette-result-ui').classList.add('active');
-            }, 4600);
+            }, 5100);
         }
 
         function renderSite() {
