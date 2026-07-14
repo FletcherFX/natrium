@@ -652,48 +652,58 @@ const SMART_TRANSLIT = {
     "вери мени плеерс": "very many players", "вмп": "very many players", "vmp": "very many players", "капборд": "cupboard"
 };
 
+
+function filterMods(modsArray, query) {
+    const cleanQuery = query.trim().toLowerCase();
+    if (!cleanQuery) return modsArray;
+
+    return modsArray.filter(mod => {
+        const modName = mod.name.toLowerCase();
+        if (modName.includes(cleanQuery)) return true;
+
+        for (const [rusKey, engValue] of Object.entries(SMART_TRANSLIT)) {
+            if (rusKey.startsWith(cleanQuery) || rusKey.includes(cleanQuery)) {
+                if (modName.includes(engValue)) return true;
+            }
+        }
+        return false;
+    });
+}
+
 function openModsModal(versionKey) { 
     let targetMods;
     if (versionKey === '1.16.5') targetMods = NATRIUM_CONFIG.mods1_16_5;
     else if (versionKey === '26.1') targetMods = NATRIUM_CONFIG.mods26_1;
     else targetMods = NATRIUM_CONFIG.mods1_20_1;
 
-            const modalModsList = document.getElementById('modal-mods-list');
-            modalModsList.innerHTML = targetMods.map(m => `
-                <div class="mod-item">
-                    <div class="mod-name">${m.name}</div>
-                    <div class="mod-desc">${m.desc}</div>
-                </div>
-            `).join('');
-            document.getElementById('mods-search').value = '';
-            filterMods();
-            document.getElementById('mods-modal').classList.add('active'); 
-        }
-        
-        function closeModsModal() { document.getElementById('mods-modal').classList.remove('active'); }
-        window.addEventListener('click', (e) => { 
-            const m = document.getElementById('mods-modal'); 
-            const r = document.getElementById('roulette-modal');
-            if (e.target === m) closeModsModal(); 
-            if (e.target === r) closeRouletteModal();
-        });
+    const modalModsList = document.getElementById('modal-mods-list');
+    const searchInput = document.getElementById('mods-search');
 
-        function filterMods() {
-            let query = document.getElementById('mods-search').value.toLowerCase().trim();
-            if (SMART_TRANSLIT[query]) query = SMART_TRANSLIT[query];
-            else {
-                for (let rusKey in SMART_TRANSLIT) {
-                    if (rusKey.includes(query) && query.length > 2) { query = SMART_TRANSLIT[rusKey]; break; }
-                }
-            }
-            const items = document.querySelectorAll('.mod-item');
-            items.forEach(item => {
-                const name = item.querySelector('.mod-name').innerText.toLowerCase();
-                const desc = item.querySelector('.mod-desc').innerText.toLowerCase();
-                if (name.includes(query) || desc.includes(query)) item.classList.remove('hidden');
-                else item.classList.add('hidden');
-            });
-        }
+    function render() {
+        const filtered = filterMods(targetMods, searchInput.value);
+        modalModsList.innerHTML = filtered.map(m => `
+            <div class="mod-item">
+                <div class="mod-name">${m.name}</div>
+                <div class="mod-desc">${m.desc}</div>
+            </div>
+        `).join('');
+    }
+
+    searchInput.value = ''; 
+    searchInput.oninput = render;
+    render();
+
+    document.getElementById('mods-modal').classList.add('active');
+}
+
+function closeModsModal() { document.getElementById('mods-modal').classList.remove('active'); }
+window.addEventListener('click', (e) => {
+    const m = document.getElementById('mods-modal');
+    const r = document.getElementById('roulette-modal');
+    if (e.target === m) closeModsModal();
+    if (e.target === r) closeRouletteModal();
+});
+
 
         let isSpinning = false;
         function openRouletteModal() {
