@@ -275,7 +275,7 @@
         .mod-name { font-weight: 700; color: #ffcc00; font-size: 1.1rem; }
         .mod-desc { color: #94a3b8; font-size: 0.9rem; line-height: 1.4; }
 
-        /* Элементы рулетки */
+        /* Элементы рулетки - Универсальный красивый дизайн */
         .roulette-container {
             position: relative; width: 100%; max-width: 500px; height: 110px;
             background: #0d0d11; border: 2px solid rgba(255, 170, 0, 0.2);
@@ -297,27 +297,44 @@
         .roulette-item {
             flex-shrink: 0; width: 140px; height: 100px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background: #13131a; border: 1px solid rgba(255,255,255,0.03);
-            border-radius: 14px; margin: 0 5px; font-weight: 800; font-size: 1.2rem;
+            background: linear-gradient(135deg, rgba(30, 30, 40, 0.9), rgba(15, 15, 20, 0.95)); 
+            border: 1px solid rgba(255, 170, 0, 0.15);
+            border-radius: 14px; margin: 0 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
         }
 
-        .roulette-item.v1_20_1 { background: linear-gradient(145deg, #1e1b10, #13131a); color: #ffcc00; }
-        .roulette-item.v1_16_5 { background: linear-gradient(145deg, #1a1510, #13131a); color: #ff6600; }
-        .roulette-item span { font-size: 0.8rem; font-weight: 600; color: #94a3b8; margin-top: 2px; }
+        /* Крупный текст версии */
+        .roulette-version {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 0%, #d1d5db 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+            line-height: 1.1;
+        }
+
+        /* Мелкий текст названия */
+        .roulette-natrium {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #ffaa00;
+            margin-top: 5px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255, 170, 0, 0.3);
+        }
 
         .roulette-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 15px; }
         .roulette-result-buttons { display: none; flex-direction: column; gap: 10px; width: 100%; }
         .roulette-result-buttons.active { display: flex; }
 
         /* ========================================================
-           АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ (SMARTPHONES & TABLETS)
+           АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ
            ======================================================== */
         @media (max-width: 768px) {
-            body {
-                padding: 20px 15px 30px 15px; /* Уменьшены общие отступы */
-            }
+            body { padding: 20px 15px 30px 15px; }
             
-            /* Делаем виджеты относительными, чтобы на телефонах они не накладывались на логотип */
             .time-widget, .btn-roulette-trigger {
                 position: relative;
                 top: auto;
@@ -329,41 +346,25 @@
                 text-align: center;
             }
 
-            .logo-container {
-                width: 120px;
-                height: 120px;
-                margin-top: 15px;
-                margin-bottom: 20px;
-            }
-
+            .logo-container { width: 120px; height: 120px; margin-top: 15px; margin-bottom: 20px; }
             h1 { letter-spacing: 4px; }
-            
             .subtitle { font-size: 1rem; margin-bottom: 30px; }
-
             .cards-grid { gap: 15px; margin-bottom: 30px; }
-            
             .card { padding: 25px 20px; }
-            
             .card-title { font-size: 2.2rem; }
 
-            /* Адаптация модальных окон для мобилок */
-            .modal-window {
-                width: 95%;
-                padding: 20px;
-                max-height: 85vh;
-            }
-
+            .modal-window { width: 95%; padding: 20px; max-height: 85vh; }
             .modal-title { font-size: 1.4rem; }
             
             .roulette-container { height: 90px; }
-            
-            .roulette-item { height: 80px; width: 120px; font-size: 1rem; }
+            .roulette-item { height: 80px; width: 120px; }
+            .roulette-version { font-size: 1.5rem; }
+            .roulette-natrium { font-size: 0.75rem; margin-top: 4px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Виджет времени и кнопка рулетки (на телефонах будут выстраиваться друг под другом) -->
     <div class="time-widget" id="realtime-widget">Загрузка времени...</div>
     <button class="btn-roulette-trigger" onclick="openRouletteModal()">Рулетка версий</button>
 
@@ -425,7 +426,6 @@
         fav.rel = 'icon'; fav.href = 'favicon.png?v=5';
         document.head.appendChild(fav);
 
-        // Определение, является ли устройство мобильным
         let isMobile = window.innerWidth <= 768 || 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
         function updateTime() {
@@ -446,7 +446,6 @@
             document.getElementById('site-subtitle').innerHTML = `<span style="color: #ffaa00; font-weight: 700;">${greeting}</span><br style="margin-bottom: 6px;">${baseSubtitle}`;
         }
 
-        // Анимация Canvas
         const canvas = document.getElementById('atom-canvas');
         const ctx = canvas.getContext('2d');
         let particles = []; let sparks = []; const mouse = { x: null, y: null, radius: 140 };
@@ -460,9 +459,7 @@
         
         window.addEventListener('resize', resizeCanvas);
         window.addEventListener('mousemove', (e) => { 
-            // Отключаем обработку мыши и трейлы искр на мобильных устройствах
             if (isMobile) return; 
-
             mouse.x = e.clientX; mouse.y = e.clientY;
             if (sparks.length < 45) sparks.push(new Spark(e.clientX, e.clientY));
         });
@@ -479,7 +476,6 @@
                 if (this.baseY < 0 || this.baseY > canvas.height) this.speedY *= -1;
                 let targetX = this.baseX; let targetY = this.baseY;
                 
-                // Эффект отталкивания от мыши только если мы не на телефоне
                 if (!isMobile && mouse.x != null && mouse.y != null) {
                     let dx = mouse.x - this.baseX; let dy = mouse.y - this.baseY; let distance = Math.hypot(dx, dy);
                     if (distance < mouse.radius) {
@@ -515,7 +511,6 @@
 
         function initParticles() {
             particles = []; 
-            // Для телефонов снижаем количество частиц в 3 раза, чтобы не расходовать батарею
             const density = isMobile ? 30000 : 9000;
             const count = Math.floor((canvas.width * canvas.height) / density);
             for (let i = 0; i < count; i++) particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
@@ -525,7 +520,6 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let p of particles) { p.update(); p.draw(); }
             
-            // Обработка искр
             for (let i = sparks.length - 1; i >= 0; i--) { 
                 sparks[i].update(); 
                 sparks[i].draw(); 
@@ -672,10 +666,17 @@
             tape.style.transform = 'translateX(0px)';
             
             let tapeHTML = '';
+            const versions = NATRIUM_CONFIG.versions;
+            
+            // Динамическая генерация карточек из конфига
             for (let i = 0; i < 35; i++) {
-                const isMain = Math.random() > 0.5;
-                if (isMain) tapeHTML += `<div class="roulette-item v1_20_1">NATRIUM<span>Версия 1.20.1</span></div>`;
-                else tapeHTML += `<div class="roulette-item v1_16_5">NATRIUM<span>Версия 1.16.5</span></div>`;
+                const randomVer = versions[Math.floor(Math.random() * versions.length)];
+                tapeHTML += `
+                    <div class="roulette-item" data-version="${randomVer.versionNum}">
+                        <div class="roulette-version">${randomVer.versionNum}</div>
+                        <div class="roulette-natrium">NATRIUM</div>
+                    </div>
+                `;
             }
             tape.innerHTML = tapeHTML;
             document.getElementById('roulette-modal').classList.add('active');
@@ -698,9 +699,11 @@
             
             const winIndex = Math.floor(Math.random() * 5) + 25;
             const targetItem = tape.children[winIndex];
-            const isVersion1_20_1 = targetItem.classList.contains('v1_20_1');
             
-            const itemWidth = isMobile ? 130 : 150; // На мобилках элемент 120px + 10px margin
+            // Получаем версию победителя из data-атрибута карточки
+            const winVersionNum = targetItem.getAttribute('data-version');
+            
+            const itemWidth = isMobile ? 130 : 150; 
             const containerWidth = document.querySelector('.roulette-container').offsetWidth;
             const centerOffset = containerWidth / 2 - itemWidth / 2;
             const targetX = -(winIndex * itemWidth) + centerOffset;
@@ -710,7 +713,7 @@
             
             setTimeout(() => {
                 isSpinning = false;
-                const configVersion = isVersion1_20_1 ? NATRIUM_CONFIG.versions[0] : NATRIUM_CONFIG.versions[1];
+                const configVersion = NATRIUM_CONFIG.versions.find(v => v.versionNum === winVersionNum);
                 
                 const dlLink = document.getElementById('roulette-download-link');
                 dlLink.href = configVersion.link;
