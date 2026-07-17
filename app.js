@@ -1,29 +1,38 @@
-if (!Config.settings.isSiteEnabled) {
+const rootStyle = document.documentElement.style;
+rootStyle.setProperty('--primary', Config.SITE.colors.primary);
+rootStyle.setProperty('--grad-start', Config.SITE.colors.gradientStart);
+rootStyle.setProperty('--grad-end', Config.SITE.colors.gradientEnd);
+
+if (!Config.FUNCTIONAL.isSiteEnabled) {
     document.getElementById('app').style.display = 'none';
     const maint = document.getElementById('maintenance');
     maint.style.display = 'flex';
-    maint.textContent = Config.ui.maintenanceText;
+    maint.textContent = Config.UI.maintenanceText;
     throw new Error('Site disabled');
 }
 
-if (!Config.settings.isResponsive) {
+if (!Config.FUNCTIONAL.isResponsive) {
     document.getElementById('meta-viewport').setAttribute('content', 'width=1100');
+}
+
+if (!Config.FUNCTIONAL.showTimeWidget) {
+    document.getElementById('realtime-widget').style.display = 'none';
 }
 
 function updateTime() {
     const now = new Date();
     const hours = now.getHours();
-    const timeStr = now.toLocaleTimeString(Config.settings.timeLocale, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const timeStr = now.toLocaleTimeString(Config.FUNCTIONAL.timeLocale, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     const offsetHours = -now.getTimezoneOffset() / 60;
     const zoneStr = offsetHours >= 0 ? `+${offsetHours}` : `${offsetHours}`;
-    document.getElementById('realtime-widget').innerHTML = `${Config.ui.timePrefix} <span>${timeStr}</span> (${Config.ui.timeZoneLabel}${zoneStr})`;
+    document.getElementById('realtime-widget').innerHTML = `${Config.UI.timePrefix} <span>${timeStr}</span> (${Config.UI.timeZoneLabel}${zoneStr})`;
     
-    let greeting = Config.ui.greetings.night;
-    if (hours >= 6 && hours < 12) greeting = Config.ui.greetings.morning;
-    else if (hours >= 12 && hours < 18) greeting = Config.ui.greetings.day;
-    else if (hours >= 18 && hours < 24) greeting = Config.ui.greetings.evening;
+    let greeting = Config.UI.greetings.night;
+    if (hours >= 6 && hours < 12) greeting = Config.UI.greetings.morning;
+    else if (hours >= 12 && hours < 18) greeting = Config.UI.greetings.day;
+    else if (hours >= 18 && hours < 24) greeting = Config.UI.greetings.evening;
     
-    document.getElementById('site-subtitle').innerHTML = `<span style="color: #ffaa00; font-weight: 700;">${greeting}</span><br style="margin-bottom: 6px;">${Config.ui.subtitle}`;
+    document.getElementById('site-subtitle').innerHTML = `<span style="color: var(--primary); font-weight: 700;">${greeting}</span><br style="margin-bottom: 6px;">${Config.UI.subtitle}`;
 }
 
 const canvas = document.getElementById('atom-canvas');
@@ -111,42 +120,77 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
+function debounce(func, timeout = Config.FUNCTIONAL.searchDebounceDelay) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
+}
+
 function filterModsList(modsArray, query) {
-    const cleanQuery = query.trim().toLowerCase();
-    if (!cleanQuery) return modsArray;
+    if (!query) return modsArray;
     return modsArray.filter(mod => {
         const modName = mod.name.toLowerCase();
-        if (modName.includes(cleanQuery)) return true;
-        for (const [rusKey, engValue] of Object.entries(Config.translit)) {
-            if (rusKey.startsWith(cleanQuery) || rusKey.includes(cleanQuery)) {
-                if (modName.includes(engValue)) return true;
-            }
+        if (modName.includes(query)) return true;
+        for (const [rusKey, engValue] of Object.entries(Config.MODS.translit)) {
+            if (rusKey.includes(query) && modName.includes(engValue)) return true;
         }
         return false;
     });
 }
 
 function openModsModal(versionKey) { 
-    let targetMods = Config.mods[versionKey] || [];
+    const targetMods = Config.MODS[versionKey] || {};
     const modalModsList = document.getElementById('modal-mods-list');
     const searchInput = document.getElementById('mods-search');
-    function render() {
-        const filtered = filterModsList(targetMods, searchInput.value);
-        modalModsList.innerHTML = filtered.map(m => `
-            <div class="mod-item">
-                <div class="mod-name">${m.name}</div>
-                <div class="mod-desc">${m.desc}</div>
-            </div>
-        `).join('');
-    }
+
+    const render = (query = '') => {
+        const cleanQuery = query.trim().toLowerCase();
+        let html = '';
+        
+        for (const [category, modsArray] of Object.entries(targetMods)) {
+            const filtered = filterModsList(modsArray, cleanQuery);
+            if (filtered.length > 0) {
+                html += `<div class="mod-category-title">${category}</div>`;
+                html += filtered.map(m => `
+                    <div class="mod-item">
+                        <div class="mod-name">${m.name}</div>
+                        <div class="mod-desc">${m.desc}</div>
+                    </div>
+                `).join('');
+            }
+        }
+        modalModsList.innerHTML = html || '<div class="mod-desc" style="text-align:center; margin-top:20px;">Ничего не найдено</div>';
+    };
+
     searchInput.value = ''; 
-    searchInput.oninput = render;
+    searchInput.oninput = debounce(() => render(searchInput.value));
     render();
     document.getElementById('mods-modal').classList.add('active');
 }
 
 function closeModsModal() { 
     document.getElementById('mods-modal').classList.remove('active'); 
+}
+
+function triggerDownload(link, fileName) {
+    const a = document.createElement('a');
+    a.href = link;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+function openDownloadModal(version, link, fileName) {
+    document.getElementById('download-modal-title').innerHTML = `${Config.UI.modals.downloadTitlePrefix} <span>NATRIUM ${version}</span>`;
+    document.getElementById('download-modal').classList.add('active');
+    triggerDownload(link, fileName);
+}
+
+function closeDownloadModal() {
+    document.getElementById('download-modal').classList.remove('active');
 }
 
 let isSpinning = false;
@@ -158,13 +202,14 @@ function openRouletteModal() {
     tape.style.transition = 'none';
     tape.style.transform = 'translateX(0px)';
     let tapeHTML = '';
-    const versions = Config.versions;
+    const versions = Config.SITE.versions;
+    
     for (let i = 0; i < 35; i++) {
         const randomVer = versions[Math.floor(Math.random() * versions.length)];
         tapeHTML += `
             <div class="roulette-item" data-version="${randomVer.versionNum}">
                 <div class="roulette-version">${randomVer.versionNum}</div>
-                <div class="roulette-natrium">${Config.ui.modals.rouletteItemHighlight}</div>
+                <div class="roulette-natrium">${Config.UI.modals.rouletteItemHighlight}</div>
             </div>
         `;
     }
@@ -181,10 +226,12 @@ function spinRoulette() {
     isSpinning = true;
     document.getElementById('roulette-result-ui').classList.remove('active');
     document.getElementById('btn-spin').style.display = 'none';
+    
     const tape = document.getElementById('roulette-tape');
     tape.style.transition = 'none';
     tape.style.transform = 'translateX(0px)';
     tape.offsetHeight; 
+    
     const winIndex = Math.floor(Math.random() * 5) + 25;
     const targetItem = tape.children[winIndex];
     const winVersionNum = targetItem.getAttribute('data-version');
@@ -192,71 +239,82 @@ function spinRoulette() {
     const containerWidth = document.querySelector('.roulette-container').offsetWidth;
     const centerOffset = containerWidth / 2 - itemWidth / 2;
     const targetX = -(winIndex * itemWidth) + centerOffset;
-    tape.style.transition = 'transform 5s cubic-bezier(0.4, -0.2, 0.1, 1)';
+    
+    tape.style.transition = `transform ${Config.FUNCTIONAL.rouletteSpinDuration}ms cubic-bezier(0.4, -0.2, 0.1, 1)`;
     tape.style.transform = `translateX(${targetX}px)`;
+    
     setTimeout(() => {
         isSpinning = false;
-        const configVersion = Config.versions.find(v => v.versionNum === winVersionNum);
-        const dlLink = document.getElementById('roulette-download-link');
-        dlLink.href = configVersion.link;
-        dlLink.setAttribute('download', configVersion.fileName);
-        dlLink.innerText = `${Config.ui.buttons.downloadRoulette} ${configVersion.versionNum}`;
+        const configVersion = Config.SITE.versions.find(v => v.versionNum === winVersionNum);
+        const dlBtn = document.getElementById('roulette-download-btn');
+        dlBtn.innerText = `${Config.UI.buttons.downloadRoulette} ${configVersion.versionNum}`;
+        dlBtn.onclick = () => {
+            closeRouletteModal();
+            openDownloadModal(configVersion.versionNum, configVersion.link, configVersion.fileName);
+        };
         document.getElementById('roulette-result-ui').classList.add('active');
-    }, Config.settings.rouletteSpinDuration);
+    }, Config.FUNCTIONAL.rouletteSpinDuration);
 }
 
 function renderSite() {
-    document.title = Config.ui.pageTitle;
+    document.title = Config.UI.pageTitle;
     const fav = document.createElement('link');
     fav.rel = 'icon';
-    fav.href = Config.paths.favicon;
+    fav.href = Config.SITE.favicon;
     document.head.appendChild(fav);
     
-    document.getElementById('site-logo').src = Config.paths.logo;
-    document.getElementById('site-title').textContent = Config.ui.title;
-    document.getElementById('btn-roulette-open').textContent = Config.ui.buttons.rouletteOpen;
-    document.getElementById('mods-modal-title').innerHTML = `${Config.ui.modals.modsTitlePrefix} <span>${Config.ui.modals.modsTitleHighlight}</span>`;
-    document.getElementById('mods-search').placeholder = Config.ui.modals.searchPlaceholder;
-    document.getElementById('roulette-modal-title').innerHTML = `${Config.ui.modals.rouletteTitlePrefix} <span>${Config.ui.modals.rouletteTitleHighlight}</span>`;
-    document.getElementById('btn-spin').textContent = Config.ui.buttons.spin;
-    document.getElementById('btn-spin-again').textContent = Config.ui.buttons.spinAgain;
-    document.getElementById('btn-roulette-home').textContent = Config.ui.buttons.home;
+    document.getElementById('site-logo').src = Config.SITE.logo;
+    document.getElementById('site-title').textContent = Config.UI.title;
+    document.getElementById('btn-roulette-open').textContent = Config.UI.buttons.rouletteOpen;
+    document.getElementById('mods-modal-title').innerHTML = `${Config.UI.modals.modsTitlePrefix} <span>${Config.UI.modals.modsTitleHighlight}</span>`;
+    document.getElementById('mods-search').placeholder = Config.UI.modals.searchPlaceholder;
+    document.getElementById('roulette-modal-title').innerHTML = `${Config.UI.modals.rouletteTitlePrefix} <span>${Config.UI.modals.rouletteTitleHighlight}</span>`;
+    document.getElementById('btn-spin').textContent = Config.UI.buttons.spin;
+    document.getElementById('btn-spin-again').textContent = Config.UI.buttons.spinAgain;
+    document.getElementById('btn-roulette-home').textContent = Config.UI.buttons.home;
     
     const versionsContainer = document.getElementById('versions-container');
-    versionsContainer.innerHTML = Config.versions.map(v => `
+    versionsContainer.innerHTML = Config.SITE.versions.map(v => `
         <div class="card">
-            <span class="card-title">${Config.ui.title}</span>
-            <span class="card-version">${Config.ui.modals.versionPrefix} ${v.versionNum}</span>
+            <span class="card-title">${Config.UI.title}</span>
+            <span class="card-version">${Config.UI.modals.versionPrefix} ${v.versionNum}</span>
             <span class="file-type">${v.fileType}</span>
-            <a href="${v.link}" download="${v.fileName}" class="btn-download">${Config.ui.buttons.download}</a>
-            <button class="btn-mods" data-version="${v.versionNum}">${Config.ui.buttons.modsList}</button>
+            <button class="btn-download btn-trigger-dl" data-ver="${v.versionNum}" data-link="${v.link}" data-file="${v.fileName}">${Config.UI.buttons.download}</button>
+            <button class="btn-mods" data-version="${v.versionNum}">${Config.UI.buttons.modsList}</button>
         </div>
     `).join('');
+
+    document.querySelectorAll('.btn-trigger-dl').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            openDownloadModal(e.target.dataset.ver, e.target.dataset.link, e.target.dataset.file);
+        });
+    });
 
     document.querySelectorAll('.btn-mods[data-version]').forEach(btn => {
         btn.addEventListener('click', (e) => openModsModal(e.target.getAttribute('data-version')));
     });
 
     const socialsContainer = document.getElementById('socials-container');
-    socialsContainer.innerHTML = Config.socials.map(s => `
-        <a href="${s.url}" target="_blank" class="pill-button">
-            ${s.text} <span>${s.span}</span>
-        </a>
-    `).join('');
+    if(Config.FUNCTIONAL.showSocialLinks) {
+        socialsContainer.innerHTML = Config.SITE.socials.map(s => `
+            <a href="${s.url}" target="_blank" class="pill-button">
+                ${s.text} <span>${s.span}</span>
+            </a>
+        `).join('');
+    }
 }
 
 window.addEventListener('click', (e) => {
-    const m = document.getElementById('mods-modal');
-    const r = document.getElementById('roulette-modal');
-    if (e.target === m) closeModsModal();
-    if (e.target === r) closeRouletteModal();
+    if (e.target === document.getElementById('mods-modal')) closeModsModal();
+    if (e.target === document.getElementById('roulette-modal')) closeRouletteModal();
+    if (e.target === document.getElementById('download-modal')) closeDownloadModal();
 });
 
 let _ib = [];
 window.addEventListener('keydown', (e) => {
     _ib.push(e.keyCode);
     if (_ib.length > 7) _ib.shift();
-    if (_ib.join(',') === Config.settings.easterEggCode) {
+    if (_ib.join(',') === Config.FUNCTIONAL.easterEggCode) {
         _initBufferFlush();
     }
 });
@@ -269,7 +327,7 @@ _l.addEventListener('click', () => {
     if (n - _lt > 1500) _tc = 0;
     _lt = n;
     _tc++;
-    if (_tc === Config.settings.easterEggClicks) {
+    if (_tc === Config.FUNCTIONAL.easterEggClicks) {
         _tc = 0;
         _initBufferFlush();
     }
@@ -279,7 +337,7 @@ function _initBufferFlush() {
     if(typeof CREEPER_SOUND_BASE64 !== 'undefined') {
         const sfx = new Audio(CREEPER_SOUND_BASE64); 
         sfx.volume = 0.5; 
-        sfx.play().catch(o => {});
+        sfx.play().catch(() => {});
     }
 }
 
@@ -292,6 +350,7 @@ updateTime();
 document.getElementById('btn-roulette-open').addEventListener('click', openRouletteModal);
 document.getElementById('roulette-close-btn').addEventListener('click', closeRouletteModal);
 document.getElementById('mods-close-btn').addEventListener('click', closeModsModal);
+document.getElementById('download-close-btn').addEventListener('click', closeDownloadModal);
 document.getElementById('btn-spin').addEventListener('click', spinRoulette);
 document.getElementById('btn-spin-again').addEventListener('click', spinRoulette);
 document.getElementById('btn-roulette-home').addEventListener('click', closeRouletteModal);
