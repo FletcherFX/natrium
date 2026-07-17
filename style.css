@@ -1,3 +1,10 @@
+:root {
+    --primary: #ffaa00;
+    --grad-start: #ffcc00;
+    --grad-end: #ff5500;
+    --bg-main: #050506;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -6,7 +13,7 @@
 }
 
 body {
-    background-color: #050506;
+    background-color: var(--bg-main);
     color: #ffffff;
     font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
     min-height: 100vh;
@@ -21,7 +28,7 @@ body {
     justify-content: center;
     min-height: calc(100vh - 100px);
     font-size: 2rem;
-    color: #ffaa00;
+    color: var(--primary);
     font-weight: 700;
     text-align: center;
 }
@@ -72,7 +79,7 @@ body {
 }
 
 .time-widget span {
-    color: #ffaa00;
+    color: var(--primary);
     font-weight: 700;
 }
 
@@ -86,7 +93,7 @@ body {
     border-radius: 20px;
     font-size: 0.9rem;
     font-weight: 700;
-    color: #ffaa00;
+    color: var(--primary);
     backdrop-filter: blur(10px);
     z-index: 10;
     cursor: pointer;
@@ -127,7 +134,7 @@ h1 {
     font-weight: 900;
     letter-spacing: 8px;
     margin-bottom: 12px;
-    background: linear-gradient(135deg, #ffcc00 0%, #ff5500 100%);
+    background: linear-gradient(135deg, var(--grad-start) 0%, var(--grad-end) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 4px 20px rgba(255, 85, 0, 0.4));
@@ -176,7 +183,7 @@ h1 {
 .card-title {
     font-size: 2.8rem;
     font-weight: 900;
-    background: linear-gradient(135deg, #ffcc00 0%, #ff5500 100%);
+    background: linear-gradient(135deg, var(--grad-start) 0%, var(--grad-end) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: 2px;
@@ -195,7 +202,7 @@ h1 {
 }
 
 .file-type {
-    color: #ffaa00; 
+    color: var(--primary); 
     font-size: 0.85rem; 
     font-weight: 700; 
     text-transform: uppercase; 
@@ -209,7 +216,7 @@ h1 {
     align-items: center; 
     justify-content: center; 
     width: 100%;
-    background: linear-gradient(135deg, #ffcc00 0%, #ff6600 100%);
+    background: linear-gradient(135deg, var(--grad-start) 0%, #ff6600 100%);
     color: #080809; 
     text-decoration: none; 
     padding: 16px 32px; 
@@ -236,7 +243,7 @@ h1 {
     width: 100%;
     background: rgba(255, 255, 255, 0.03); 
     border: 1px solid rgba(255, 170, 0, 0.3);
-    color: #ffaa00; 
+    color: var(--primary); 
     text-decoration: none; 
     padding: 12px 24px; 
     border-radius: 12px;
@@ -279,7 +286,7 @@ h1 {
 }
 
 .pill-button span { 
-    color: #ffcc00; 
+    color: var(--grad-start); 
     font-weight: 700; 
     margin-left: 5px; 
 }
@@ -305,6 +312,7 @@ h1 {
     opacity: 0; 
     pointer-events: none; 
     transition: opacity 0.3s ease;
+    will-change: opacity;
 }
 
 .modal-overlay.active { 
@@ -325,6 +333,7 @@ h1 {
     box-shadow: 0 30px 70px rgba(0,0,0,0.8);
     transform: scale(0.95); 
     transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    will-change: transform;
 }
 
 .modal-overlay.active .modal-window { 
@@ -345,7 +354,7 @@ h1 {
 }
 
 .modal-title span { 
-    color: #ffaa00; 
+    color: var(--primary); 
 }
 
 .modal-close {
@@ -402,6 +411,21 @@ h1 {
 .mods-list::-webkit-scrollbar-thumb { background: rgba(255, 170, 0, 0.3); border-radius: 10px; }
 .mods-list::-webkit-scrollbar-thumb:hover { background: rgba(255, 170, 0, 0.6); }
 
+.mod-category-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 20px 0 10px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255, 170, 0, 0.2);
+    padding-bottom: 5px;
+}
+
+.mod-category-title:first-child {
+    margin-top: 5px;
+}
+
 .mod-item {
     background: rgba(255,255,255,0.01); 
     border: 1px solid rgba(255,255,255,0.03);
@@ -413,9 +437,8 @@ h1 {
     gap: 4px;
 }
 
-.mod-item.hidden { display: none !important; }
 .mod-item:hover { background: rgba(255,170,0,0.02); border-color: rgba(255,170,0,0.15); }
-.mod-name { font-weight: 700; color: #ffcc00; font-size: 1.1rem; }
+.mod-name { font-weight: 700; color: var(--grad-start); font-size: 1.1rem; }
 .mod-desc { color: #94a3b8; font-size: 0.9rem; line-height: 1.4; }
 
 .roulette-container {
@@ -438,7 +461,7 @@ h1 {
     transform: translateX(-50%);
     width: 4px; 
     height: 100%; 
-    background: #ffaa00; 
+    background: var(--primary); 
     z-index: 10;
     box-shadow: 0 0 15px #ff5500; 
     pointer-events: none;
@@ -482,7 +505,7 @@ h1 {
 .roulette-natrium {
     font-size: 0.85rem;
     font-weight: 800;
-    color: #ffaa00;
+    color: var(--primary);
     margin-top: 5px;
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -510,8 +533,8 @@ h1 {
     .logo-container { width: 120px; height: 120px; margin-top: 15px; margin-bottom: 20px; }
     h1 { letter-spacing: 4px; }
     .subtitle { font-size: 1rem; margin-bottom: 30px; }
-    .cards-grid { gap: 15px; margin-bottom: 30px; }
-    .card { padding: 25px 20px; }
+    .cards-grid { gap: 15px; margin-bottom: 30px; width: 100%; }
+    .card { padding: 25px 20px; width: 100%; }
     .card-title { font-size: 2.2rem; }
     .modal-window { width: 95%; padding: 20px; max-height: 85vh; }
     .modal-title { font-size: 1.4rem; }
