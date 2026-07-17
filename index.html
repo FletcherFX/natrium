@@ -54,10 +54,26 @@
                 <div class="roulette-actions">
                     <button class="btn-download" id="btn-spin"></button>
                     <div class="roulette-result-buttons" id="roulette-result-ui">
-                        <a href="#" class="btn-download" id="roulette-download-link" download></a>
+                        <button class="btn-download" id="roulette-download-btn"></button>
                         <button class="btn-mods" style="margin-bottom: 4px;" id="btn-spin-again"></button>
                         <button class="btn-mods" id="btn-roulette-home"></button>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="download-modal">
+            <div class="modal-window" style="max-width: 450px; text-align: center;">
+                <div class="modal-header" style="justify-content: center; position: relative;">
+                    <div class="modal-title" id="download-modal-title" style="font-size: 1.4rem;"></div>
+                    <button class="modal-close" id="download-close-btn" style="position: absolute; right: 0; top: -10px;">&times;</button>
+                </div>
+                <div style="margin: 20px 0; color: #94a3b8; font-size: 1rem;">
+                    Загрузка файла начнется автоматически. Пока вы ждете, присоединяйтесь к нашим сообществам!
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <a href="https://t.me/NatriumProject" target="_blank" class="btn-download" style="margin-bottom: 0;">Telegram Channel</a>
+                    <a href="https://t.me/JavaFixer" target="_blank" class="btn-mods" style="padding: 16px; border-radius: 14px;">Telegram Channel Автора</a>
                 </div>
             </div>
         </div>
