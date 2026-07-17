@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="maintenance"></div>
     <div id="app">
         <div class="time-widget" id="realtime-widget"></div>
         <button class="btn-roulette-trigger" id="btn-roulette-open"></button>
@@ -23,6 +22,9 @@
             <div class="subtitle" id="site-subtitle"></div>
 
             <div class="cards-grid" id="versions-container"></div>
+            
+            <div class="instruction-wrapper" id="instruction-container"></div>
+            
             <div class="bottom-links" id="socials-container"></div>
         </div>
 
@@ -79,8 +81,8 @@
         </div>
     </div>
 
-    <script src="audio-base64.js"></script>
-    <script src="cfg.js"></script>
-    <script src="app.js"></script>
+    <script src="audio-base64.js" defer></script>
+    <script src="cfg.js" defer></script>
+    <script src="app.js" defer></script>
 </body>
 </html>
