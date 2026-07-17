@@ -6,7 +6,7 @@ const Config = {
     // 1. ФУНКЦИОНАЛЬНЫЕ НАСТРОЙКИ
     // ---------------------------------------------------
     FUNCTIONAL: {
-        isSiteEnabled: true,             // Вкл/выкл сайт (false = тех. работы)
+        isSiteEnabled: false,             // Вкл/выкл сайт (false = тех. работы)
         isResponsive: true,              // Адаптивность для мобильных
         showTimeWidget: true,            // Отображать ли виджет времени
         showSocialLinks: true,           // Отображать ли ссылки на соцсети внизу
