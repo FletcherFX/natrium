@@ -72,7 +72,7 @@ const LauncherLinks = {
 const Config = {
     FUNCTIONAL: {
         isSiteEnabled: true,             // Вкл/выкл сайт (false = вывод экрана тех.работ)
-        isResponsive: true,              // Адаптивность разметки под мобильные экраны
+        isResponsive: false,              // Адаптивность разметки под мобильные экраны
         showTimeWidget: true,            // Отображать ли виджет реального времени
         showSocialLinks: true,           // Отображать ли социальные блоки-кнопки внизу
         searchDebounceDelay: 150,        // Оптимизированный отклик поиска модов (мс)
