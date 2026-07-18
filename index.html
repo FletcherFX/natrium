@@ -2,83 +2,82 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" id="meta-viewport">
-    <meta name="description" id="meta-desc" content="NATRIUM">
-    <title>NATRIUM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" id="meta-viewport">
+    <meta name="description" content="" id="meta-desc">
+    <title id="head-title">NATRIUM</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Пул частиц вынесен в отдельный фиксированный контейнер без событий мыши -->
-    <div id="sparks-container"></div>
-
     <div id="app">
         <div class="time-widget" id="realtime-widget"></div>
+        
         <button class="btn-roulette-trigger" id="btn-roulette-open"></button>
+        <button class="gear-settings-btn" id="gear-settings-btn" aria-label="Настройки темы">⚙</button>
 
-        <main class="main-wrapper">
+        <!-- Контейнер для высокопроизводительных искр -->
+        <div id="trail-container"></div>
+        
+        <canvas id="atom-canvas"></canvas>
+
+        <div class="main-wrapper">
             <div class="logo-container">
-                <img alt="Natrium Logo" class="logo" id="site-logo">
+                <img alt="Logo" class="logo" id="site-logo">
             </div>
 
             <h1 id="site-title"></h1>
             <div class="subtitle" id="site-subtitle"></div>
 
-            <section class="cards-grid" id="versions-container" aria-label="Версии сборки"></section>
+            <div class="cards-grid" id="versions-container"></div>
             
-            <section class="instruction-wrapper" id="instruction-container" aria-label="Инструкция"></section>
+            <div class="instruction-wrapper" id="instruction-container"></div>
             
-            <!-- Новый блок преимуществ -->
-            <section id="advantages-container" aria-label="Преимущества"></section>
-
-            <nav class="bottom-links" id="socials-container" aria-label="Социальные сети"></nav>
-        </main>
-
-        <!-- Иконка вызова Color Picker -->
-        <button class="btn-color-picker" id="btn-color-picker" aria-label="Настройки темы">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
-                <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
-            </svg>
-        </button>
-
-        <!-- Модальное окно Color Picker -->
-        <div class="modal-overlay" id="color-picker-modal">
-            <div class="modal-window cp-window">
-                <div class="modal-header">
-                    <div class="modal-title">Внешний вид <span>Сайта</span></div>
-                    <button class="modal-close">&times;</button>
-                </div>
-                <div class="cp-content">
-                    <div class="cp-row">
-                        <label>Спектр:</label>
-                        <input type="color" id="cp-native" class="cp-native-input">
-                    </div>
-                    <div class="cp-row">
-                        <label>HEX Код:</label>
-                        <input type="text" id="cp-hex" class="cp-text-input" maxlength="7">
-                    </div>
-                    <div class="cp-row cp-rgb-group">
-                        <label>RGB:</label>
-                        <input type="number" id="cp-r" class="cp-text-input" min="0" max="255">
-                        <input type="number" id="cp-g" class="cp-text-input" min="0" max="255">
-                        <input type="number" id="cp-b" class="cp-text-input" min="0" max="255">
-                    </div>
-                    <div class="cp-row" style="margin-top: 15px;">
-                        <label>Светлая тема:</label>
-                        <label class="cp-switch">
-                            <input type="checkbox" id="cp-mode">
-                            <span class="cp-slider"></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
+            <!-- Блок преимуществ сборки и честного дисклеймера -->
+            <section class="advantages-section fade-in-scroll" id="advantages-section">
+                <h2 class="advantages-main-title">Почему именно Natrium?</h2>
+                <div class="advantages-grid" id="advantages-grid"></div>
+                <div class="disclaimer-container" id="disclaimer-text"></div>
+            </section>
+            
+            <div class="bottom-links" id="socials-container"></div>
         </div>
 
-        <!-- Окно модов -->
+        <!-- Интерактивная плавающая панель кастомизации цвета и темы -->
+        <div class="settings-panel" id="settings-panel">
+            <div class="settings-panel-header">
+                <h3>Интерфейс Палитры</h3>
+                <button class="settings-panel-close" id="settings-panel-close">&times;</button>
+            </div>
+            <div class="settings-option">
+                <label>Глобальная тема:</label>
+                <div class="theme-switch-wrapper">
+                    <span class="theme-label-text">Тёмная</span>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="theme-label-text">Светлая</span>
+                </div>
+            </div>
+            <div class="settings-option">
+                <label>Выбор цвета (Спектр):</label>
+                <input type="color" id="custom-color-picker" class="color-picker-input">
+            </div>
+            <div class="settings-option">
+                <label>Код HEX:</label>
+                <input type="text" id="custom-color-hex" class="settings-text-input" placeholder="#ffaa00">
+            </div>
+            <div class="settings-option">
+                <label>Код RGB:</label>
+                <input type="text" id="custom-color-rgb" class="settings-text-input" placeholder="255, 170, 0">
+            </div>
+            <button class="btn-mods" style="margin-top: 10px;" id="reset-theme-btn">Сбросить настройки</button>
+        </div>
+
         <div class="modal-overlay" id="mods-modal">
             <div class="modal-window">
                 <div class="modal-header">
                     <div class="modal-title" id="mods-modal-title"></div>
-                    <button class="modal-close">&times;</button>
+                    <button class="modal-close" id="mods-close-btn">&times;</button>
                 </div>
                 <div class="search-container">
                     <input type="text" class="search-input" id="mods-search">
@@ -87,41 +86,36 @@
             </div>
         </div>
 
-        <!-- Рулетка -->
         <div class="modal-overlay" id="roulette-modal">
             <div class="modal-window" style="max-width: 550px;">
                 <div class="modal-header">
                     <div class="modal-title" id="roulette-modal-title"></div>
-                    <button class="modal-close">&times;</button>
+                    <button class="modal-close" id="roulette-close-btn">&times;</button>
                 </div>
+                
                 <div class="roulette-container">
                     <div class="roulette-marker"></div>
                     <div class="roulette-tape" id="roulette-tape"></div>
                 </div>
+
                 <div class="roulette-actions">
-                    <button class="btn-primary" id="btn-spin">Крутить</button>
+                    <button class="btn-download" id="btn-spin"></button>
                     <div class="roulette-result-buttons" id="roulette-result-ui">
-                        <button class="btn-primary" id="roulette-download-btn"></button>
-                        <button class="btn-secondary modal-close">Закрыть</button>
+                        <button class="btn-download" id="roulette-download-btn"></button>
+                        <button class="btn-mods" style="margin-bottom: 4px;" id="btn-spin-again"></button>
+                        <button class="btn-mods" id="btn-roulette-home"></button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Окно загрузки -->
         <div class="modal-overlay" id="download-modal">
             <div class="modal-window" style="max-width: 450px; text-align: center;">
-                <div class="modal-header" style="justify-content: center; position: relative; padding-right: 45px;">
+                <div class="modal-header" style="justify-content: center; position: relative;">
                     <div class="modal-title" id="download-modal-title" style="font-size: 1.4rem;"></div>
-                    <button class="modal-close" style="position: absolute; right: 0; top: -10px;">&times;</button>
+                    <button class="modal-close" id="download-close-btn" style="position: absolute; right: 0; top: -10px;">&times;</button>
                 </div>
-                <div style="margin: 20px 0; color: #94a3b8; font-size: 1rem;">
-                    Файл начал загружаться. Пока ждете, присоединяйтесь к нам!
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <a href="https://t.me/NatriumProject" target="_blank" class="btn-primary" style="margin:0;">Telegram Channel</a>
-                    <a href="https://t.me/JavaFixer" target="_blank" class="btn-secondary" style="padding:16px; border-radius:14px;">Блог Автора</a>
-                </div>
+                <div id="download-modal-content"></div>
             </div>
         </div>
     </div>
