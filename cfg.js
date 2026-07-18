@@ -1,78 +1,54 @@
 // =====================================================================
-// СПИСОК ССЫЛОК НА ЛАУНЧЕРЫ (Управляются отсюда)
+// 1. БАЗОВЫЕ НАСТРОЙКИ, ФУНКЦИОНАЛ И ТУМБЛЕРЫ (GLOBAL SETTINGS)
 // =====================================================================
-const LauncherLinks = {
-    ATLauncher: "https://atlauncher.com/",
-    ElyPrismLauncher: "https://elyprismlauncher.github.io/",
-    PrismLauncher: "https://prismlauncher.org/",
-    ModrinthApp: "https://modrinth.com/app"
-};
-
 const Config = {
-    // ---------------------------------------------------
-    // 1. ФУНКЦИОНАЛЬНЫЕ НАСТРОЙКИ
-    // ---------------------------------------------------
     FUNCTIONAL: {
-        isSiteEnabled: false,             // Вкл/выкл сайт (false = полная блокировка и вывод экрана тех.работ)
-        isResponsive: true,              // Адаптивность для мобильных
-        showTimeWidget: true,            // Отображать ли виджет времени
-        showSocialLinks: true,           // Отображать ли ссылки на соцсети внизу
-        searchDebounceDelay: 250,        // Задержка поиска модов (в мс)
-        rouletteSpinDuration: 5100,      // Длительность рулетки (в мс)
-        timeLocale: "ru-RU",             // Локаль времени
-        easterEggCode: "78,65,84,82,73,85,77", // Пасхалка: NATRIUM
+        isSiteEnabled: true,             
+        isResponsive: true,              
+        showTimeWidget: true,            
+        showSocialLinks: true,           
+        searchDebounceDelay: 250,        
+        rouletteSpinDuration: 5100,      
+        timeLocale: "ru-RU",             
+        easterEggCode: "78,65,84,82,73,85,77", 
         easterEggClicks: 7
     },
 
     // ---------------------------------------------------
-    // 2. НАСТРОЙКИ ВНЕШНЕГО ВИДА (ТЕПЕРЬ ЧЕЛОВЕЧЕСКИМИ СЛОВАМИ)
+    // 2. ВНЕШНИЙ ВИД И ПАРСЕР ЦВЕТОВ (АДМИН-ПАНЕЛЬ)
     // ---------------------------------------------------
-    /*
-        Доступные цвета: 
-        "золотой", "красный", "зеленый", "синий", "неоновый", 
-        "фиолетовый", "белый", "темно-серый", "черный"
-        (Просто впишите нужное слово, сайт сам подберет градиенты и оттенки)
-    */
     SITE: {
-        favicon: "favicon.png?v=5",
+        favicon: "favicon.png?v=6",
         logo: "logo.webp",
-        colors: {
-            theme: "синий",       // Основной цвет всего сайта (кнопки, заголовки, подсветки)
-            background: "темно-серый" // Цвет фона (подстраивается под оттенок сайта)
-        },
-        versions: [
-            { versionNum: "1.20.1", fileType: "Модпак .mrpack", link: "./Natrium_1.20.1.mrpack", fileName: "Natrium_1.20.1.mrpack" },
-            { versionNum: "26.1", fileType: "Модпак .mrpack", link: "./Natrium_26.1.mrpack", fileName: "Natrium_26.1.mrpack" },
-            { versionNum: "1.16.5", fileType: "Модпак .mrpack", link: "./Natrium_1.16.5.mrpack", fileName: "Natrium_1.16.5.mrpack" }
-        ],
-        socials: [
-            { text: "Наш Telegram-канал:", span: "@NatriumProject", url: "https://telegram.me/NatriumProject" },
-            { text: "Наш Telegram-чат:", span: "@NatriumChat", url: "https://telegram.me/NatriumChat" },
-            { text: "Нашли баг или краш? Пишите в бота:", span: "@JavaFixerTEXbot", url: "https://telegram.me/JavaFixerTEXbot" }
-        ]
+        // Впишите любое из этих слов для дефолтной темы новых юзеров:
+        // "золотой", "неоновый", "пурпурный", "кислотно-лаймовый", "красный", 
+        // "небесно-голубой", "мятный", "изумрудный", "глубокий синий", "розовый неон", 
+        // "оранжевый", "серебряный", "кровавый", "малиновый"
+        defaultThemeWord: "золотой", 
+        defaultMode: "dark" // "dark" или "light"
     },
 
-    // ---------------------------------------------------
-    // 3. НАСТРОЙКИ ТРЕЙЛА МЫШИ (ИСКРЫ)
-    // ---------------------------------------------------
     TRAIL: {
-        color: "золотой",        // Цвет искр (используйте те же слова, что и для темы сайта)
-        sparksPerStep: 2,        // Количество создаваемых частиц за одно движение мыши
-        maxSparks: 45,           // Лимит искр на экране
-        decaySpeed: 0.015,       // Базовая скорость затухания искр
-        maxSize: 3               // Базовый максимальный размер искры
+        sparksPerStep: 2,        
+        maxSparks: 40,           
+        decaySpeed: 0.015,       
+        maxSize: 4               
     },
 
     // ---------------------------------------------------
-    // 4. ТЕКСТЫ И ИНТЕРФЕЙС
+    // 3. SEO, ТЕКСТЫ, ИНТЕРФЕЙС И ОПИСАНИЯ
     // ---------------------------------------------------
     UI: {
+        siteTitle: "NATRIUM — Ультимативная сборка Minecraft",
+        siteDescription: "Максимальная оптимизация FPS, баланс модов и стабильность. Скачай сборку Natrium в формате .mrpack и ускорь свой Minecraft.",
+        vpnNotice: "Если не открывается сайт или лаунчер — включите VPN.",
         pageTitle: "NATRIUM",
         title: "NATRIUM",
         subtitle: "Сборка-каркас на Minecraft, состоящая из полной оптимизации",
         maintenanceText: "Сайт временно недоступен. Ведутся технические работы.",
         timePrefix: "Время:",
         timeZoneLabel: "GMT",
+        disclaimerText: "Внимание: Прирост FPS сугубо индивидуален для каждого ПК, зависит от вашего железа, версии игры и текущих драйверов. Мы не гарантируем 1000 FPS на калькуляторах, но мы выжали абсолютный максимум из возможных оптимизаций.",
         greetings: {
             night: "Доброй ночи.", morning: "Доброе утро.", day: "Добрый день.", evening: "Добрый вечер."
         },
@@ -80,29 +56,53 @@ const Config = {
             rouletteOpen: "Рулетка версий",
             download: "Скачать сборку",
             modsList: "Список модов",
-            spin: "Крутить рулетку",
-            spinAgain: "Крутить еще раз",
-            home: "На главную",
+            spin: "Крутить",
+            spinAgain: "Еще раз",
+            home: "Закрыть",
             downloadRoulette: "Скачать NATRIUM"
         },
         modals: {
             modsTitlePrefix: "Моды сборки",
             modsTitleHighlight: "NATRIUM",
-            searchPlaceholder: "Поиск мода...",
+            searchPlaceholder: "Поиск мода (например: Sodium)...",
             rouletteTitlePrefix: "Рулетка версий",
             rouletteTitleHighlight: "NATRIUM",
             versionPrefix: "Версия",
             rouletteItemHighlight: "NATRIUM",
             downloadTitlePrefix: "Начало загрузки:",
-            
-            // Настройки модального окна загрузки
-            downloadInfoText: "Загрузка файла начнется автоматически. Пока вы ждете, присоединяйтесь к нашим сообществам!",
+            downloadInfoText: "Ваш файл начинает загружаться. Присоединяйтесь к нашему коммьюнити, чтобы не пропустить обновления!",
             downloadLinks: [
-                { text: "Telegram Channel", url: "https://t.me/NatriumProject", type: "primary" },
-                { text: "Telegram Channel Автора", url: "https://t.me/JavaFixer", type: "secondary" }
+                { text: "Наш Telegram-канал", url: "https://t.me/NatriumProject", type: "primary" },
+                { text: "Блог Разработчика", url: "https://t.me/JavaFixer", type: "secondary" }
             ]
         }
     },
+
+    // ---------------------------------------------------
+    // 4. ПРЕИМУЩЕСТВА СБОРКИ (ДЛЯ НОВОГО БЛОКА)
+    // ---------------------------------------------------
+    ADVANTAGES: [
+        {
+            icon: "🚀",
+            title: "Максимальный FPS",
+            desc: "Каждая модификация в сборке тщательно протестирована на конфликты. Мы заменили тяжелые аналоги на современные легковесные решения, что дает буст кадров до 300%."
+        },
+        {
+            icon: "⚖️",
+            title: "Идеальный баланс",
+            desc: "Никакого лишнего мусора, влияющего на ванильный геймплей. Только технические моды, исправления движка, фиксы утечек памяти и микрофризов."
+        },
+        {
+            icon: "⚡",
+            title: "Моментальный запуск",
+            desc: "Благодаря внедрению современных технологий кэширования и распараллеливания процессов, сборка стартует в несколько раз быстрее обычного Minecraft."
+        },
+        {
+            icon: "📦",
+            title: "Удобный формат .mrpack",
+            desc: "Забудьте про ручное перекидывание файлов в папку mods. Формат mrpack устанавливается в один клик через любой современный лаунчер, автоматически скачивая актуальные версии."
+        }
+    ],
 
     // ---------------------------------------------------
     // 5. ИНСТРУКЦИЯ ПО УСТАНОВКЕ
@@ -112,10 +112,10 @@ const Config = {
         title: "Как установить сборку Natrium:",
         steps: [
             "Скачай файл сборки в формате .mrpack под нужную версию с нашего сайта.",
-            `Скачай и установи современный лаунчер с поддержкой Modrinth.<br>
-            <ul style='margin-top: 8px; padding-left: 20px; list-style-type: disc;'>
-                <li style='margin-bottom: 4px;'>Для лицензии: <a href='${LauncherLinks.PrismLauncher}' target='_blank' style='color: var(--primary); text-decoration: none; font-weight: bold;'>Prism Launcher</a> или официальный <a href='${LauncherLinks.ModrinthApp}' target='_blank' style='color: var(--primary); text-decoration: none; font-weight: bold;'>Modrinth App</a>.</li>
-                <li>Для пираток/офлайн: <a href='${LauncherLinks.ElyPrismLauncher}' target='_blank' style='color: var(--primary); text-decoration: none; font-weight: bold;'>Ely Prism Launcher</a> или <a href='${LauncherLinks.ATLauncher}' target='_blank' style='color: var(--primary); text-decoration: none; font-weight: bold;'>ATLauncher</a>.</li>
+            `Скачай и установи современный лаунчер с поддержкой Modrinth. <strong>(ВАЖНО: Если не открывается сайт или лаунчер — включите VPN)</strong><br>
+            <ul class='instruction-sublist'>
+                <li>Для лицензии: <a href='https://prismlauncher.org/' target='_blank'>Prism Launcher</a> или официальный <a href='https://modrinth.com/app' target='_blank'>Modrinth App</a>.</li>
+                <li>Для пираток: <a href='https://elyprismlauncher.github.io/' target='_blank'>Ely Prism Launcher</a> или <a href='https://atlauncher.com/' target='_blank'>ATLauncher</a>.</li>
             </ul>`,
             "В лаунчере нажмите кнопку «Добавить экземпляр» (или «Импорт») и выберите скачанный ранее файл .mrpack.",
             "Дождись, пока лаунчер автоматически скачает все необходимые моды из конфига сборки, и запускай игру."
@@ -123,131 +123,70 @@ const Config = {
     },
 
     // ---------------------------------------------------
-    // 6. МОДЫ (С КАТЕГОРИЯМИ)
+    // 6. ТЯЖЕЛЫЕ МАССИВЫ (ВЕРСИИ, СОЦСЕТИ, МОДЫ)
     // ---------------------------------------------------
+    SITE_VERSIONS: [
+        { versionNum: "1.20.1", fileType: "Модпак .mrpack", link: "./Natrium_1.20.1.mrpack", fileName: "Natrium_1.20.1.mrpack" },
+        { versionNum: "26.1", fileType: "Модпак .mrpack", link: "./Natrium_26.1.mrpack", fileName: "Natrium_26.1.mrpack" },
+        { versionNum: "1.16.5", fileType: "Модпак .mrpack", link: "./Natrium_1.16.5.mrpack", fileName: "Natrium_1.16.5.mrpack" }
+    ],
+
+    SITE_SOCIALS: [
+        { text: "Наш Telegram-канал:", span: "@NatriumProject", url: "https://telegram.me/NatriumProject" },
+        { text: "Наш Telegram-чат:", span: "@NatriumChat", url: "https://telegram.me/NatriumChat" },
+        { text: "Нашли баг или краш? Пишите:", span: "@JavaFixerTEXbot", url: "https://telegram.me/JavaFixerTEXbot" }
+    ],
+
     MODS: {
-        translit: {
-            "содиум": "sodium", "айрис": "iris", "оптимизация": "optimization", "мод меню": "mod menu", 
-            "клампс": "clumps", "дебагифай": "debugify", "энтити": "entityculling", "модернфикс": "modernfix"
-        },
+        translit: { "содиум": "sodium", "айрис": "iris", "оптимизация": "optimization", "энтити": "entityculling", "модернфикс": "modernfix" },
         "1.20.1": {
             "Оптимизация": [
                 { name: "Alternate Current", desc: "Глубокая оптимизация алгоритмов редстоуна." },
-                { name: "BadOptimizations", desc: "Патчи, убирающие микрофризы." },
                 { name: "Clumps", desc: "Объединяет сферы опыта, убирая лаги на фермах." },
-                { name: "Concurrent Chunk Management Engine", desc: "Многопоточный движок обработки чанков." },
-                { name: "Connectivity Mod", desc: "Оптимизация сетевых соединений." },
                 { name: "Dynamic FPS", desc: "Снижает нагрузку на GPU при свернутой игре." },
-                { name: "Enhanced Block Entities", desc: "Переводит рендеринг сундуков на Sodium." },
                 { name: "EntityCulling", desc: "Пропускает рендеринг невидимых мобов." },
-                { name: "FastAnim", desc: "Оптимизация просчета анимаций." },
                 { name: "FerriteCore", desc: "Экстремальное сокращение потребления ОЗУ." },
-                { name: "Gpu memory leak fix mod", desc: "Блокировка утечек памяти в видеокарте." },
                 { name: "ImmediatelyFast", desc: "Ускорение рендеринга шрифтов и частиц." },
-                { name: "Indium", desc: "Адаптер для Sodium." },
-                { name: "Krypton", desc: "Оптимизация сетевого стека." },
                 { name: "Lithium", desc: "Оптимизация физики и ИИ мобов." },
-                { name: "Memory Leak Fix", desc: "Зачистка утечек RAM." },
                 { name: "ModernFix", desc: "Ускорение запуска игры в разы." },
-                { name: "More Culling", desc: "Отсечение рендеринга невидимых граней." },
-                { name: "Sodium", desc: "Главный движок оптимизации." },
-                { name: "Sodium Extra", desc: "Дополнительные тумблеры оптимизации." },
-                { name: "ThreadTweak", desc: "Умное перераспределение потоков CPU." },
-                { name: "Very Many Players", desc: "Оптимизация для серверов с кучей игроков." },
-                { name: "cupboard", desc: "Оптимизированное фоновое ядро." }
+                { name: "Sodium", desc: "Главный движок оптимизации." }
             ],
-            "Библиотеки": [
-                { name: "Fabric API", desc: "Библиотека-ядро." },
-                { name: "Cloth Config v11", desc: "Стабильный конфигурационный экран." },
-                { name: "Bad Packets", desc: "Служебный API для безопасной синхронизации пакетов." },
-                { name: "YetAnotherConfigLib", desc: "Библиотека слоев конфигурации." }
-            ],
-            "Исправления и Утилиты": [
-                { name: "Almanac", desc: "Улучшенная интеграция и управление внутриигровой документацией." },
-                { name: "Athena", desc: "Инструмент для создания комплексных, динамических текстур." },
-                { name: "Crash Assistant", desc: "Помощник при крашах." },
+            "Исправления": [
                 { name: "Debugify", desc: "Комплексное исправление сотен багов." },
                 { name: "Iris", desc: "Движок шейдеров с поддержкой Sodium." },
-                { name: "Language Reload", desc: "Моментальное переключение языков." },
-                { name: "Let Me Despawn", desc: "Очистка ненужных мобов на расстоянии." },
-                { name: "Mod Menu", desc: "Интерфейс просмотра модов." },
-                { name: "Model Gap Fix", desc: "Исправляет щели в 3D моделях." },
-                { name: "Not Enough Crashes", desc: "Не дает вылетать при ошибке." },
-                { name: "PacketFixer", desc: "Исправляет вылеты от больших пакетов данных." },
-                { name: "Reese's Sodium Options", desc: "Интерфейс для настроек Sodium." }
+                { name: "Mod Menu", desc: "Интерфейс просмотра модов." }
             ]
         },
         "26.1": {
             "Оптимизация": [
-                { name: "Alternate Current", desc: "Глубокая оптимизация алгоритмов редстоуна." },
-                { name: "BadOptimizations", desc: "Патчи, убирающие микрофризы." },
-                { name: "Clumps", desc: "Объединяет сферы опыта, убирая лаги на фермах." },
-                { name: "Connectivity Mod", desc: "Оптимизация сетевых соединений." },
-                { name: "Dynamic FPS", desc: "Снижает нагрузку на GPU при свернутой игре." },
-                { name: "EntityCulling", desc: "Пропускает рендеринг невидимых мобов." },
                 { name: "FerriteCore", desc: "Экстремальное сокращение потребления ОЗУ." },
-                { name: "Gpu memory leak fix mod", desc: "Блокировка утечек памяти в видеокарте." },
-                { name: "ImmediatelyFast", desc: "Ускорение рендеринга шрифтов и частиц." },
-                { name: "Krypton", desc: "Оптимизация сетевого стека." },
-                { name: "Lithium", desc: "Оптимизация физики и ИИ мобов." },
-                { name: "ModernFix", desc: "Ускорение запуска игры в разы." },
-                { name: "More Culling", desc: "Отсечение рендеринга невидимых граней." },
-                { name: "Smooth Boot", desc: "Оптимизация нагрузки на процессор при запуске." },
                 { name: "Sodium", desc: "Главный движок оптимизации." },
-                { name: "Sodium Extra", desc: "Дополнительные тумблеры оптимизации." },
-                { name: "Stutterfix", desc: "Устранение статтеров и микролагов." },
-                { name: "Very Many Players", desc: "Оптимизация для серверов с кучей игроков." },
-                { name: "cupboard", desc: "Оптимизированное фоновое ядро." }
-            ],
-            "Библиотеки": [
-                { name: "Fabric API", desc: "Библиотека-ядро." },
-                { name: "Bad Packets", desc: "Служебный API для безопасной синхронизации пакетов." },
-                { name: "Cloth Config v26.1", desc: "Стабильный конфигурационный экран." },
-                { name: "Fabric Language Kotlin", desc: "Поддержка языка Kotlin для модов." },
-                { name: "Placeholder API", desc: "API для использования плейсхолдеров." },
-                { name: "YetAnotherConfigLib", desc: "Библиотека слоев конфигурации." }
-            ],
-            "Исправления и Утилиты": [
-                { name: "Iris", desc: "Движок шейдеров с поддержкой Sodium." },
-                { name: "Language Reload", desc: "Моментальное переключение языков." },
-                { name: "Mod Menu", desc: "Интерфейс просмотра модов." },
-                { name: "Mouse Tweaks", desc: "Улучшенное управление мышью в инвентаре." },
-                { name: "No Chat Reports", desc: "Блокировка репортов и телеметрии чата." },
-                { name: "Packet Fixer", desc: "Исправляет вылеты от больших пакетов данных." },
-                { name: "Reese's Sodium Options", desc: "Интерфейс для настроек Sodium." }
+                { name: "Lithium", desc: "Оптимизация физики и ИИ мобов." }
             ]
         },
         "1.16.5": {
             "Оптимизация": [
-                { name: "Alternate Current", desc: "Оптимизация алгоритмов редстоуна." },
-                { name: "Cull Leaves", desc: "Оптимизация рендеринга листвы." },
-                { name: "Dynamic FPS", desc: "Снижает нагрузку при свернутой игре." },
-                { name: "Enhanced Block Entities", desc: "Рендеринг сундуков на Sodium." },
-                { name: "EntityCulling-Fabric", desc: "Пропускает рендеринг мобов за стенами." },
-                { name: "FerriteCore", desc: "Сокращение потребления ОЗУ." },
-                { name: "Indium", desc: "Поддержка графики на Sodium." },
-                { name: "Krypton", desc: "Снижение пинга." },
-                { name: "LazyDFU", desc: "Ускоряет запуск игры." },
-                { name: "Lithium", desc: "Оптимизация механик." },
-                { name: "Memory Leak Fix", desc: "Зачистка утечек RAM." },
-                { name: "ModernFix", desc: "Ускорение структур данных." },
-                { name: "Phosphor", desc: "Оптимизация света." },
                 { name: "Sodium", desc: "Движок оптимизации." },
-                { name: "Sodium Extra", desc: "Доп. настройки оптимизации." }
-            ],
-            "Библиотеки": [
-                { name: "Fabric API", desc: "Базовая библиотека." }
-            ],
-            "Исправления и Утилиты": [
-                { name: "Borderless Mining", desc: "Окно без рамок." },
-                { name: "CleanCut", desc: "Удары сквозь траву." },
-                { name: "Crash Assistant", desc: "Логи крашей." },
-                { name: "Iris", desc: "Движок шейдеров." },
-                { name: "Let Me Despawn", desc: "Очистка мобов на расстоянии." },
-                { name: "Mod Menu", desc: "Меню модов." },
-                { name: "Packet Fixer", desc: "Фикс вылетов при больших пакетах." },
-                { name: "Reese's Sodium Options", desc: "Расширенные графические настройки." }
+                { name: "Lithium", desc: "Оптимизация механик." }
             ]
         }
     }
+};
+
+// Справочник русских цветов для парсера
+const RussianColorMap = {
+    "золотой": "#ffaa00",
+    "неоновый": "#b026ff",
+    "пурпурный": "#e810a6",
+    "кислотно-лаймовый": "#aaff00",
+    "красный": "#ff3333",
+    "небесно-голубой": "#00d4ff",
+    "мятный": "#00ffaa",
+    "изумрудный": "#00e676",
+    "глубокий синий": "#1a53ff",
+    "розовый неон": "#ff007f",
+    "оранжевый": "#ff6a00",
+    "серебряный": "#b8c6db",
+    "кровавый": "#bb0a1e",
+    "малиновый": "#e30b5d"
 };
