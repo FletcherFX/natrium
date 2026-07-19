@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" id="meta-viewport">
-    <meta name="description" content="Natrium - идеальная сборка Minecraft с экстремальной оптимизацией. Скачайте лучшие моды для повышения FPS.">
-    <title>NATRIUM | Оптимизация</title>
+    <meta name="description" content="Natrium - идеальная сборка Minecraft с экстремальной оптимизацией.">
+    <title>NATRIUM</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,7 +20,7 @@
             <button class="btn-roulette-trigger" id="btn-roulette-open"></button>
         </div>
 
-        <button class="floating-settings-btn" id="btn-open-settings" aria-label="Открыть настройки">
+        <button class="floating-settings-btn" id="btn-open-settings">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
         </button>
 
@@ -56,7 +60,6 @@
             
             <div class="instruction-wrapper reveal" id="instruction-container"></div>
 
-            <!-- НОВЫЙ БЛОК ПРЕИМУЩЕСТВ -->
             <div class="advantages-wrapper reveal" id="advantages-container"></div>
             
             <div class="bottom-links reveal" id="socials-container"></div>
@@ -69,7 +72,7 @@
                     <button class="modal-close" id="mods-close-btn">&times;</button>
                 </div>
                 <div class="search-container">
-                    <input type="text" class="search-input" id="mods-search" aria-label="Поиск мода">
+                    <input type="text" class="search-input" id="mods-search">
                 </div>
                 <div class="mods-list" id="modal-mods-list"></div>
             </div>
