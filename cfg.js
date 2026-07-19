@@ -3,38 +3,25 @@
 // =====================================================================
 
 const Config = {
-    // ---------------------------------------------------
-    // 1. БАЗОВЫЕ ТУМБЛЕРЫ И ФУНКЦИОНАЛ
-    // ---------------------------------------------------
     FUNCTIONAL: {
-        isSiteEnabled: true,             // Вкл/выкл сайт
-        isResponsive: true,              // Адаптивность для мобильных
-        showTimeWidget: true,            // Отображать виджет времени
-        showSocialLinks: true,           // Отображать ссылки на соцсети
-        searchDebounceDelay: 250,        // Задержка поиска модов (мс)
-        rouletteSpinDuration: 5100,      // Длительность рулетки (мс)
-        timeLocale: "ru-RU",             // Локаль времени
-        easterEggCode: "78,65,84,82,73,85,77", // Пасхалка клавиатуры: NATRIUM
-        easterEggClicks: 7               // Пасхалка кликов для мобилок
+        isSiteEnabled: true,
+        isResponsive: true,
+        showTimeWidget: true,
+        showSocialLinks: true,
+        searchDebounceDelay: 250,
+        rouletteSpinDuration: 5100,
+        timeLocale: "ru-RU",
+        easterEggCode: "78,65,84,82,73,85,77",
+        easterEggClicks: 7
     },
 
-    // ---------------------------------------------------
-    // 2. ГЛОБАЛЬНАЯ ПАЛИТРА И ВНЕШНИЙ ВИД
-    // ---------------------------------------------------
-    /* 
-        Доступные базовые цвета (можно писать словами): 
-        "золотой", "неоновый", "пурпурный", "кислотно-лаймовый", "красный", 
-        "небесно-голубой", "мятный", "изумрудный", "глубокий синий", "розовый неон",
-        "оранжевый", "малиновый", "бирюзовый", "лавандовый", "белый".
-    */
     SITE: {
         favicon: "favicon.png",
         logo: "logo.webp",
-        defaultThemeMode: "dark", // "dark" или "light" по умолчанию
-        defaultColor: "красный"   // Дефолтный цвет для новых пользователей
+        defaultThemeMode: "dark",
+        defaultColor: "красный"
     },
 
-    // Справочник оттенков для админа (Автоматически генерирует градиенты в app.js)
     COLOR_DICTIONARY: {
         "золотой": "#ffaa00",
         "неоновый": "#ff00ff",
@@ -53,19 +40,13 @@ const Config = {
         "белый": "#ffffff"
     },
 
-    // ---------------------------------------------------
-    // 3. НАСТРОЙКИ ТРЕЙЛА (ИСКРЫ МЫШИ) - Только для ПК
-    // ---------------------------------------------------
     TRAIL: {
-        sparksPerStep: 2,        // Количество создаваемых частиц за движение
-        maxSparks: 50,           // Лимит искр на экране
-        decaySpeed: 0.015,       // Базовая скорость затухания искр
-        maxSize: 3               // Базовый максимальный размер искры
+        sparksPerStep: 2,
+        maxSparks: 50,
+        decaySpeed: 0.015,
+        maxSize: 3
     },
 
-    // ---------------------------------------------------
-    // 4. ТЕКСТЫ И UI ИНТЕРФЕЙСА
-    // ---------------------------------------------------
     UI: {
         pageTitle: "NATRIUM",
         title: "NATRIUM",
@@ -102,9 +83,6 @@ const Config = {
         }
     },
 
-    // ---------------------------------------------------
-    // 5. ИНСТРУКЦИИ ПО УСТАНОВКЕ
-    // ---------------------------------------------------
     INSTRUCTION: {
         buttonText: "Как установить сборку",
         title: "Пошаговая установка Natrium:",
@@ -121,9 +99,6 @@ const Config = {
         ]
     },
 
-    // ---------------------------------------------------
-    // 6. БЛОК ПРЕИМУЩЕСТВ (ПОЧЕМУ NATRIUM?)
-    // ---------------------------------------------------
     ADVANTAGES: {
         title: "Почему именно Natrium?",
         disclaimerText: "Внимание: Фактический прирост FPS строго индивидуален и зависит от конфигурации вашего ПК, фоновых процессов и выбранной версии игры.",
@@ -135,9 +110,6 @@ const Config = {
         ]
     },
 
-    // ---------------------------------------------------
-    // 7. МАССИВЫ ДАННЫХ: ВЕРСИИ И СОЦСЕТИ
-    // ---------------------------------------------------
     VERSIONS: [
         { versionNum: "1.20.1", fileType: "Модпак .mrpack", link: "./Natrium_1.20.1.mrpack", fileName: "Natrium_1.20.1.mrpack" },
         { versionNum: "26.1", fileType: "Модпак .mrpack", link: "./Natrium_26.1.mrpack", fileName: "Natrium_26.1.mrpack" },
@@ -150,9 +122,6 @@ const Config = {
         { text: "Нашли баг или краш? Бот:", span: "@JavaFixerTEXbot", url: "https://telegram.me/JavaFixerTEXbot" }
     ],
 
-    // ---------------------------------------------------
-    // 8. СПИСКИ МОДОВ
-    // ---------------------------------------------------
     MODS: {
         translit: {
             "содиум": "sodium", "айрис": "iris", "мод меню": "mod menu", 
@@ -161,118 +130,118 @@ const Config = {
         "1.20.1": {
             "Оптимизация": [
                 { name: "Alternate Current", desc: "Оптимизация редстоуна." },
-                { name: "BadOptimizations", desc: "Патчи от микрофризов." },
-                { name: "Clumps", desc: "Оптимизация сфер опыта." },
+                { name: "BadOptimizations", desc: "Патчи микрофризов." },
+                { name: "Clumps", desc: "Группировка сфер опыта." },
                 { name: "Concurrent Chunk Management Engine", desc: "Многопоточные чанки." },
-                { name: "Connectivity", desc: "Ускорение сети." },
-                { name: "Cupboard", desc: "Оптимизированное ядро." },
+                { name: "Connectivity Mod", desc: "Ускорение сети." },
                 { name: "Dynamic FPS", desc: "Снижение нагрузки в фоне." },
-                { name: "Enhanced Block Entities", desc: "Оптимизация рендера сундуков." },
-                { name: "Entity Culling", desc: "Отсечение невидимых мобов." },
-                { name: "FastAnim", desc: "Быстрые анимации 2D." },
-                { name: "FerriteCore", desc: "Очистка ОЗУ." },
-                { name: "Gpu memory leak fix mod", desc: "Фикс утечек VRAM." },
+                { name: "Enhanced Block Entities", desc: "Быстрые сундуки и таблички." },
+                { name: "Entity Culling", desc: "Скрытие невидимых мобов." },
+                { name: "FastAnim", desc: "Быстрые анимации." },
+                { name: "FerriteCore", desc: "Глубокая очистка RAM." },
                 { name: "ImmediatelyFast", desc: "Ускорение рендера частиц." },
-                { name: "Indium", desc: "Рендер-адаптер." },
                 { name: "Krypton", desc: "Сетевая оптимизация." },
                 { name: "Lithium", desc: "Оптимизация ИИ и физики." },
-                { name: "Memory Leak Fix", desc: "Защита от утечек RAM." },
+                { name: "Memory Leak Fix", desc: "Устранение утечек RAM." },
                 { name: "ModernFix", desc: "Экстремально быстрый запуск." },
                 { name: "More Culling", desc: "Отсечение граней блоков." },
-                { name: "Sodium", desc: "Главный движок." },
-                { name: "Sodium Extra", desc: "Расширенные настройки графики." },
-                { name: "ThreadTweak", desc: "Настройка потоков CPU." },
-                { name: "Very Many Players", desc: "Серверная оптимизация." }
+                { name: "Sodium", desc: "Главный движок рендера." },
+                { name: "Sodium Extra", desc: "Настройки графики." },
+                { name: "ThreadTweak", desc: "Оптимизация потоков." },
+                { name: "Very Many Players", desc: "Серверная стабильность." },
+                { name: "cupboard", desc: "Библиотека оптимизации." },
+                { name: "fix GPU memory leak", desc: "Устранение утечек VRAM." }
             ],
             "Библиотеки": [
+                { name: "Cloth Config API", desc: "База для конфигов." },
                 { name: "Fabric API", desc: "Базовое ядро Fabric." },
-                { name: "Cloth Config v11", desc: "Библиотека конфигов." },
+                { name: "Indium", desc: "Рендер-адаптер для Sodium." },
                 { name: "YetAnotherConfigLib (YACL)", desc: "Интерфейс настроек." },
-                { name: "bad packets", desc: "Сетевая либа." }
+                { name: "bad packets", desc: "Сетевая библиотека." }
             ],
             "Исправления и Утилиты": [
-                { name: "Almanac", desc: "Система гайдов." },
-                { name: "Athena", desc: "CTM Текстуры." },
+                { name: "Almanac", desc: "Внутриигровые руководства." },
+                { name: "Athena", desc: "Поддержка CTM текстур." },
                 { name: "Crash Assistant", desc: "Помощник при крашах." },
-                { name: "Debugify", desc: "Пакет багфиксов." },
+                { name: "Debugify", desc: "Сборник багфиксов игры." },
                 { name: "Iris Shaders", desc: "Шейдерный движок." },
                 { name: "Language Reload", desc: "Быстрая смена языка." },
-                { name: "Let Me Despawn", desc: "Очистка мобов." },
+                { name: "Let Me Despawn", desc: "Исправление деспавна." },
                 { name: "Mod Menu", desc: "Список модов в игре." },
-                { name: "Model Gap Fix", desc: "Убирает щели в руках." },
-                { name: "Not Enough Crashes", desc: "Перехват крашей." },
-                { name: "Packet Fixer", desc: "Фикс лимита пакетов." },
-                { name: "Reese's Sodium Options", desc: "Удобное меню Sodium." }
+                { name: "Model Gap Fix", desc: "Убирает щели в моделях." },
+                { name: "Not Enough Crashes", desc: "Перехват крашей в меню." },
+                { name: "Packet Fixer", desc: "Снятие лимита пакетов." },
+                { name: "Reese's Sodium Options", desc: "Удобное меню настроек." }
             ]
         },
         "26.1": {
             "Оптимизация": [
                 { name: "Alternate Current", desc: "Оптимизация редстоуна." },
-                { name: "BadOptimizations", desc: "Убирает фризы." },
+                { name: "BadOptimizations", desc: "Устранение статтеров." },
                 { name: "Clumps", desc: "Группировка сфер опыта." },
-                { name: "Connectivity Mod", desc: "Ускорение пинга." },
                 { name: "Dynamic FPS", desc: "Оптимизация свернутой игры." },
-                { name: "EntityCulling", desc: "Скрытие мобов за стенами." },
-                { name: "FerriteCore", desc: "Очистка памяти." },
-                { name: "Gpu memory leak fix mod", desc: "Фикс памяти GPU." },
-                { name: "ImmediatelyFast", desc: "Быстрый рендер." },
-                { name: "Krypton", desc: "Патчи сети." },
-                { name: "Lithium", desc: "Физика сервера." },
-                { name: "ModernFix", desc: "Ускорение меню и загрузки." },
-                { name: "More Culling", desc: "Доп. куллинг." },
+                { name: "EntityCulling", desc: "Скрытие объектов вне поля зрения." },
+                { name: "FerriteCore", desc: "Агрессивная чистка памяти." },
+                { name: "ImmediatelyFast", desc: "Быстрый рендер геометрии." },
+                { name: "Krypton", desc: "Патчи сетевого стека." },
+                { name: "Lithium", desc: "Серверная физика и ИИ." },
+                { name: "ModernFix-mVUS", desc: "Ускорение меню и загрузки." },
+                { name: "More Culling", desc: "Дополнительный куллинг." },
                 { name: "Smooth Boot", desc: "Сглаживание пиков CPU." },
                 { name: "Sodium", desc: "Движок рендера." },
                 { name: "Sodium Extra", desc: "Тумблеры Sodium." },
-                { name: "Stutterfix", desc: "Устранение статтеров." },
+                { name: "StutterFix - Refurbished!", desc: "Фикс микрофризов." },
                 { name: "Very Many Players", desc: "Мультиплеерная оптимизация." },
-                { name: "cupboard", desc: "Библиотека оптимизации." }
+                { name: "cupboard", desc: "Служебная оптимизация." },
+                { name: "gpumemleakfix-fabric-26.1-1.9", desc: "Патч утечек видеопамяти." }
             ],
             "Библиотеки": [
-                { name: "Bad Packets", desc: "Служебный API." },
-                { name: "Cloth Config v26.1", desc: "Настройки модов." },
-                { name: "Fabric API", desc: "Ядро." },
+                { name: "Cloth Config API", desc: "Настройки модов." },
+                { name: "Fabric API", desc: "Базовое ядро." },
                 { name: "Fabric Language Kotlin", desc: "Поддержка Kotlin." },
-                { name: "Placeholder API", desc: "Форматирование текста." },
-                { name: "YetAnotherConfigLib", desc: "UI для настроек." }
+                { name: "Text Placeholder API", desc: "Работа с текстом." },
+                { name: "YetAnotherConfigLib (YACL)", desc: "UI для настроек." },
+                { name: "bad packets", desc: "Сетевая библиотека." },
+                { name: "connectivity-fabric-26.1-7.6", desc: "Сетевые исправления." }
             ],
             "Исправления и Утилиты": [
-                { name: "Iris", desc: "Шейдеры." },
-                { name: "Language Reload", desc: "Язык без фризов." },
+                { name: "Iris Shaders", desc: "Поддержка шейдеров." },
+                { name: "Language Reload", desc: "Язык без зависаний." },
                 { name: "Mod Menu", desc: "Меню модификаций." },
-                { name: "Mouse Tweaks", desc: "Твики мыши." },
-                { name: "No Chat Reports", desc: "Удаление репортов." },
-                { name: "Packet Fixer", desc: "Фикс NBT." },
+                { name: "Mouse Tweaks", desc: "Улучшенное управление мышью." },
+                { name: "No Chat Reports", desc: "Блокировка репортов чата." },
+                { name: "Packet Fixer", desc: "Снятие ограничений NBT." },
                 { name: "Reese's Sodium Options", desc: "Кастомное меню." }
             ]
         },
         "1.16.5": {
             "Оптимизация": [
-                { name: "Alternate Current", desc: "Патч редстоуна." },
-                { name: "Cull Leaves", desc: "Оптимизация листвы." },
-                { name: "Dynamic FPS", desc: "Контроль FPS." },
-                { name: "Enhanced Block Entities", desc: "Быстрые сундуки." },
+                { name: "Alternate Current", desc: "Патч логики редстоуна." },
+                { name: "Cull Leaves", desc: "Оптимизация рендера листвы." },
+                { name: "Dynamic FPS", desc: "Контроль FPS в фоне." },
+                { name: "Enhanced Block Entities", desc: "Быстрые тайл-энтити." },
                 { name: "EntityCulling-Fabric", desc: "Отсечение мобов." },
-                { name: "FerriteCore", desc: "Снижение RAM." },
-                { name: "Indium", desc: "Поддержка API." },
-                { name: "Krypton", desc: "Сетевой патч." },
-                { name: "LazyDFU", desc: "Очень быстрый запуск." },
-                { name: "Lithium", desc: "Физика игры." },
-                { name: "Memory Leak Fix", desc: "Фикс утечек." },
+                { name: "FerriteCore", desc: "Снижение потребления RAM." },
+                { name: "LazyDFU", desc: "Ускорение инициализации." },
+                { name: "Lithium", desc: "Ускорение серверного тика." },
+                { name: "Memory Leak Fix", desc: "Фикс утечек памяти." },
                 { name: "ModernFix", desc: "Универсальный фиксер." },
-                { name: "Phosphor", desc: "Быстрое освещение." },
+                { name: "Phosphor", desc: "Быстрый просчет света." },
                 { name: "Sodium", desc: "Движок Sodium." },
-                { name: "Sodium Extra", desc: "Доп. опции." }
+                { name: "Sodium Extra", desc: "Дополнительные опции." }
             ],
             "Библиотеки": [
-                { name: "Fabric API", desc: "Базовый мод." }
+                { name: "Fabric API", desc: "Базовый мод ядра." },
+                { name: "Indium", desc: "Совместимость рендера." }
             ],
             "Исправления и Утилиты": [
-                { name: "Borderless Mining", desc: "Игра без рамок." },
-                { name: "CleanCut", desc: "Удар через траву." },
-                { name: "Crash Assistant", desc: "Чтение логов." },
-                { name: "Iris Shaders", desc: "Шейдеры." },
-                { name: "Let Me Despawn", desc: "Деспавн мобов." },
-                { name: "Mod Menu", desc: "Меню для модов." },
+                { name: "Borderless Mining", desc: "Режим без рамок." },
+                { name: "CleanCut", desc: "Удары сквозь траву." },
+                { name: "Crash Assistant", desc: "Помощь с логами." },
+                { name: "Iris", desc: "Шейдеры." },
+                { name: "Krypton", desc: "Ускорение сети." },
+                { name: "Let Me Despawn", desc: "Исправление деспавна." },
+                { name: "Mod Menu", desc: "Управление модами." },
                 { name: "Packet Fixer", desc: "Большие пакеты данных." },
                 { name: "Reese's Sodium Options", desc: "Улучшенное меню графики." }
             ]
