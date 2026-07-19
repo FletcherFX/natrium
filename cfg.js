@@ -4,7 +4,7 @@
 
 const Config = {
     FUNCTIONAL: {
-        isSiteEnabled: true,
+        isSiteEnabled: false,
         isResponsive: true,
         showTimeWidget: true,
         showSocialLinks: true,
