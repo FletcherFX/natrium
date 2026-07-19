@@ -56,6 +56,14 @@ function applyThemeColors() {
     const shades = generateShades(currentColor);
     const root = document.documentElement;
     const textColor = getContrastColor(currentColor);
+    const rgb = hexToRgbArr(currentColor);
+    const brightness = (rgb[0] * 299 + rgb[1] * 587 + rgb[2] * 114) / 1000;
+    
+    if (brightness < 90) {
+        document.body.classList.add('dark-accent');
+    } else {
+        document.body.classList.remove('dark-accent');
+    }
     
     root.setAttribute('data-theme', currentTheme);
     root.style.setProperty('--primary', shades.primary);
@@ -74,8 +82,11 @@ const settingsPanel = document.getElementById('settings-panel');
 const closeSettingsBtn = document.getElementById('btn-close-settings');
 const themeDarkBtn = document.getElementById('theme-dark');
 const themeLightBtn = document.getElementById('theme-light');
-const colorPicker = document.getElementById('native-color-picker');
+const colorPreview = document.getElementById('color-preview');
 const hexRgbInput = document.getElementById('hex-rgb-input');
+const rSlider = document.getElementById('r-slider');
+const gSlider = document.getElementById('g-slider');
+const bSlider = document.getElementById('b-slider');
 
 settingsBtn.addEventListener('click', () => settingsPanel.classList.add('active'));
 closeSettingsBtn.addEventListener('click', () => settingsPanel.classList.remove('active'));
@@ -89,7 +100,15 @@ updateThemeButtons();
 themeDarkBtn.addEventListener('click', () => { currentTheme = 'dark'; localStorage.setItem('natrium_theme_mode', 'dark'); applyThemeColors(); updateThemeButtons(); });
 themeLightBtn.addEventListener('click', () => { currentTheme = 'light'; localStorage.setItem('natrium_theme_mode', 'light'); applyThemeColors(); updateThemeButtons(); });
 
-colorPicker.value = currentColor;
+function updateSlidersAndPreview(hex) {
+    const rgbArr = hexToRgbArr(hex);
+    rSlider.value = rgbArr[0];
+    gSlider.value = rgbArr[1];
+    bSlider.value = rgbArr[2];
+    colorPreview.style.backgroundColor = hex;
+}
+
+updateSlidersAndPreview(currentColor);
 hexRgbInput.value = currentColor;
 
 function handleColorChange(newColor) {
@@ -100,13 +119,19 @@ function handleColorChange(newColor) {
         currentColor = rgbToHex(rgb[0], rgb[1], rgb[2]);
     } else return;
 
-    colorPicker.value = currentColor;
+    updateSlidersAndPreview(currentColor);
     hexRgbInput.value = currentColor;
     localStorage.setItem('natrium_base_color', currentColor);
     applyThemeColors();
 }
 
-colorPicker.addEventListener('input', (e) => handleColorChange(e.target.value));
+[rSlider, gSlider, bSlider].forEach(slider => {
+    slider.addEventListener('input', () => {
+        const hex = rgbToHex(parseInt(rSlider.value), parseInt(gSlider.value), parseInt(bSlider.value));
+        handleColorChange(hex);
+    });
+});
+
 hexRgbInput.addEventListener('input', (e) => handleColorChange(e.target.value));
 
 const presetsContainer = document.getElementById('color-presets');
@@ -272,6 +297,7 @@ function renderSite() {
 
     document.getElementById('versions-container').innerHTML = Config.VERSIONS.map(v => `
         <div class="card">
+            <div class="fabric-badge">✨ FABRIC</div>
             <span class="card-title">${Config.UI.title}</span>
             <span class="card-version">${Config.UI.modals.versionPrefix} ${v.versionNum}</span>
             <span class="file-type">${v.fileType}</span>
