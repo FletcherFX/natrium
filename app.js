@@ -1,8 +1,3 @@
-// =====================================================================
-// ЯДРО NATRIUM APP
-// =====================================================================
-
-// Проверка тех. работ
 if (!Config.FUNCTIONAL.isSiteEnabled) {
     document.body.innerHTML = `
         <div class="maintenance-screen">
@@ -15,9 +10,6 @@ if (!Config.FUNCTIONAL.isSiteEnabled) {
     throw new Error('Maintenance Mode Active');
 }
 
-// ---------------------------------------------------
-// 1. ОПРЕДЕЛЕНИЕ УСТРОЙСТВ
-// ---------------------------------------------------
 let isMobile = false;
 function checkDevice() {
     isMobile = window.innerWidth <= 768 || 'ontouchstart' in window || navigator.maxTouchPoints > 0;
@@ -29,9 +21,6 @@ if (!Config.FUNCTIONAL.isResponsive) {
     document.getElementById('meta-viewport').setAttribute('content', 'width=1100');
 }
 
-// ---------------------------------------------------
-// 2. УЛЬТИМАТИВНАЯ СИСТЕМА ЦВЕТОВ И ТЕМ
-// ---------------------------------------------------
 let currentTheme = localStorage.getItem('natrium_theme_mode') || Config.SITE.defaultThemeMode;
 let currentColor = localStorage.getItem('natrium_base_color') || Config.COLOR_DICTIONARY[Config.SITE.defaultColor] || Config.COLOR_DICTIONARY["золотой"];
 
@@ -48,12 +37,17 @@ function rgbToHex(r, g, b) {
     }).join('');
 }
 
-// Генератор градиентов из одного цвета
+function getContrastColor(hex) {
+    let r = parseInt(hex.substr(1, 2), 16);
+    let g = parseInt(hex.substr(3, 2), 16);
+    let b = parseInt(hex.substr(5, 2), 16);
+    let yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+    return (yiq >= 128) ? '#000000' : '#ffffff';
+}
+
 function generateShades(hexColor) {
     const rgb = hexToRgbArr(hexColor);
-    // Светлый оттенок (для старта градиента)
     const start = rgbToHex(rgb[0] + 40, rgb[1] + 40, rgb[2] + 40);
-    // Темный оттенок (для конца)
     const end = rgbToHex(rgb[0] - 40, rgb[1] - 40, rgb[2] - 40);
     return { primary: hexColor, start, end, glow: hexColor };
 }
@@ -61,23 +55,20 @@ function generateShades(hexColor) {
 function applyThemeColors() {
     const shades = generateShades(currentColor);
     const root = document.documentElement;
+    const textColor = getContrastColor(currentColor);
     
     root.setAttribute('data-theme', currentTheme);
     root.style.setProperty('--primary', shades.primary);
     root.style.setProperty('--grad-start', shades.start);
     root.style.setProperty('--grad-end', shades.end);
     root.style.setProperty('--spark-glow', shades.glow);
+    root.style.setProperty('--btn-text', textColor);
     
-    // Обновляем глобальные переменные для канваса
     window.ThemeVars = shades;
 }
 
-// Инициализация
 applyThemeColors();
 
-// ---------------------------------------------------
-// 3. UI КАСТОМИЗАЦИЯ (ПАНЕЛЬ)
-// ---------------------------------------------------
 const settingsBtn = document.getElementById('btn-open-settings');
 const settingsPanel = document.getElementById('settings-panel');
 const closeSettingsBtn = document.getElementById('btn-close-settings');
@@ -89,7 +80,6 @@ const hexRgbInput = document.getElementById('hex-rgb-input');
 settingsBtn.addEventListener('click', () => settingsPanel.classList.add('active'));
 closeSettingsBtn.addEventListener('click', () => settingsPanel.classList.remove('active'));
 
-// Установка активной кнопки темы
 function updateThemeButtons() {
     if(currentTheme === 'dark') { themeDarkBtn.classList.add('active'); themeLightBtn.classList.remove('active'); }
     else { themeLightBtn.classList.add('active'); themeDarkBtn.classList.remove('active'); }
@@ -99,7 +89,6 @@ updateThemeButtons();
 themeDarkBtn.addEventListener('click', () => { currentTheme = 'dark'; localStorage.setItem('natrium_theme_mode', 'dark'); applyThemeColors(); updateThemeButtons(); });
 themeLightBtn.addEventListener('click', () => { currentTheme = 'light'; localStorage.setItem('natrium_theme_mode', 'light'); applyThemeColors(); updateThemeButtons(); });
 
-// Синхронизация инпутов
 colorPicker.value = currentColor;
 hexRgbInput.value = currentColor;
 
@@ -109,7 +98,7 @@ function handleColorChange(newColor) {
     } else if (/^\d{1,3},\s*\d{1,3},\s*\d{1,3}$/.test(newColor)) {
         const rgb = newColor.split(',').map(n => parseInt(n.trim()));
         currentColor = rgbToHex(rgb[0], rgb[1], rgb[2]);
-    } else return; // невалидный ввод
+    } else return;
 
     colorPicker.value = currentColor;
     hexRgbInput.value = currentColor;
@@ -120,7 +109,6 @@ function handleColorChange(newColor) {
 colorPicker.addEventListener('input', (e) => handleColorChange(e.target.value));
 hexRgbInput.addEventListener('input', (e) => handleColorChange(e.target.value));
 
-// Рендер пресетов из cfg.js
 const presetsContainer = document.getElementById('color-presets');
 presetsContainer.style.display = 'flex';
 presetsContainer.style.gap = '8px';
@@ -132,13 +120,13 @@ Object.entries(Config.COLOR_DICTIONARY).forEach(([name, hex]) => {
     dot.style.width = '24px'; dot.style.height = '24px'; dot.style.borderRadius = '50%';
     dot.style.background = hex; dot.style.cursor = 'pointer'; dot.title = name;
     dot.style.border = '2px solid var(--border-color)';
+    dot.style.transition = 'transform 0.3s ease';
+    dot.onmouseenter = () => dot.style.transform = 'scale(1.2)';
+    dot.onmouseleave = () => dot.style.transform = 'scale(1)';
     dot.onclick = () => handleColorChange(hex);
     presetsContainer.appendChild(dot);
 });
 
-// ---------------------------------------------------
-// 4. ОПТИМИЗИРОВАННЫЙ КАНВАС (БЕЗ ТРЕЙЛА НА ТЕЛЕФОНАХ)
-// ---------------------------------------------------
 const canvas = document.getElementById('atom-canvas');
 const ctx = canvas.getContext('2d');
 let particles = []; 
@@ -152,7 +140,6 @@ function resizeCanvas() {
 }
 window.addEventListener('resize', resizeCanvas);
 
-// Слушатель мыши ТОЛЬКО если это не мобилка
 if (!isMobile) {
     window.addEventListener('mousemove', (e) => { 
         mouse.x = e.clientX; 
@@ -191,7 +178,6 @@ class Particle {
         ctx.globalAlpha = Math.random() > 0.5 ? 0.3 : 0.1;
         ctx.beginPath(); 
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        // Динамический цвет из окна ThemeVars
         ctx.fillStyle = Math.random() > 0.5 ? window.ThemeVars.primary : window.ThemeVars.glow; 
         ctx.fill();
         ctx.restore();
@@ -230,7 +216,7 @@ class Spark {
 
 function initParticles() {
     particles = []; sparks = [];
-    const density = isMobile ? 25000 : 10000; // На мобилках меньше частиц
+    const density = isMobile ? 25000 : 10000;
     const count = Math.floor((canvas.width * canvas.height) / density);
     for (let i = 0; i < count; i++) particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
 }
@@ -247,9 +233,6 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
-// ---------------------------------------------------
-// 5. РЕНДЕР И ЛОГИКА САЙТА
-// ---------------------------------------------------
 function updateTime() {
     if(!Config.FUNCTIONAL.showTimeWidget) { document.getElementById('realtime-widget').style.display = 'none'; return; }
     const now = new Date();
@@ -263,7 +246,7 @@ function updateTime() {
     else if (h >= 12 && h < 18) g = Config.UI.greetings.day;
     else if (h >= 18) g = Config.UI.greetings.evening;
     
-    document.getElementById('site-subtitle').innerHTML = `<span style="color: var(--primary); font-weight: 700;">${g}</span><br>${Config.UI.subtitle}`;
+    document.getElementById('site-subtitle').innerHTML = `<span style="color: var(--primary); font-weight: 800;">${g}</span><br>${Config.UI.subtitle}`;
 }
 setInterval(updateTime, 1000);
 updateTime();
@@ -280,15 +263,13 @@ function renderSite() {
     document.getElementById('btn-spin-again').textContent = Config.UI.buttons.spinAgain;
     document.getElementById('btn-roulette-home').textContent = Config.UI.buttons.home;
 
-    // Окно загрузки
     document.getElementById('download-modal-content').innerHTML = `
-        <div style="margin: 20px 0; color: var(--text-muted); font-size: 1rem; text-align: center;">${Config.UI.modals.downloadInfoText}</div>
+        <div style="margin: 20px 0; color: var(--text-muted); font-size: 1.05rem; text-align: center; font-weight: 600;">${Config.UI.modals.downloadInfoText}</div>
         <div style="display: flex; flex-direction: column; gap: 10px;">
             ${Config.UI.modals.downloadLinks.map(l => `<a href="${l.url}" target="_blank" class="${l.type === 'primary' ? 'btn-download' : 'btn-mods'}">${l.text}</a>`).join('')}
         </div>
     `;
 
-    // Карточки версий
     document.getElementById('versions-container').innerHTML = Config.VERSIONS.map(v => `
         <div class="card">
             <span class="card-title">${Config.UI.title}</span>
@@ -299,7 +280,6 @@ function renderSite() {
         </div>
     `).join('');
 
-    // Инструкция
     document.getElementById('instruction-container').innerHTML = `
         <button id="btn-instruction" class="pill-button" style="width: auto; padding: 14px 40px; margin-bottom: 20px; font-weight: 800;">${Config.INSTRUCTION.buttonText}</button>
         <div class="instruction-anim-box" id="instruction-anim-box">
@@ -313,7 +293,6 @@ function renderSite() {
     `;
     document.getElementById('btn-instruction').addEventListener('click', () => document.getElementById('instruction-anim-box').classList.toggle('active'));
 
-    // НОВЫЙ БЛОК: ПРЕИМУЩЕСТВА
     document.getElementById('advantages-container').innerHTML = `
         <h2 class="advantages-title">${Config.ADVANTAGES.title}</h2>
         <div class="advantages-grid">
@@ -328,7 +307,6 @@ function renderSite() {
         <div class="disclaimer-text">${Config.ADVANTAGES.disclaimerText}</div>
     `;
 
-    // Соцсети
     if(Config.FUNCTIONAL.showSocialLinks) {
         document.getElementById('socials-container').innerHTML = Config.SOCIALS.map(s => `<a href="${s.url}" target="_blank" class="pill-button">${s.text} <span>${s.span}</span></a>`).join('');
     }
@@ -337,7 +315,6 @@ function renderSite() {
     initIntersectionObserver();
 }
 
-// Плавное появление (Scroll Reveal)
 function initIntersectionObserver() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -351,9 +328,6 @@ function initIntersectionObserver() {
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 }
 
-// ---------------------------------------------------
-// 6. ЛОГИКА МОДАЛОК
-// ---------------------------------------------------
 function debounce(f, t = Config.FUNCTIONAL.searchDebounceDelay) { let tm; return (...a) => { clearTimeout(tm); tm = setTimeout(() => f.apply(this, a), t); }; }
 
 function openModsModal(ver) { 
@@ -403,7 +377,7 @@ function spinRoulette() {
     const itemWidth = isMobile ? 130 : 150;
     const targetX = -(winIndex * itemWidth) + (document.querySelector('.roulette-container').offsetWidth / 2 - itemWidth / 2);
     
-    tape.style.transition = `transform ${Config.FUNCTIONAL.rouletteSpinDuration}ms cubic-bezier(0.15, 0.85, 0.15, 1)`;
+    tape.style.transition = `transform ${Config.FUNCTIONAL.rouletteSpinDuration}ms cubic-bezier(0.4, -0.3, 0.1, 1.2)`;
     tape.style.transform = `translateX(${targetX}px)`;
     
     setTimeout(() => {
@@ -432,9 +406,6 @@ function attachEvents() {
     });
 }
 
-// ---------------------------------------------------
-// 7. ПАСХАЛКИ (Отключена клавиатура для мобильных)
-// ---------------------------------------------------
 function triggerEasterEgg() {
     if(typeof CREEPER_SOUND_BASE64 !== 'undefined') {
         const sfx = new Audio(CREEPER_SOUND_BASE64); sfx.volume = 0.5; sfx.play().catch(()=>{});
@@ -456,7 +427,6 @@ _l.addEventListener('click', () => {
     if (_tc === Config.FUNCTIONAL.easterEggClicks) { _tc = 0; triggerEasterEgg(); }
 });
 
-// ЗАПУСК
 renderSite();
 resizeCanvas();
 animate();
