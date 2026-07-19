@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -39,10 +39,17 @@
             </div>
 
             <div class="settings-block">
-                <label>Акцентный цвет (HEX / RGB):</label>
-                <div class="color-picker-wrapper">
-                    <input type="color" id="native-color-picker">
-                    <input type="text" id="hex-rgb-input" placeholder="#ffaa00 или 255,170,0">
+                <label>Акцентный цвет:</label>
+                <div class="custom-color-picker">
+                    <div class="color-preview-row">
+                        <div class="color-preview" id="color-preview"></div>
+                        <input type="text" id="hex-rgb-input" placeholder="#ffaa00 или 255,170,0">
+                    </div>
+                    <div class="rgb-sliders">
+                        <div class="slider-row"><span class="r-label">R</span><input type="range" id="r-slider" min="0" max="255"></div>
+                        <div class="slider-row"><span class="g-label">G</span><input type="range" id="g-slider" min="0" max="255"></div>
+                        <div class="slider-row"><span class="b-label">B</span><input type="range" id="b-slider" min="0" max="255"></div>
+                    </div>
                 </div>
                 <div class="color-presets" id="color-presets"></div>
             </div>
