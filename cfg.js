@@ -144,9 +144,9 @@ const Config = {
         // Пошаговые пункты установки
         steps: [
             "Скачай файл сборки в формате .mrpack под нужную версию с нашего сайта.",
-            "Скачай и установи современный лаунчер с поддержкой Modrinth (например: <a href='https://elyprism.ru/' target='_blank'>PineconeMc (Elyprism)</a>, <a href='https://atlauncher.com/' target='_blank'>ATLauncher</a>, <a href='https://prismlauncher.org/' target='_blank'>Prism Launcher</a> или <a href='https://modrinth.com/app' target='_blank'>Modrinth App</a>).",
+            "Установи современный лаунчер с поддержкой Modrinth (например: <a href='https://elyprism.ru/' target='_blank'>PineconeMc (Elyprism)</a>, <a href='https://atlauncher.com/' target='_blank'>ATLauncher</a>, <a href='https://prismlauncher.org/' target='_blank'>Prism Launcher</a> или <a href='https://modrinth.com/app' target='_blank'>Modrinth App</a>).",
             "В лаунчере нажми кнопку «Добавить экземпляр» (или «Импорт») и выбери скачанный ранее файл .mrpack.",
-            "Дождись, пока лаунчер автоматически скачает все необходимые моды из конфига сборки, и запускай игру."
+            "Дождись, пока лаунчер автоматически скачает все необходимые моды из конфига сборки, и запусти игру."
         ]
     },
 
