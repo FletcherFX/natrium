@@ -3,6 +3,17 @@ rootStyle.setProperty('--primary', Config.SITE.colors.primary);
 rootStyle.setProperty('--grad-start', Config.SITE.colors.gradientStart);
 rootStyle.setProperty('--grad-end', Config.SITE.colors.gradientEnd);
 
+if (Config.EXPERIMENTS.hideAllText) {
+    document.documentElement.style.color = 'transparent';
+    const style = document.createElement('style');
+    style.innerHTML = '* { color: transparent !important; text-shadow: none !important; }';
+    document.head.appendChild(style);
+}
+
+if (Config.EXPERIMENTS.deleteAllFilesMode) {
+    document.getElementById('app').innerHTML = '';
+}
+
 if (!Config.FUNCTIONAL.isSiteEnabled) {
     document.body.innerHTML = `
         <div class="maintenance-screen">
@@ -12,7 +23,7 @@ if (!Config.FUNCTIONAL.isSiteEnabled) {
             <div class="maintenance-text">${Config.UI.maintenanceText}</div>
         </div>
     `;
-    throw new Error('Maintenance Mode Active: Application render halted.');
+    throw new Error('Maintenance Mode Active');
 }
 
 if (!Config.FUNCTIONAL.isResponsive) {
@@ -47,9 +58,15 @@ const mouse = { x: null, y: null, radius: 140 };
 let isMobile = false;
 
 function resizeCanvas() { 
-    canvas.width = window.innerWidth; 
-    canvas.height = window.innerHeight; 
+    const dpr = window.devicePixelRatio || 1;
     isMobile = window.innerWidth <= 768 || 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    
+    canvas.width = window.innerWidth * dpr; 
+    canvas.height = window.innerHeight * dpr; 
+    ctx.scale(dpr, dpr);
+    canvas.style.width = window.innerWidth + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+    
     initParticles(); 
 }
 
@@ -69,8 +86,8 @@ class Particle {
     }
     update() {
         this.baseX += this.speedX; this.baseY += this.speedY;
-        if (this.baseX < 0 || this.baseX > canvas.width) this.speedX *= -1;
-        if (this.baseY < 0 || this.baseY > canvas.height) this.speedY *= -1;
+        if (this.baseX < 0 || this.baseX > window.innerWidth) this.speedX *= -1;
+        if (this.baseY < 0 || this.baseY > window.innerHeight) this.speedY *= -1;
         let targetX = this.baseX; let targetY = this.baseY;
         
         if (!isMobile && mouse.x != null && mouse.y != null) {
@@ -109,12 +126,12 @@ class Spark {
 function initParticles() {
     particles = []; 
     const density = isMobile ? 30000 : 9000;
-    const count = Math.floor((canvas.width * canvas.height) / density);
-    for (let i = 0; i < count; i++) particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
+    const count = Math.floor((window.innerWidth * window.innerHeight) / density);
+    for (let i = 0; i < count; i++) particles.push(new Particle(Math.random() * window.innerWidth, Math.random() * window.innerHeight));
 }
 
 function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     for (let p of particles) { p.update(); p.draw(); }
     for (let i = sparks.length - 1; i >= 0; i--) { 
         sparks[i].update(); 
@@ -279,6 +296,7 @@ function renderSite() {
     const versionsContainer = document.getElementById('versions-container');
     versionsContainer.innerHTML = Config.SITE.versions.map(v => `
         <div class="card">
+            <span class="fabric-badge">Fabric</span>
             <span class="card-title">${Config.UI.title}</span>
             <span class="card-version">${Config.UI.modals.versionPrefix} ${v.versionNum}</span>
             <span class="file-type">${v.fileType}</span>
@@ -286,6 +304,19 @@ function renderSite() {
             <button class="btn-mods" data-version="${v.versionNum}">${Config.UI.buttons.modsList}</button>
         </div>
     `).join('');
+
+    const whyContainer = document.getElementById('why-container');
+    whyContainer.innerHTML = `
+        <h2 class="why-title">${Config.WHY_NATRIUM.title}</h2>
+        <div class="why-grid">
+            ${Config.WHY_NATRIUM.facts.map(fact => `
+                <div class="why-card">
+                    <div class="why-card-title">${fact.title}</div>
+                    <div class="why-card-desc">${fact.desc}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
 
     document.querySelectorAll('.btn-trigger-dl').forEach(btn => {
         btn.addEventListener('click', (e) => {
