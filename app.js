@@ -1,36 +1,7 @@
-// Система перевода человеческих слов в HEX-цвета
-const WordColors = {
-    "золотой": { primary: "#ffaa00", start: "#ffcc00", end: "#ff5500", bg: "#050506", spark: "#ffbb00", sparkGlow: "#ff8800" },
-    "красный": { primary: "#ff3333", start: "#ff6666", end: "#cc0000", bg: "#0a0303", spark: "#ff4444", sparkGlow: "#aa0000" },
-    "зеленый": { primary: "#00e676", start: "#69f0ae", end: "#00b248", bg: "#020a04", spark: "#00e676", sparkGlow: "#00b248" },
-    "синий": { primary: "#3399ff", start: "#66b2ff", end: "#0055cc", bg: "#03050a", spark: "#3399ff", sparkGlow: "#0055cc" },
-    "неоновый": { primary: "#ff00ff", start: "#ff66ff", end: "#b300b3", bg: "#0a020a", spark: "#ff00ff", sparkGlow: "#b300b3" },
-    "фиолетовый": { primary: "#9933ff", start: "#b266ff", end: "#5500cc", bg: "#05020a", spark: "#9933ff", sparkGlow: "#5500cc" },
-    "белый": { primary: "#ffffff", start: "#e0e0e0", end: "#999999", bg: "#050505", spark: "#ffffff", sparkGlow: "#aaaaaa" },
-    "темно-серый": { primary: "#aaaaaa", start: "#cccccc", end: "#666666", bg: "#030303", spark: "#aaaaaa", sparkGlow: "#555555" },
-    "черный": { primary: "#555555", start: "#777777", end: "#333333", bg: "#000000", spark: "#555555", sparkGlow: "#222222" }
-};
-
-function applyConfigColors() {
-    const themeWord = (Config.SITE.colors.theme || "золотой").trim().toLowerCase();
-    const bgWord = (Config.SITE.colors.background || themeWord).trim().toLowerCase();
-    const trailWord = (Config.TRAIL.color || themeWord).trim().toLowerCase();
-
-    const theme = WordColors[themeWord] || WordColors["золотой"];
-    const bg = WordColors[bgWord] || WordColors["золотой"];
-    const trail = WordColors[trailWord] || WordColors["золотой"];
-
-    const rootStyle = document.documentElement.style;
-    rootStyle.setProperty('--primary', theme.primary);
-    rootStyle.setProperty('--grad-start', theme.start);
-    rootStyle.setProperty('--grad-end', theme.end);
-    rootStyle.setProperty('--bg-main', bg.bg);
-
-    window.SparkColor = trail.spark;
-    window.SparkGlow = trail.sparkGlow;
-}
-
-applyConfigColors();
+const rootStyle = document.documentElement.style;
+rootStyle.setProperty('--primary', Config.SITE.colors.primary);
+rootStyle.setProperty('--grad-start', Config.SITE.colors.gradientStart);
+rootStyle.setProperty('--grad-end', Config.SITE.colors.gradientEnd);
 
 if (!Config.FUNCTIONAL.isSiteEnabled) {
     document.body.innerHTML = `
@@ -87,12 +58,7 @@ window.addEventListener('mousemove', (e) => {
     if (isMobile) return; 
     mouse.x = e.clientX; 
     mouse.y = e.clientY;
-    
-    for(let i = 0; i < Config.TRAIL.sparksPerStep; i++) {
-        if (sparks.length < Config.TRAIL.maxSparks) {
-            sparks.push(new Spark(e.clientX, e.clientY));
-        }
-    }
+    if (sparks.length < 45) sparks.push(new Spark(e.clientX, e.clientY));
 });
 window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
 
@@ -117,43 +83,26 @@ class Particle {
         this.x += (targetX - this.x) * 0.08; this.y += (targetY - this.y) * 0.08;
     }
     draw() {
-        ctx.save();
-        ctx.globalAlpha = Math.random() > 0.5 ? 0.25 : 0.15;
-        ctx.beginPath(); 
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = Math.random() > 0.5 ? window.SparkGlow : window.SparkColor; 
-        ctx.fill();
-        ctx.restore();
+        ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = Math.random() > 0.5 ? 'rgba(255, 180, 0, 0.25)' : 'rgba(255, 85, 0, 0.15)'; ctx.fill();
     }
 }
 
 class Spark {
     constructor(x, y) {
-        this.x = x; this.y = y; 
-        this.maxSize = Math.random() * Config.TRAIL.maxSize + 2; 
-        this.size = this.maxSize;
-        this.speedX = (Math.random() - 0.5) * 2.5; 
-        this.speedY = (Math.random() - 0.5) * 2.5;
-        this.alpha = 1; this.life = 1; 
-        this.decay = Math.random() * (Config.TRAIL.decaySpeed * 0.5) + Config.TRAIL.decaySpeed;
+        this.x = x; this.y = y; this.maxSize = Math.random() * 3 + 2; this.size = this.maxSize;
+        this.speedX = (Math.random() - 0.5) * 2.5; this.speedY = (Math.random() - 0.5) * 2.5;
+        this.alpha = 1; this.life = 1; this.decay = Math.random() * 0.015 + 0.012;
     }
     update() {
-        this.x += this.speedX; this.y += this.speedY; 
-        this.speedX *= 0.97; this.speedY *= 0.97;
+        this.x += this.speedX; this.y += this.speedY; this.speedX *= 0.97; this.speedY *= 0.97;
         this.life -= this.decay; this.alpha = this.life; this.size = this.maxSize * this.life;
         if (this.size < 0) this.size = 0;
     }
     draw() {
         if (this.alpha <= 0) return;
-        ctx.save(); 
-        ctx.globalAlpha = this.alpha; 
-        ctx.beginPath(); 
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.shadowBlur = 15; 
-        ctx.shadowColor = window.SparkGlow; 
-        ctx.fillStyle = window.SparkColor; 
-        ctx.fill(); 
-        ctx.restore();
+        ctx.save(); ctx.globalAlpha = this.alpha; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.shadowBlur = 15; ctx.shadowColor = '#ff8800'; ctx.fillStyle = '#ffbb00'; ctx.fill(); ctx.restore();
     }
 }
 
@@ -327,19 +276,6 @@ function renderSite() {
     document.getElementById('btn-spin-again').textContent = Config.UI.buttons.spinAgain;
     document.getElementById('btn-roulette-home').textContent = Config.UI.buttons.home;
     
-    // Рендер окна загрузки из конфига
-    const downloadContentHTML = `
-        <div style="margin: 20px 0; color: #94a3b8; font-size: 1rem;">
-            ${Config.UI.modals.downloadInfoText}
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 10px;">
-            ${Config.UI.modals.downloadLinks.map(link => `
-                <a href="${link.url}" target="_blank" class="${link.type === 'primary' ? 'btn-download' : 'btn-mods'}" style="${link.type === 'primary' ? 'margin-bottom: 0;' : 'padding: 16px; border-radius: 14px;'}">${link.text}</a>
-            `).join('')}
-        </div>
-    `;
-    document.getElementById('download-modal-content').innerHTML = downloadContentHTML;
-
     const versionsContainer = document.getElementById('versions-container');
     versionsContainer.innerHTML = Config.SITE.versions.map(v => `
         <div class="card">
