@@ -1,3 +1,37 @@
+// Система перевода человеческих слов в HEX-цвета
+const WordColors = {
+    "золотой": { primary: "#ffaa00", start: "#ffcc00", end: "#ff5500", bg: "#050506", spark: "#ffbb00", sparkGlow: "#ff8800" },
+    "красный": { primary: "#ff3333", start: "#ff6666", end: "#cc0000", bg: "#0a0303", spark: "#ff4444", sparkGlow: "#aa0000" },
+    "зеленый": { primary: "#00e676", start: "#69f0ae", end: "#00b248", bg: "#020a04", spark: "#00e676", sparkGlow: "#00b248" },
+    "синий": { primary: "#3399ff", start: "#66b2ff", end: "#0055cc", bg: "#03050a", spark: "#3399ff", sparkGlow: "#0055cc" },
+    "неоновый": { primary: "#ff00ff", start: "#ff66ff", end: "#b300b3", bg: "#0a020a", spark: "#ff00ff", sparkGlow: "#b300b3" },
+    "фиолетовый": { primary: "#9933ff", start: "#b266ff", end: "#5500cc", bg: "#05020a", spark: "#9933ff", sparkGlow: "#5500cc" },
+    "белый": { primary: "#ffffff", start: "#e0e0e0", end: "#999999", bg: "#050505", spark: "#ffffff", sparkGlow: "#aaaaaa" },
+    "темно-серый": { primary: "#aaaaaa", start: "#cccccc", end: "#666666", bg: "#030303", spark: "#aaaaaa", sparkGlow: "#555555" },
+    "черный": { primary: "#555555", start: "#777777", end: "#333333", bg: "#000000", spark: "#555555", sparkGlow: "#222222" }
+};
+
+function applyConfigColors() {
+    const themeWord = (Config.SITE.colors.theme || "золотой").trim().toLowerCase();
+    const bgWord = (Config.SITE.colors.background || themeWord).trim().toLowerCase();
+    const trailWord = (Config.TRAIL.color || themeWord).trim().toLowerCase();
+
+    const theme = WordColors[themeWord] || WordColors["золотой"];
+    const bg = WordColors[bgWord] || WordColors["золотой"];
+    const trail = WordColors[trailWord] || WordColors["золотой"];
+
+    const rootStyle = document.documentElement.style;
+    rootStyle.setProperty('--primary', theme.primary);
+    rootStyle.setProperty('--grad-start', theme.start);
+    rootStyle.setProperty('--grad-end', theme.end);
+    rootStyle.setProperty('--bg-main', bg.bg);
+
+    window.SparkColor = trail.spark;
+    window.SparkGlow = trail.sparkGlow;
+}
+
+applyConfigColors();
+
 if (!Config.FUNCTIONAL.isSiteEnabled) {
     document.body.innerHTML = `
         <div class="maintenance-screen">
@@ -7,176 +41,60 @@ if (!Config.FUNCTIONAL.isSiteEnabled) {
             <div class="maintenance-text">${Config.UI.maintenanceText}</div>
         </div>
     `;
-    throw new Error('Maintenance Mode Active');
+    throw new Error('Maintenance Mode Active: Application render halted.');
 }
-
-let isMobile = false;
-function checkDevice() {
-    isMobile = window.innerWidth <= 768 || 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-}
-checkDevice();
-window.addEventListener('resize', checkDevice);
 
 if (!Config.FUNCTIONAL.isResponsive) {
     document.getElementById('meta-viewport').setAttribute('content', 'width=1100');
 }
 
-let currentTheme = localStorage.getItem('natrium_theme_mode') || Config.SITE.defaultThemeMode;
-let currentColor = localStorage.getItem('natrium_base_color') || Config.COLOR_DICTIONARY[Config.SITE.defaultColor] || Config.COLOR_DICTIONARY["золотой"];
-
-function hexToRgbArr(hex) {
-    let c = hex.replace('#', '');
-    if(c.length === 3) c = c.split('').map(x => x + x).join('');
-    return [parseInt(c.substring(0, 2), 16), parseInt(c.substring(2, 4), 16), parseInt(c.substring(4, 6), 16)];
+if (!Config.FUNCTIONAL.showTimeWidget) {
+    document.getElementById('realtime-widget').style.display = 'none';
 }
 
-function rgbToHex(r, g, b) {
-    return "#" + [r, g, b].map(x => {
-        const hex = Math.max(0, Math.min(255, Math.round(x))).toString(16);
-        return hex.length === 1 ? "0" + hex : hex;
-    }).join('');
-}
-
-function getContrastColor(hex) {
-    let r = parseInt(hex.substr(1, 2), 16);
-    let g = parseInt(hex.substr(3, 2), 16);
-    let b = parseInt(hex.substr(5, 2), 16);
-    let yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-    return (yiq >= 128) ? '#000000' : '#ffffff';
-}
-
-function generateShades(hexColor) {
-    const rgb = hexToRgbArr(hexColor);
-    const start = rgbToHex(rgb[0] + 40, rgb[1] + 40, rgb[2] + 40);
-    const end = rgbToHex(rgb[0] - 40, rgb[1] - 40, rgb[2] - 40);
-    return { primary: hexColor, start, end, glow: hexColor };
-}
-
-function applyThemeColors() {
-    const shades = generateShades(currentColor);
-    const root = document.documentElement;
-    const textColor = getContrastColor(currentColor);
-    const rgb = hexToRgbArr(currentColor);
-    const brightness = (rgb[0] * 299 + rgb[1] * 587 + rgb[2] * 114) / 1000;
+function updateTime() {
+    const now = new Date();
+    const hours = now.getHours();
+    const timeStr = now.toLocaleTimeString(Config.FUNCTIONAL.timeLocale, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const offsetHours = -now.getTimezoneOffset() / 60;
+    const zoneStr = offsetHours >= 0 ? `+${offsetHours}` : `${offsetHours}`;
+    document.getElementById('realtime-widget').innerHTML = `${Config.UI.timePrefix} <span>${timeStr}</span> (${Config.UI.timeZoneLabel}${zoneStr})`;
     
-    if (brightness < 90) {
-        document.body.classList.add('dark-accent');
-    } else {
-        document.body.classList.remove('dark-accent');
-    }
+    let greeting = Config.UI.greetings.night;
+    if (hours >= 6 && hours < 12) greeting = Config.UI.greetings.morning;
+    else if (hours >= 12 && hours < 18) greeting = Config.UI.greetings.day;
+    else if (hours >= 18 && hours < 24) greeting = Config.UI.greetings.evening;
     
-    root.setAttribute('data-theme', currentTheme);
-    root.style.setProperty('--primary', shades.primary);
-    root.style.setProperty('--grad-start', shades.start);
-    root.style.setProperty('--grad-end', shades.end);
-    root.style.setProperty('--spark-glow', shades.glow);
-    root.style.setProperty('--btn-text', textColor);
-    
-    window.ThemeVars = shades;
+    document.getElementById('site-subtitle').innerHTML = `<span style="color: var(--primary); font-weight: 700;">${greeting}</span><br style="margin-bottom: 6px;">${Config.UI.subtitle}`;
 }
-
-applyThemeColors();
-
-const settingsBtn = document.getElementById('btn-open-settings');
-const settingsPanel = document.getElementById('settings-panel');
-const closeSettingsBtn = document.getElementById('btn-close-settings');
-const themeDarkBtn = document.getElementById('theme-dark');
-const themeLightBtn = document.getElementById('theme-light');
-const colorPreview = document.getElementById('color-preview');
-const hexRgbInput = document.getElementById('hex-rgb-input');
-const rSlider = document.getElementById('r-slider');
-const gSlider = document.getElementById('g-slider');
-const bSlider = document.getElementById('b-slider');
-
-settingsBtn.addEventListener('click', () => settingsPanel.classList.add('active'));
-closeSettingsBtn.addEventListener('click', () => settingsPanel.classList.remove('active'));
-
-function updateThemeButtons() {
-    if(currentTheme === 'dark') { themeDarkBtn.classList.add('active'); themeLightBtn.classList.remove('active'); }
-    else { themeLightBtn.classList.add('active'); themeDarkBtn.classList.remove('active'); }
-}
-updateThemeButtons();
-
-themeDarkBtn.addEventListener('click', () => { currentTheme = 'dark'; localStorage.setItem('natrium_theme_mode', 'dark'); applyThemeColors(); updateThemeButtons(); });
-themeLightBtn.addEventListener('click', () => { currentTheme = 'light'; localStorage.setItem('natrium_theme_mode', 'light'); applyThemeColors(); updateThemeButtons(); });
-
-function updateSlidersAndPreview(hex) {
-    const rgbArr = hexToRgbArr(hex);
-    rSlider.value = rgbArr[0];
-    gSlider.value = rgbArr[1];
-    bSlider.value = rgbArr[2];
-    colorPreview.style.backgroundColor = hex;
-}
-
-updateSlidersAndPreview(currentColor);
-hexRgbInput.value = currentColor;
-
-function handleColorChange(newColor) {
-    if (/^#[0-9A-F]{6}$/i.test(newColor)) {
-        currentColor = newColor;
-    } else if (/^\d{1,3},\s*\d{1,3},\s*\d{1,3}$/.test(newColor)) {
-        const rgb = newColor.split(',').map(n => parseInt(n.trim()));
-        currentColor = rgbToHex(rgb[0], rgb[1], rgb[2]);
-    } else return;
-
-    updateSlidersAndPreview(currentColor);
-    hexRgbInput.value = currentColor;
-    localStorage.setItem('natrium_base_color', currentColor);
-    applyThemeColors();
-}
-
-[rSlider, gSlider, bSlider].forEach(slider => {
-    slider.addEventListener('input', () => {
-        const hex = rgbToHex(parseInt(rSlider.value), parseInt(gSlider.value), parseInt(bSlider.value));
-        handleColorChange(hex);
-    });
-});
-
-hexRgbInput.addEventListener('input', (e) => handleColorChange(e.target.value));
-
-const presetsContainer = document.getElementById('color-presets');
-presetsContainer.style.display = 'flex';
-presetsContainer.style.gap = '8px';
-presetsContainer.style.flexWrap = 'wrap';
-presetsContainer.style.marginTop = '15px';
-
-Object.entries(Config.COLOR_DICTIONARY).forEach(([name, hex]) => {
-    const dot = document.createElement('div');
-    dot.style.width = '24px'; dot.style.height = '24px'; dot.style.borderRadius = '50%';
-    dot.style.background = hex; dot.style.cursor = 'pointer'; dot.title = name;
-    dot.style.border = '2px solid var(--border-color)';
-    dot.style.transition = 'transform 0.3s ease';
-    dot.onmouseenter = () => dot.style.transform = 'scale(1.2)';
-    dot.onmouseleave = () => dot.style.transform = 'scale(1)';
-    dot.onclick = () => handleColorChange(hex);
-    presetsContainer.appendChild(dot);
-});
 
 const canvas = document.getElementById('atom-canvas');
 const ctx = canvas.getContext('2d');
 let particles = []; 
 let sparks = []; 
 const mouse = { x: null, y: null, radius: 140 };
+let isMobile = false;
 
 function resizeCanvas() { 
     canvas.width = window.innerWidth; 
     canvas.height = window.innerHeight; 
+    isMobile = window.innerWidth <= 768 || 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     initParticles(); 
 }
-window.addEventListener('resize', resizeCanvas);
 
-if (!isMobile) {
-    window.addEventListener('mousemove', (e) => { 
-        mouse.x = e.clientX; 
-        mouse.y = e.clientY;
-        for(let i = 0; i < Config.TRAIL.sparksPerStep; i++) {
-            if (sparks.length < Config.TRAIL.maxSparks) {
-                sparks.push(new Spark(e.clientX, e.clientY));
-            }
+window.addEventListener('resize', resizeCanvas);
+window.addEventListener('mousemove', (e) => { 
+    if (isMobile) return; 
+    mouse.x = e.clientX; 
+    mouse.y = e.clientY;
+    
+    for(let i = 0; i < Config.TRAIL.sparksPerStep; i++) {
+        if (sparks.length < Config.TRAIL.maxSparks) {
+            sparks.push(new Spark(e.clientX, e.clientY));
         }
-    });
-    window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
-}
+    }
+});
+window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
 
 class Particle {
     constructor(x, y) {
@@ -200,10 +118,10 @@ class Particle {
     }
     draw() {
         ctx.save();
-        ctx.globalAlpha = Math.random() > 0.5 ? 0.3 : 0.1;
+        ctx.globalAlpha = Math.random() > 0.5 ? 0.25 : 0.15;
         ctx.beginPath(); 
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = Math.random() > 0.5 ? window.ThemeVars.primary : window.ThemeVars.glow; 
+        ctx.fillStyle = Math.random() > 0.5 ? window.SparkGlow : window.SparkColor; 
         ctx.fill();
         ctx.restore();
     }
@@ -232,16 +150,16 @@ class Spark {
         ctx.beginPath(); 
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.shadowBlur = 15; 
-        ctx.shadowColor = window.ThemeVars.glow; 
-        ctx.fillStyle = window.ThemeVars.primary; 
+        ctx.shadowColor = window.SparkGlow; 
+        ctx.fillStyle = window.SparkColor; 
         ctx.fill(); 
         ctx.restore();
     }
 }
 
 function initParticles() {
-    particles = []; sparks = [];
-    const density = isMobile ? 25000 : 10000;
+    particles = []; 
+    const density = isMobile ? 30000 : 9000;
     const count = Math.floor((canvas.width * canvas.height) / density);
     for (let i = 0; i < count; i++) particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
 }
@@ -249,35 +167,156 @@ function initParticles() {
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let p of particles) { p.update(); p.draw(); }
-    if (!isMobile) {
-        for (let i = sparks.length - 1; i >= 0; i--) { 
-            sparks[i].update(); sparks[i].draw(); 
-            if (sparks[i].alpha <= 0) sparks.splice(i, 1);
-        }
+    for (let i = sparks.length - 1; i >= 0; i--) { 
+        sparks[i].update(); 
+        sparks[i].draw(); 
+        if (sparks[i].alpha <= 0) { sparks.splice(i, 1); } 
     }
     requestAnimationFrame(animate);
 }
 
-function updateTime() {
-    if(!Config.FUNCTIONAL.showTimeWidget) { document.getElementById('realtime-widget').style.display = 'none'; return; }
-    const now = new Date();
-    const timeStr = now.toLocaleTimeString(Config.FUNCTIONAL.timeLocale, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    const offset = -now.getTimezoneOffset() / 60;
-    document.getElementById('realtime-widget').innerHTML = `${Config.UI.timePrefix} <span>${timeStr}</span> (${Config.UI.timeZoneLabel}${offset >= 0 ? '+'+offset : offset})`;
-    
-    const h = now.getHours();
-    let g = Config.UI.greetings.night;
-    if (h >= 6 && h < 12) g = Config.UI.greetings.morning;
-    else if (h >= 12 && h < 18) g = Config.UI.greetings.day;
-    else if (h >= 18) g = Config.UI.greetings.evening;
-    
-    document.getElementById('site-subtitle').innerHTML = `<span style="color: var(--primary); font-weight: 800;">${g}</span><br>${Config.UI.subtitle}`;
+function debounce(func, timeout = Config.FUNCTIONAL.searchDebounceDelay) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
 }
-setInterval(updateTime, 1000);
-updateTime();
+
+function filterModsList(modsArray, query) {
+    if (!query) return modsArray;
+    return modsArray.filter(mod => {
+        const modName = mod.name.toLowerCase();
+        if (modName.includes(query)) return true;
+        for (const [rusKey, engValue] of Object.entries(Config.MODS.translit)) {
+            if (rusKey.includes(query) && modName.includes(engValue)) return true;
+        }
+        return false;
+    });
+}
+
+function openModsModal(versionKey) { 
+    const targetMods = Config.MODS[versionKey] || {};
+    const modalModsList = document.getElementById('modal-mods-list');
+    const searchInput = document.getElementById('mods-search');
+
+    const render = (query = '') => {
+        const cleanQuery = query.trim().toLowerCase();
+        let html = '';
+        for (const [category, modsArray] of Object.entries(targetMods)) {
+            const filtered = filterModsList(modsArray, cleanQuery);
+            if (filtered.length > 0) {
+                html += `<div class="mod-category-title">${category}</div>`;
+                html += filtered.map(m => `
+                    <div class="mod-item">
+                        <div class="mod-name">${m.name}</div>
+                        <div class="mod-desc">${m.desc}</div>
+                    </div>
+                `).join('');
+            }
+        }
+        modalModsList.innerHTML = html || '<div class="mod-desc" style="text-align:center; margin-top:20px;">Ничего не найдено</div>';
+    };
+
+    searchInput.value = ''; 
+    searchInput.oninput = debounce(() => render(searchInput.value));
+    render();
+    document.getElementById('mods-modal').classList.add('active');
+}
+
+function closeModsModal() { 
+    document.getElementById('mods-modal').classList.remove('active'); 
+}
+
+function triggerDownload(link, fileName) {
+    const a = document.createElement('a');
+    a.href = link;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+function openDownloadModal(version, link, fileName) {
+    document.getElementById('download-modal-title').innerHTML = `${Config.UI.modals.downloadTitlePrefix} <span>NATRIUM ${version}</span>`;
+    document.getElementById('download-modal').classList.add('active');
+    triggerDownload(link, fileName);
+}
+
+function closeDownloadModal() {
+    document.getElementById('download-modal').classList.remove('active');
+}
+
+let isSpinning = false;
+
+function openRouletteModal() {
+    document.getElementById('roulette-result-ui').classList.remove('active');
+    document.getElementById('btn-spin').style.display = 'inline-flex';
+    const tape = document.getElementById('roulette-tape');
+    tape.style.transition = 'none';
+    tape.style.transform = 'translateX(0px)';
+    let tapeHTML = '';
+    const versions = Config.SITE.versions;
+    
+    for (let i = 0; i < 35; i++) {
+        const randomVer = versions[Math.floor(Math.random() * versions.length)];
+        tapeHTML += `
+            <div class="roulette-item" data-version="${randomVer.versionNum}">
+                <div class="roulette-version">${randomVer.versionNum}</div>
+                <div class="roulette-natrium">${Config.UI.modals.rouletteItemHighlight}</div>
+            </div>
+        `;
+    }
+    tape.innerHTML = tapeHTML;
+    document.getElementById('roulette-modal').classList.add('active');
+}
+
+function closeRouletteModal() { 
+    if (!isSpinning) document.getElementById('roulette-modal').classList.remove('active'); 
+}
+
+function spinRoulette() {
+    if (isSpinning) return;
+    isSpinning = true;
+    document.getElementById('roulette-result-ui').classList.remove('active');
+    document.getElementById('btn-spin').style.display = 'none';
+    
+    const tape = document.getElementById('roulette-tape');
+    tape.style.transition = 'none';
+    tape.style.transform = 'translateX(0px)';
+    tape.offsetHeight; 
+    
+    const winIndex = Math.floor(Math.random() * 5) + 25;
+    const targetItem = tape.children[winIndex];
+    const winVersionNum = targetItem.getAttribute('data-version');
+    const itemWidth = isMobile ? 130 : 150; 
+    const containerWidth = document.querySelector('.roulette-container').offsetWidth;
+    const centerOffset = containerWidth / 2 - itemWidth / 2;
+    const targetX = -(winIndex * itemWidth) + centerOffset;
+    
+    tape.style.transition = `transform ${Config.FUNCTIONAL.rouletteSpinDuration}ms cubic-bezier(0.4, -0.2, 0.1, 1)`;
+    tape.style.transform = `translateX(${targetX}px)`;
+    
+    setTimeout(() => {
+        isSpinning = false;
+        const configVersion = Config.SITE.versions.find(v => v.versionNum === winVersionNum);
+        const dlBtn = document.getElementById('roulette-download-btn');
+        dlBtn.innerText = `${Config.UI.buttons.downloadRoulette} ${configVersion.versionNum}`;
+        dlBtn.onclick = () => {
+            closeRouletteModal();
+            openDownloadModal(configVersion.versionNum, configVersion.link, configVersion.fileName);
+        };
+        document.getElementById('roulette-result-ui').classList.add('active');
+    }, Config.FUNCTIONAL.rouletteSpinDuration);
+}
 
 function renderSite() {
     document.title = Config.UI.pageTitle;
+    const fav = document.createElement('link');
+    fav.rel = 'icon';
+    fav.href = Config.SITE.favicon;
+    document.head.appendChild(fav);
+    
     document.getElementById('site-logo').src = Config.SITE.logo;
     document.getElementById('site-title').textContent = Config.UI.title;
     document.getElementById('btn-roulette-open').textContent = Config.UI.buttons.rouletteOpen;
@@ -287,17 +326,23 @@ function renderSite() {
     document.getElementById('btn-spin').textContent = Config.UI.buttons.spin;
     document.getElementById('btn-spin-again').textContent = Config.UI.buttons.spinAgain;
     document.getElementById('btn-roulette-home').textContent = Config.UI.buttons.home;
-
-    document.getElementById('download-modal-content').innerHTML = `
-        <div style="margin: 20px 0; color: var(--text-muted); font-size: 1.05rem; text-align: center; font-weight: 600;">${Config.UI.modals.downloadInfoText}</div>
+    
+    // Рендер окна загрузки из конфига
+    const downloadContentHTML = `
+        <div style="margin: 20px 0; color: #94a3b8; font-size: 1rem;">
+            ${Config.UI.modals.downloadInfoText}
+        </div>
         <div style="display: flex; flex-direction: column; gap: 10px;">
-            ${Config.UI.modals.downloadLinks.map(l => `<a href="${l.url}" target="_blank" class="${l.type === 'primary' ? 'btn-download' : 'btn-mods'}">${l.text}</a>`).join('')}
+            ${Config.UI.modals.downloadLinks.map(link => `
+                <a href="${link.url}" target="_blank" class="${link.type === 'primary' ? 'btn-download' : 'btn-mods'}" style="${link.type === 'primary' ? 'margin-bottom: 0;' : 'padding: 16px; border-radius: 14px;'}">${link.text}</a>
+            `).join('')}
         </div>
     `;
+    document.getElementById('download-modal-content').innerHTML = downloadContentHTML;
 
-    document.getElementById('versions-container').innerHTML = Config.VERSIONS.map(v => `
+    const versionsContainer = document.getElementById('versions-container');
+    versionsContainer.innerHTML = Config.SITE.versions.map(v => `
         <div class="card">
-            <div class="fabric-badge">✨ FABRIC</div>
             <span class="card-title">${Config.UI.title}</span>
             <span class="card-version">${Config.UI.modals.versionPrefix} ${v.versionNum}</span>
             <span class="file-type">${v.fileType}</span>
@@ -306,153 +351,94 @@ function renderSite() {
         </div>
     `).join('');
 
-    document.getElementById('instruction-container').innerHTML = `
-        <button id="btn-instruction" class="pill-button" style="width: auto; padding: 14px 40px; margin-bottom: 20px; font-weight: 800;">${Config.INSTRUCTION.buttonText}</button>
+    document.querySelectorAll('.btn-trigger-dl').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            openDownloadModal(e.target.dataset.ver, e.target.dataset.link, e.target.dataset.file);
+        });
+    });
+
+    document.querySelectorAll('.btn-mods[data-version]').forEach(btn => {
+        btn.addEventListener('click', (e) => openModsModal(e.target.getAttribute('data-version')));
+    });
+
+    const instructionContainer = document.getElementById('instruction-container');
+    instructionContainer.innerHTML = `
+        <button id="btn-instruction" class="pill-button" style="width: auto; padding: 14px 40px; margin-bottom: 20px; font-weight: 800; font-size: 1.05rem;">
+            ${Config.INSTRUCTION.buttonText}
+        </button>
         <div class="instruction-anim-box" id="instruction-anim-box">
             <div class="instruction-inner">
                 <div class="instruction-content">
                     <div class="instruction-title">${Config.INSTRUCTION.title}</div>
-                    <ol class="instruction-list">${Config.INSTRUCTION.steps.map(s => `<li>${s}</li>`).join('')}</ol>
+                    <ol class="instruction-list">
+                        ${Config.INSTRUCTION.steps.map(step => `<li>${step}</li>`).join('')}
+                    </ol>
                 </div>
             </div>
         </div>
     `;
-    document.getElementById('btn-instruction').addEventListener('click', () => document.getElementById('instruction-anim-box').classList.toggle('active'));
 
-    document.getElementById('advantages-container').innerHTML = `
-        <h2 class="advantages-title">${Config.ADVANTAGES.title}</h2>
-        <div class="advantages-grid">
-            ${Config.ADVANTAGES.cards.map(c => `
-                <div class="adv-card">
-                    <div class="adv-icon">${c.icon}</div>
-                    <div class="adv-card-title">${c.title}</div>
-                    <div class="adv-card-desc">${c.desc}</div>
-                </div>
-            `).join('')}
-        </div>
-        <div class="disclaimer-text">${Config.ADVANTAGES.disclaimerText}</div>
-    `;
+    document.getElementById('btn-instruction').addEventListener('click', () => {
+        document.getElementById('instruction-anim-box').classList.toggle('active');
+    });
 
+    const socialsContainer = document.getElementById('socials-container');
     if(Config.FUNCTIONAL.showSocialLinks) {
-        document.getElementById('socials-container').innerHTML = Config.SOCIALS.map(s => `<a href="${s.url}" target="_blank" class="pill-button">${s.text} <span>${s.span}</span></a>`).join('');
-    }
-
-    attachEvents();
-    initIntersectionObserver();
-}
-
-function initIntersectionObserver() {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1 });
-    
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-}
-
-function debounce(f, t = Config.FUNCTIONAL.searchDebounceDelay) { let tm; return (...a) => { clearTimeout(tm); tm = setTimeout(() => f.apply(this, a), t); }; }
-
-function openModsModal(ver) { 
-    const list = document.getElementById('modal-mods-list');
-    const input = document.getElementById('mods-search');
-    const render = (q = '') => {
-        q = q.trim().toLowerCase(); let html = '';
-        Object.entries(Config.MODS[ver] || {}).forEach(([cat, mods]) => {
-            const filtered = q ? mods.filter(m => m.name.toLowerCase().includes(q) || Object.entries(Config.MODS.translit).some(([rus, eng]) => rus.includes(q) && m.name.toLowerCase().includes(eng))) : mods;
-            if(filtered.length > 0) {
-                html += `<div class="mod-category-title">${cat}</div>` + filtered.map(m => `<div class="mod-item"><div class="mod-name">${m.name}</div><div class="mod-desc">${m.desc}</div></div>`).join('');
-            }
-        });
-        list.innerHTML = html || '<div class="mod-desc" style="text-align:center; margin-top:20px;">Ничего не найдено</div>';
-    };
-    input.value = ''; input.oninput = debounce(() => render(input.value)); render();
-    document.getElementById('mods-modal').classList.add('active');
-}
-
-function openDownloadModal(ver, link, file) {
-    document.getElementById('download-modal-title').innerHTML = `${Config.UI.modals.downloadTitlePrefix} <br><span>NATRIUM ${ver}</span>`;
-    document.getElementById('download-modal').classList.add('active');
-    const a = document.createElement('a'); a.href = link; a.download = file; document.body.appendChild(a); a.click(); a.remove();
-}
-
-let isSpinning = false;
-function openRouletteModal() {
-    document.getElementById('roulette-result-ui').classList.remove('active');
-    document.getElementById('btn-spin').style.display = 'inline-flex';
-    const tape = document.getElementById('roulette-tape');
-    tape.style.transition = 'none'; tape.style.transform = 'translateX(0px)';
-    tape.innerHTML = Array.from({length: 35}).map(() => {
-        const v = Config.VERSIONS[Math.floor(Math.random() * Config.VERSIONS.length)];
-        return `<div class="roulette-item" data-version="${v.versionNum}"><div class="roulette-version">${v.versionNum}</div><div class="roulette-natrium">${Config.UI.modals.rouletteItemHighlight}</div></div>`;
-    }).join('');
-    document.getElementById('roulette-modal').classList.add('active');
-}
-
-function spinRoulette() {
-    if (isSpinning) return; isSpinning = true;
-    document.getElementById('roulette-result-ui').classList.remove('active');
-    document.getElementById('btn-spin').style.display = 'none';
-    const tape = document.getElementById('roulette-tape'); tape.style.transition = 'none'; tape.style.transform = 'translateX(0px)'; tape.offsetHeight;
-    
-    const winIndex = Math.floor(Math.random() * 5) + 25;
-    const winVer = tape.children[winIndex].getAttribute('data-version');
-    const itemWidth = isMobile ? 130 : 150;
-    const targetX = -(winIndex * itemWidth) + (document.querySelector('.roulette-container').offsetWidth / 2 - itemWidth / 2);
-    
-    tape.style.transition = `transform ${Config.FUNCTIONAL.rouletteSpinDuration}ms cubic-bezier(0.4, -0.3, 0.1, 1.2)`;
-    tape.style.transform = `translateX(${targetX}px)`;
-    
-    setTimeout(() => {
-        isSpinning = false;
-        const cv = Config.VERSIONS.find(v => v.versionNum === winVer);
-        const dlBtn = document.getElementById('roulette-download-btn');
-        dlBtn.innerText = `${Config.UI.buttons.downloadRoulette} ${cv.versionNum}`;
-        dlBtn.onclick = () => { document.getElementById('roulette-modal').classList.remove('active'); openDownloadModal(cv.versionNum, cv.link, cv.fileName); };
-        document.getElementById('roulette-result-ui').classList.add('active');
-    }, Config.FUNCTIONAL.rouletteSpinDuration);
-}
-
-function attachEvents() {
-    document.querySelectorAll('.btn-trigger-dl').forEach(b => b.addEventListener('click', e => openDownloadModal(e.target.dataset.ver, e.target.dataset.link, e.target.dataset.file)));
-    document.querySelectorAll('.btn-mods').forEach(b => b.hasAttribute('data-version') && b.addEventListener('click', e => openModsModal(e.target.dataset.version)));
-    document.getElementById('btn-roulette-open').addEventListener('click', openRouletteModal);
-    document.getElementById('roulette-close-btn').addEventListener('click', () => !isSpinning && document.getElementById('roulette-modal').classList.remove('active'));
-    document.getElementById('mods-close-btn').addEventListener('click', () => document.getElementById('mods-modal').classList.remove('active'));
-    document.getElementById('download-close-btn').addEventListener('click', () => document.getElementById('download-modal').classList.remove('active'));
-    document.getElementById('btn-spin').addEventListener('click', spinRoulette);
-    document.getElementById('btn-spin-again').addEventListener('click', spinRoulette);
-    document.getElementById('btn-roulette-home').addEventListener('click', () => document.getElementById('roulette-modal').classList.remove('active'));
-    
-    window.addEventListener('click', e => {
-        if(e.target.classList.contains('modal-overlay') && !isSpinning) e.target.classList.remove('active');
-    });
-}
-
-function triggerEasterEgg() {
-    if(typeof CREEPER_SOUND_BASE64 !== 'undefined') {
-        const sfx = new Audio(CREEPER_SOUND_BASE64); sfx.volume = 0.5; sfx.play().catch(()=>{});
+        socialsContainer.innerHTML = Config.SITE.socials.map(s => `
+            <a href="${s.url}" target="_blank" class="pill-button">
+                ${s.text} <span>${s.span}</span>
+            </a>
+        `).join('');
     }
 }
 
-if (!isMobile) {
-    let _ib = [];
-    window.addEventListener('keydown', (e) => {
-        _ib.push(e.keyCode); if (_ib.length > 7) _ib.shift();
-        if (_ib.join(',') === Config.FUNCTIONAL.easterEggCode) triggerEasterEgg();
-    });
-}
+window.addEventListener('click', (e) => {
+    if (e.target === document.getElementById('mods-modal')) closeModsModal();
+    if (e.target === document.getElementById('roulette-modal')) closeRouletteModal();
+    if (e.target === document.getElementById('download-modal')) closeDownloadModal();
+});
+
+let _ib = [];
+window.addEventListener('keydown', (e) => {
+    _ib.push(e.keyCode);
+    if (_ib.length > 7) _ib.shift();
+    if (_ib.join(',') === Config.FUNCTIONAL.easterEggCode) {
+        _initBufferFlush();
+    }
+});
 
 let _tc = 0, _lt = 0;
 const _l = document.getElementById('site-logo');
+_l.style.cursor = 'pointer';
 _l.addEventListener('click', () => {
-    const n = Date.now(); if (n - _lt > 1500) _tc = 0; _lt = n; _tc++;
-    if (_tc === Config.FUNCTIONAL.easterEggClicks) { _tc = 0; triggerEasterEgg(); }
+    const n = Date.now();
+    if (n - _lt > 1500) _tc = 0;
+    _lt = n;
+    _tc++;
+    if (_tc === Config.FUNCTIONAL.easterEggClicks) {
+        _tc = 0;
+        _initBufferFlush();
+    }
 });
+
+function _initBufferFlush() {
+    if(typeof CREEPER_SOUND_BASE64 !== 'undefined') {
+        const sfx = new Audio(CREEPER_SOUND_BASE64); 
+        sfx.volume = 0.5; 
+        sfx.play().catch(() => {});
+    }
+}
 
 renderSite();
 resizeCanvas();
 animate();
+setInterval(updateTime, 1000);
+updateTime();
+
+document.getElementById('btn-roulette-open').addEventListener('click', openRouletteModal);
+document.getElementById('roulette-close-btn').addEventListener('click', closeRouletteModal);
+document.getElementById('mods-close-btn').addEventListener('click', closeModsModal);
+document.getElementById('download-close-btn').addEventListener('click', closeDownloadModal);
+document.getElementById('btn-spin').addEventListener('click', spinRoulette);
+document.getElementById('btn-spin-again').addEventListener('click', spinRoulette);
+document.getElementById('btn-roulette-home').addEventListener('click', closeRouletteModal);
