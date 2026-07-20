@@ -1,4 +1,4 @@
-:root {
+root {
     --primary: #ffaa00;
     --grad-start: #ffcc00;
     --grad-end: #ff5500;
@@ -409,6 +409,7 @@ h1 {
     grid-template-rows: 0fr;
     opacity: 0;
     width: 100%;
+    transition: grid-template-rows 0.4s ease-out, opacity 0.4s ease-out;
 }
 
 .instruction-anim-box.active {
