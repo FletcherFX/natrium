@@ -3,7 +3,7 @@ rootStyle.setProperty('--primary', Config.SITE.colors.primary);
 rootStyle.setProperty('--grad-start', Config.SITE.colors.gradientStart);
 rootStyle.setProperty('--grad-end', Config.SITE.colors.gradientEnd);
 
-let currentModalVersion = null; // Текущая версия в окне списка модов
+let currentModalVersion = null;
 
 if (Config.EXPERIMENTS.hideAllText) {
     document.documentElement.style.color = 'transparent';
@@ -177,7 +177,7 @@ function filterModsList(modsArray, query) {
 
 function openModsModal(versionKey) { 
     currentModalVersion = versionKey;
-    const targetMods = Config.MODS[versionKey] || {};
+    const targetMods = (Config.MODS && Config.MODS[versionKey]) || (typeof MODS_DATA !== 'undefined' ? MODS_DATA[versionKey] : {}) || {};
     const modalModsList = document.getElementById('modal-mods-list');
     const searchInput = document.getElementById('mods-search');
 
@@ -389,7 +389,7 @@ window.addEventListener('click', (e) => {
 
 document.getElementById('btn-copy-mods').addEventListener('click', () => {
     if (!currentModalVersion) return;
-    const targetMods = Config.MODS[currentModalVersion] || {};
+    const targetMods = (Config.MODS && Config.MODS[currentModalVersion]) || (typeof MODS_DATA !== 'undefined' ? MODS_DATA[currentModalVersion] : {}) || {};
     let textToCopy = '';
     
     for (const modsArray of Object.values(targetMods)) {
