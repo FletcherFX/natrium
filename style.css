@@ -4,12 +4,14 @@
     --grad-end: #ff5500;
     --bg-main: #050506;
 }
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
     transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease, color 0.4s ease, opacity 0.4s ease;
 }
+
 body {
     background-color: var(--bg-main);
     color: #ffffff;
@@ -19,14 +21,17 @@ body {
     position: relative;
     padding: 60px 20px 40px 20px;
 }
+
 a {
     color: var(--primary);
     text-decoration: none;
     font-weight: 700;
 }
+
 a:hover {
     text-decoration: underline;
 }
+
 .maintenance-screen {
     display: flex;
     flex-direction: column;
@@ -36,16 +41,19 @@ a:hover {
     text-align: center;
     animation: fadeIn 0.8s ease-out forwards;
 }
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
 .maintenance-logo-container {
     width: 180px;
     height: 180px;
     margin-bottom: 35px;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9);
 }
+
 .maintenance-text {
     font-size: 1.6rem;
     font-weight: 800;
@@ -55,6 +63,7 @@ a:hover {
     line-height: 1.4;
     max-width: 600px;
 }
+
 #app {
     display: flex;
     flex-direction: column;
@@ -62,6 +71,7 @@ a:hover {
     align-items: center;
     justify-content: center;
 }
+
 #atom-canvas {
     position: fixed;
     top: 0;
@@ -72,12 +82,8 @@ a:hover {
     pointer-events: none;
     margin: 0;
     padding: 0;
-    animation: fadeInCanvas 2s ease 0.5s backwards;
 }
-@keyframes fadeInCanvas {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-}
+
 .main-wrapper {
     text-align: center;
     max-width: 1300px;
@@ -87,10 +93,7 @@ a:hover {
     align-items: center;
     z-index: 2;
 }
-@keyframes uiRise {
-    0% { opacity: 0; transform: translateY(50px); }
-    100% { opacity: 1; transform: translateY(0); }
-}
+
 .time-widget {
     position: absolute;
     top: 20px;
@@ -106,12 +109,13 @@ a:hover {
     z-index: 10;
     letter-spacing: 0.5px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    animation: uiRise 1s cubic-bezier(0.22, 1, 0.36, 1) 0.75s backwards;
 }
+
 .time-widget span {
     color: var(--primary);
     font-weight: 700;
 }
+
 .btn-roulette-trigger {
     position: absolute;
     top: 20px;
@@ -128,14 +132,15 @@ a:hover {
     cursor: pointer;
     letter-spacing: 0.5px;
     box-shadow: 0 10px 25px rgba(255, 85, 0, 0.05);
-    animation: uiRise 1s cubic-bezier(0.22, 1, 0.36, 1) 0.75s backwards;
 }
+
 .btn-roulette-trigger:hover {
     transform: translateY(-2px);
     border-color: rgba(255, 170, 0, 0.6);
     box-shadow: 0 12px 30px rgba(255, 85, 0, 0.2);
     color: #ffffff;
 }
+
 .logo-container {
     position: relative;
     margin-bottom: 25px;
@@ -144,22 +149,19 @@ a:hover {
     border-radius: 38px;
     overflow: hidden;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
-    animation: logoIntro 1.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
-@keyframes logoIntro {
-    0% { transform: translateY(35vh) scale(1.6); }
-    45% { transform: translateY(35vh) scale(1.6); }
-    100% { transform: translateY(0) scale(1); }
-}
+
 .logo-container:hover {
     transform: scale(1.06) rotate(2deg);
     box-shadow: 0 0 40px rgba(255, 140, 0, 0.6);
 }
+
 .logo { 
     width: 100%; 
     height: 100%; 
     object-fit: cover; 
 }
+
 h1 {
     font-size: clamp(3.5rem, 8vw, 5.5rem);
     font-weight: 900;
@@ -170,8 +172,8 @@ h1 {
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 4px 20px rgba(255, 85, 0, 0.4));
     text-transform: uppercase;
-    animation: uiRise 1s cubic-bezier(0.22, 1, 0.36, 1) 0.7s backwards;
 }
+
 .subtitle {
     color: #94a3b8;
     font-size: clamp(1.1rem, 3vw, 1.35rem);
@@ -179,8 +181,8 @@ h1 {
     line-height: 1.6;
     margin-bottom: 50px;
     text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    animation: uiRise 1s cubic-bezier(0.22, 1, 0.36, 1) 0.7s backwards;
 }
+
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -189,8 +191,8 @@ h1 {
     max-width: 1300px;
     margin-bottom: 40px;
     justify-content: center;
-    animation: uiRise 1s cubic-bezier(0.22, 1, 0.36, 1) 0.85s backwards;
 }
+
 .card {
     background: rgba(16, 16, 20, 0.9);
     border: 2px solid rgba(255, 183, 0, 0.2);
@@ -204,11 +206,13 @@ h1 {
     justify-content: center;
     align-items: center;
 }
+
 .card:hover {
     transform: translateY(-8px);
     border-color: rgba(255, 183, 0, 0.5);
     box-shadow: 0 30px 60px rgba(255, 85, 0, 0.15);
 }
+
 .fabric-badge {
     color: #ffffff;
     background: rgba(255, 255, 255, 0.1);
@@ -221,6 +225,7 @@ h1 {
     margin-bottom: 15px;
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
+
 .card-title {
     font-size: 2.5rem;
     font-weight: 900;
@@ -231,6 +236,7 @@ h1 {
     display: block;
     text-align: center;
 }
+
 .card-version {
     font-size: 1.25rem;
     font-weight: 700;
@@ -240,6 +246,7 @@ h1 {
     display: block;
     letter-spacing: 1px;
 }
+
 .file-type {
     color: var(--primary); 
     font-size: 0.85rem; 
@@ -249,6 +256,7 @@ h1 {
     margin-bottom: 25px; 
     display: block;
 }
+
 .btn-download {
     display: inline-flex; 
     align-items: center; 
@@ -267,10 +275,12 @@ h1 {
     border: none;
     cursor: pointer;
 }
+
 .btn-download:hover { 
     transform: scale(1.03); 
     box-shadow: 0 12px 35px rgba(255, 85, 0, 0.5); 
 }
+
 .btn-mods {
     display: inline-flex; 
     align-items: center; 
@@ -286,11 +296,13 @@ h1 {
     font-weight: 700; 
     cursor: pointer;
 }
+
 .btn-mods:hover { 
     background: rgba(255, 170, 0, 0.1); 
     border-color: rgba(255, 170, 0, 0.6); 
     color: #ffffff; 
 }
+
 .fps-notice-box {
     width: 100%;
     max-width: 1300px;
@@ -305,19 +317,23 @@ h1 {
     backdrop-filter: blur(10px);
     text-align: left;
 }
+
 .fps-notice-icon {
     font-size: 1.5rem;
     line-height: 1;
     flex-shrink: 0;
 }
+
 .fps-notice-text {
     font-size: 0.93rem;
     color: #cbd5e1;
     line-height: 1.5;
 }
+
 .fps-notice-text strong {
     color: var(--grad-start);
 }
+
 .why-container {
     width: 100%;
     max-width: 1300px;
@@ -325,8 +341,8 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    animation: uiRise 1s cubic-bezier(0.22, 1, 0.36, 1) 1.05s backwards;
 }
+
 .why-title {
     font-size: 2.2rem;
     font-weight: 900;
@@ -336,12 +352,14 @@ h1 {
     letter-spacing: 2px;
     text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
+
 .why-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
     width: 100%;
 }
+
 .why-card {
     background: rgba(16, 16, 20, 0.85);
     border: 1px solid rgba(255, 170, 0, 0.2);
@@ -353,11 +371,13 @@ h1 {
     flex-direction: column;
     box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
+
 .why-card:hover {
     border-color: rgba(255, 183, 0, 0.5);
     transform: translateY(-6px);
     box-shadow: 0 18px 35px rgba(255, 85, 0, 0.15);
 }
+
 .why-card-title {
     font-size: 1.25rem;
     font-weight: 800;
@@ -368,11 +388,13 @@ h1 {
     line-height: 1.35;
     letter-spacing: 0.3px;
 }
+
 .why-card-desc {
     color: #94a3b8;
     font-size: 0.92rem;
     line-height: 1.6;
 }
+
 .instruction-wrapper {
     width: 100%;
     max-width: 800px;
@@ -380,8 +402,8 @@ h1 {
     flex-direction: column;
     align-items: center;
     margin-bottom: 40px;
-    animation: uiRise 1s cubic-bezier(0.22, 1, 0.36, 1) 0.95s backwards;
 }
+
 .instruction-anim-box {
     display: grid;
     grid-template-rows: 0fr;
@@ -389,13 +411,16 @@ h1 {
     width: 100%;
     transition: grid-template-rows 0.4s ease-out, opacity 0.4s ease-out;
 }
+
 .instruction-anim-box.active {
     grid-template-rows: 1fr;
     opacity: 1;
 }
+
 .instruction-inner {
     overflow: hidden;
 }
+
 .instruction-content {
     background: rgba(16, 16, 20, 0.9);
     border: 1px solid rgba(255, 170, 0, 0.3);
@@ -406,6 +431,7 @@ h1 {
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
     margin-top: 5px;
 }
+
 .instruction-title {
     color: #ffffff;
     font-size: 1.3rem;
@@ -414,26 +440,30 @@ h1 {
     border-bottom: 1px solid rgba(255, 170, 0, 0.2);
     padding-bottom: 15px;
 }
+
 .instruction-list {
     color: #94a3b8;
     font-size: 1.05rem;
     line-height: 1.7;
     padding-left: 20px;
 }
+
 .instruction-list li {
     margin-bottom: 12px;
 }
+
 .instruction-list li:last-child {
     margin-bottom: 0;
 }
+
 .bottom-links { 
     display: flex; 
     flex-direction: column; 
     gap: 12px; 
     width: 100%; 
     max-width: 500px; 
-    animation: uiRise 1s cubic-bezier(0.22, 1, 0.36, 1) 1.15s backwards;
 }
+
 .pill-button {
     display: inline-flex; 
     align-items: center; 
@@ -451,16 +481,19 @@ h1 {
     width: 100%;
     cursor: pointer;
 }
+
 .pill-button span { 
     color: var(--grad-start); 
     font-weight: 700; 
     margin-left: 5px; 
 }
+
 .pill-button:hover { 
     background-color: rgba(255, 183, 0, 0.04); 
     border-color: rgba(255, 183, 0, 0.3); 
     color: #ffffff; 
 }
+
 .site-disclaimer {
     margin-top: 30px;
     font-size: 0.78rem;
@@ -470,8 +503,8 @@ h1 {
     line-height: 1.5;
     opacity: 0.85;
     padding: 0 10px;
-    animation: uiRise 1s cubic-bezier(0.22, 1, 0.36, 1) 1.15s backwards;
 }
+
 .modal-overlay {
     position: fixed; 
     top: 0; 
@@ -488,10 +521,12 @@ h1 {
     pointer-events: none; 
     will-change: opacity;
 }
+
 .modal-overlay.active { 
     opacity: 1; 
     pointer-events: auto; 
 }
+
 .modal-window {
     background: rgba(18, 18, 24, 0.95); 
     border: 2px solid rgba(255, 170, 0, 0.25);
@@ -506,23 +541,28 @@ h1 {
     transform: scale(0.95); 
     will-change: transform;
 }
+
 .modal-overlay.active .modal-window { 
     transform: scale(1); 
 }
+
 .modal-header { 
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
     margin-bottom: 15px; 
 }
+
 .modal-title { 
     font-size: 1.8rem; 
     font-weight: 800; 
     color: #ffffff; 
 }
+
 .modal-title span { 
     color: var(--primary); 
 }
+
 .modal-close {
     background: rgba(255,255,255,0.04); 
     border: 1px solid rgba(255,255,255,0.1);
@@ -536,15 +576,18 @@ h1 {
     justify-content: center; 
     cursor: pointer; 
 }
+
 .modal-close:hover { 
     background: rgba(255, 85, 0, 0.2); 
     border-color: rgba(255, 85, 0, 0.4); 
     color: #ffffff; 
 }
+
 .search-container { 
     margin-bottom: 20px; 
     position: relative; 
 }
+
 .search-input {
     width: 100%; 
     background: rgba(0, 0, 0, 0.4); 
@@ -556,19 +599,23 @@ h1 {
     outline: none; 
     font-family: inherit;
 }
+
 .search-input:focus { 
     border-color: rgba(255, 170, 0, 0.6); 
     box-shadow: 0 0 15px rgba(255, 170, 0, 0.15); 
 }
+
 .mods-list { 
     overflow-y: auto; 
     padding-right: 10px; 
     flex: 1; 
 }
+
 .mods-list::-webkit-scrollbar { width: 6px; }
 .mods-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
 .mods-list::-webkit-scrollbar-thumb { background: rgba(255, 170, 0, 0.3); border-radius: 10px; }
 .mods-list::-webkit-scrollbar-thumb:hover { background: rgba(255, 170, 0, 0.6); }
+
 .mod-category-title {
     font-size: 1.15rem;
     font-weight: 800;
@@ -579,9 +626,11 @@ h1 {
     border-bottom: 1px solid rgba(255, 170, 0, 0.2);
     padding-bottom: 5px;
 }
+
 .mod-category-title:first-child {
     margin-top: 5px;
 }
+
 .mod-item {
     background: rgba(255,255,255,0.01); 
     border: 1px solid rgba(255,255,255,0.03);
@@ -592,9 +641,11 @@ h1 {
     flex-direction: column; 
     gap: 4px;
 }
+
 .mod-item:hover { background: rgba(255,170,0,0.02); border-color: rgba(255,170,0,0.15); }
 .mod-name { font-weight: 700; color: var(--grad-start); font-size: 1.1rem; }
 .mod-desc { color: #94a3b8; font-size: 0.9rem; line-height: 1.4; }
+
 .roulette-container {
     position: relative; 
     width: 100%; 
@@ -607,6 +658,7 @@ h1 {
     margin: 20px auto;
     box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
 }
+
 .roulette-marker {
     position: absolute; 
     top: 0; 
@@ -619,6 +671,7 @@ h1 {
     box-shadow: 0 0 15px #ff5500; 
     pointer-events: none;
 }
+
 .roulette-tape {
     display: flex; 
     position: absolute; 
@@ -628,6 +681,7 @@ h1 {
     transform: translateX(0); 
     will-change: transform;
 }
+
 .roulette-item {
     flex-shrink: 0; 
     width: 140px; 
@@ -642,6 +696,7 @@ h1 {
     margin: 0 5px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.4);
 }
+
 .roulette-version {
     font-size: 1.8rem;
     font-weight: 900;
@@ -651,6 +706,7 @@ h1 {
     letter-spacing: 1px;
     line-height: 1.1;
 }
+
 .roulette-natrium {
     font-size: 0.85rem;
     font-weight: 800;
@@ -660,16 +716,23 @@ h1 {
     text-transform: uppercase;
     text-shadow: 0 0 10px rgba(255, 170, 0, 0.3);
 }
+
 .roulette-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 15px; }
 .roulette-result-buttons { display: none; flex-direction: column; gap: 10px; width: 100%; }
 .roulette-result-buttons.active { display: flex; }
 
 @media (max-width: 1024px) {
-    .cards-grid { grid-template-columns: repeat(2, 1fr); }
-    .why-grid { grid-template-columns: repeat(2, 1fr); }
+    .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .why-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
+
 @media (max-width: 768px) {
     body { padding: 20px 15px 30px 15px; }
+    
     .time-widget, .btn-roulette-trigger {
         position: relative;
         top: auto;
@@ -680,21 +743,28 @@ h1 {
         margin: 0 auto 10px auto;
         text-align: center;
     }
+
     .logo-container { width: 120px; height: 120px; margin-top: 15px; margin-bottom: 20px; }
     h1 { letter-spacing: 4px; }
     .subtitle { font-size: 1rem; margin-bottom: 30px; }
+    
     .cards-grid { grid-template-columns: 1fr; gap: 15px; margin-bottom: 25px; width: 100%; }
     .card { padding: 25px 20px; width: 100%; }
     .card-title { font-size: 2.2rem; }
+    
     .why-title { font-size: 1.8rem; }
     .why-grid { grid-template-columns: 1fr; }
+    
     .fps-notice-box { padding: 15px; }
+    
     .instruction-wrapper { margin-bottom: 30px; }
     .instruction-content { padding: 20px; }
     .instruction-title { font-size: 1.15rem; }
     .instruction-list { font-size: 0.95rem; }
+    
     .maintenance-logo-container { width: 140px; height: 140px; margin-bottom: 25px; }
     .maintenance-text { font-size: 1.3rem; }
+    
     .modal-window { width: 95%; padding: 20px; max-height: 85vh; }
     .modal-title { font-size: 1.4rem; }
     .roulette-container { height: 90px; }
