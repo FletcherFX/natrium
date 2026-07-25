@@ -177,7 +177,15 @@ function filterModsList(modsArray, query) {
 
 function openModsModal(versionKey) { 
     currentModalVersion = versionKey;
-    const targetMods = (Config.MODS && Config.MODS[versionKey]) || (typeof MODS_DATA !== 'undefined' ? MODS_DATA[versionKey] : {}) || {};
+    const allMods = (Config.MODS && Object.keys(Config.MODS).length > 0) ? Config.MODS : (typeof MODS_DATA !== 'undefined' ? MODS_DATA : {});
+    
+    const targetMods = {};
+    for (const [category, versionsObj] of Object.entries(allMods)) {
+        if (versionsObj[versionKey]) {
+            targetMods[category] = versionsObj[versionKey];
+        }
+    }
+
     const modalModsList = document.getElementById('modal-mods-list');
     const searchInput = document.getElementById('mods-search');
 
@@ -389,12 +397,14 @@ window.addEventListener('click', (e) => {
 
 document.getElementById('btn-copy-mods').addEventListener('click', () => {
     if (!currentModalVersion) return;
-    const targetMods = (Config.MODS && Config.MODS[currentModalVersion]) || (typeof MODS_DATA !== 'undefined' ? MODS_DATA[currentModalVersion] : {}) || {};
+    const allMods = (Config.MODS && Object.keys(Config.MODS).length > 0) ? Config.MODS : (typeof MODS_DATA !== 'undefined' ? MODS_DATA : {});
     let textToCopy = '';
     
-    for (const modsArray of Object.values(targetMods)) {
-        for (const mod of modsArray) {
-            textToCopy += mod.name + '\n';
+    for (const versionsObj of Object.values(allMods)) {
+        if (versionsObj[currentModalVersion]) {
+            for (const mod of versionsObj[currentModalVersion]) {
+                textToCopy += mod.name + '\n';
+            }
         }
     }
     
