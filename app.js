@@ -175,6 +175,22 @@ function filterModsList(modsArray, query) {
     );
 }
 
+function showLarp() {
+    const larp = document.createElement('div');
+    larp.textContent = 'LARP';
+    larp.style.position = 'fixed';
+    larp.style.top = '50%';
+    larp.style.left = '50%';
+    larp.style.transform = 'translate(-50%, -50%)';
+    larp.style.color = 'red';
+    larp.style.fontSize = '10rem';
+    larp.style.fontWeight = '900';
+    larp.style.zIndex = '9999';
+    larp.style.pointerEvents = 'none';
+    document.body.appendChild(larp);
+    setTimeout(() => larp.remove(), 3000);
+}
+
 function openModsModal(versionKey) { 
     currentModalVersion = versionKey;
     const allMods = (Config.MODS && Object.keys(Config.MODS).length > 0) ? Config.MODS : (typeof MODS_DATA !== 'undefined' ? MODS_DATA : {});
@@ -208,7 +224,12 @@ function openModsModal(versionKey) {
     };
 
     searchInput.value = ''; 
-    searchInput.oninput = debounce(() => render(searchInput.value));
+    searchInput.oninput = debounce(() => {
+        if (searchInput.value.trim() === '333') {
+            showLarp();
+        }
+        render(searchInput.value);
+    });
     render();
     document.getElementById('mods-modal').classList.add('active');
 }
@@ -416,6 +437,8 @@ document.getElementById('btn-copy-mods').addEventListener('click', () => {
     }).catch(err => console.error('Ошибка копирования:', err));
 });
 
+let _ib3 = [];
+
 if (!isMobile) {
     let _ib = [];
     window.addEventListener('keydown', (e) => {
@@ -423,6 +446,17 @@ if (!isMobile) {
         if (_ib.length > 7) _ib.shift();
         if (_ib.join(',') === Config.FUNCTIONAL.easterEggCode) {
             _initBufferFlush();
+        }
+
+        if (e.key === '3') {
+            _ib3.push('3');
+            if (_ib3.length > 3) _ib3.shift();
+            if (_ib3.join('') === '333') {
+                showLarp();
+                _ib3 = [];
+            }
+        } else {
+            _ib3 = [];
         }
     });
 
