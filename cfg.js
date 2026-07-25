@@ -29,11 +29,14 @@ const Config = {
             modalBg: "rgba(18, 18, 24, 0.95)" // Цвет фона модальных окон
         },
         versions: [
-            { versionNum: "1.21.4", fileType: "Модпак .mrpack", link: "./Natrium_1.21.4.mrpack", fileName: "Natrium_1.21.4.mrpack" }, // Версия 1.21.4
-            { versionNum: "1.20.1", fileType: "Модпак .mrpack", link: "./Natrium_1.20.1.mrpack", fileName: "Natrium_1.20.1.mrpack" }, // Версия 1.20.1
-            { versionNum: "1.18.2", fileType: "Модпак .mrpack", link: "./Natrium_1.18.2.mrpack", fileName: "Natrium_1.18.2.mrpack" }, // Версия 1.18.2
-            { versionNum: "26.1", fileType: "Модпак .mrpack", link: "./Natrium_26.1.mrpack", fileName: "Natrium_26.1.mrpack" }, // Версия 26.1
-            { versionNum: "1.16.5", fileType: "Модпак .mrpack", link: "./Natrium_1.16.5.mrpack", fileName: "Natrium_1.16.5.mrpack" } // Версия 1.16.5
+versions: [
+    { versionNum: "1.21.11", fileType: "Модпак .mrpack", link: "./Natrium_1.21.1.mrpack", fileName: "Natrium_1.21.1.mrpack" }, // 1.21.11
+    { versionNum: "1.21.4", fileType: "Модпак .mrpack", link: "./Natrium_1.21.4.mrpack", fileName: "Natrium_1.21.4.mrpack" }, // 1.21.4
+    { versionNum: "1.20.1", fileType: "Модпак .mrpack", link: "./Natrium_1.20.1.mrpack", fileName: "Natrium_1.20.1.mrpack" }, // 1.20.1
+    { versionNum: "1.18.2", fileType: "Модпак .mrpack", link: "./Natrium_1.18.2.mrpack", fileName: "Natrium_1.18.2.mrpack" }, // 1.18.2
+    { versionNum: "26.1", fileType: "Модпак .mrpack", link: "./Natrium_26.1.mrpack", fileName: "Natrium_26.1.mrpack" }, // 26.1
+    { versionNum: "1.16.5", fileType: "Модпак .mrpack", link: "./Natrium_1.16.5.mrpack", fileName: "Natrium_1.16.5.mrpack" } // 1.16.5
+]
         ],
         socials: [
             { text: "Наш Telegram-канал:", span: "@NatriumProject", url: "https://telegram.me/NatriumProject" }, // Канал Telegram
