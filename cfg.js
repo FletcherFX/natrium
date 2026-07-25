@@ -29,7 +29,6 @@ const Config = {
             modalBg: "rgba(18, 18, 24, 0.95)" // Цвет фона модальных окон
         },
         versions: [
-versions: [
     { versionNum: "1.21.11", fileType: "Модпак .mrpack", link: "./Natrium_1.21.1.mrpack", fileName: "Natrium_1.21.1.mrpack" }, // 1.21.11
     { versionNum: "1.21.4", fileType: "Модпак .mrpack", link: "./Natrium_1.21.4.mrpack", fileName: "Natrium_1.21.4.mrpack" }, // 1.21.4
     { versionNum: "1.20.1", fileType: "Модпак .mrpack", link: "./Natrium_1.20.1.mrpack", fileName: "Natrium_1.20.1.mrpack" }, // 1.20.1
