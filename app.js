@@ -4,6 +4,7 @@ rootStyle.setProperty('--grad-start', Config.SITE.colors.gradientStart);
 rootStyle.setProperty('--grad-end', Config.SITE.colors.gradientEnd);
 
 let currentModalVersion = null;
+let activeCategoryFilter = 'all';
 
 if (Config.EXPERIMENTS.hideAllText) {
     document.documentElement.style.color = 'transparent';
@@ -178,37 +179,52 @@ function filterModsList(modsArray, query) {
 function showLarp() {
     const larp = document.createElement('div');
     larp.textContent = 'LARP';
-    larp.style.position = 'fixed';
-    larp.style.top = '50%';
-    larp.style.left = '50%';
-    larp.style.transform = 'translate(-50%, -50%)';
-    larp.style.color = 'red';
-    larp.style.fontSize = '10rem';
-    larp.style.fontWeight = '900';
-    larp.style.zIndex = '9999';
-    larp.style.pointerEvents = 'none';
+    larp.className = 'larp-text';
     document.body.appendChild(larp);
-    setTimeout(() => larp.remove(), 3000);
+    setTimeout(() => larp.remove(), 2500);
+}
+
+function getModsForCurrentVersion() {
+    const allMods = (Config.MODS && Object.keys(Config.MODS).length > 0) ? Config.MODS : (typeof MODS_DATA !== 'undefined' ? MODS_DATA : {});
+    const targetMods = {};
+    for (const [category, versionsObj] of Object.entries(allMods)) {
+        if (versionsObj[currentModalVersion]) {
+            targetMods[category] = versionsObj[currentModalVersion];
+        }
+    }
+    return targetMods;
 }
 
 function openModsModal(versionKey) { 
     currentModalVersion = versionKey;
-    const allMods = (Config.MODS && Object.keys(Config.MODS).length > 0) ? Config.MODS : (typeof MODS_DATA !== 'undefined' ? MODS_DATA : {});
-    
-    const targetMods = {};
-    for (const [category, versionsObj] of Object.entries(allMods)) {
-        if (versionsObj[versionKey]) {
-            targetMods[category] = versionsObj[versionKey];
-        }
-    }
+    activeCategoryFilter = 'all';
+    const targetMods = getModsForCurrentVersion();
 
     const modalModsList = document.getElementById('modal-mods-list');
     const searchInput = document.getElementById('mods-search');
+    const filterContainer = document.getElementById('mods-category-filters');
+
+    let filtersHtml = `<button class="cat-btn active" data-cat="all">Все категории</button>`;
+    for (const category of Object.keys(targetMods)) {
+        filtersHtml += `<button class="cat-btn" data-cat="${category}">${category}</button>`;
+    }
+    filterContainer.innerHTML = filtersHtml;
+
+    document.querySelectorAll('.cat-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            activeCategoryFilter = e.target.getAttribute('data-cat');
+            render(searchInput.value);
+        });
+    });
 
     const render = (query = '') => {
         const cleanQuery = query.trim().toLowerCase();
         let html = '';
         for (const [category, modsArray] of Object.entries(targetMods)) {
+            if (activeCategoryFilter !== 'all' && activeCategoryFilter !== category) continue;
+            
             const filtered = filterModsList(modsArray, cleanQuery);
             if (filtered.length > 0) {
                 html += `<div class="mod-category-title">${category}</div>`;
@@ -261,13 +277,20 @@ let isSpinning = false;
 
 function openRouletteModal() {
     document.getElementById('roulette-result-ui').classList.remove('active');
-    document.getElementById('btn-spin').style.display = 'inline-flex';
+    
+    const btnSpin = document.getElementById('btn-spin');
+    btnSpin.style.opacity = '1';
+    btnSpin.style.pointerEvents = 'auto';
+    btnSpin.style.transform = 'scale(1)';
+    
     const tape = document.getElementById('roulette-tape');
     tape.style.transition = 'none';
     tape.style.transform = 'translateX(0px)';
     let tapeHTML = '';
-    const versions = Config.SITE.versions;
+    const versions = Config.SITE.versions.filter(v => v.isAvailable !== false);
     
+    if(versions.length === 0) return;
+
     for (let i = 0; i < 35; i++) {
         const randomVer = versions[Math.floor(Math.random() * versions.length)];
         tapeHTML += `
@@ -288,8 +311,12 @@ function closeRouletteModal() {
 function spinRoulette() {
     if (isSpinning) return;
     isSpinning = true;
+    
     document.getElementById('roulette-result-ui').classList.remove('active');
-    document.getElementById('btn-spin').style.display = 'none';
+    const btnSpin = document.getElementById('btn-spin');
+    btnSpin.style.opacity = '0';
+    btnSpin.style.pointerEvents = 'none';
+    btnSpin.style.transform = 'scale(0.95)';
     
     const tape = document.getElementById('roulette-tape');
     tape.style.transition = 'none';
@@ -320,7 +347,16 @@ function spinRoulette() {
     }, Config.FUNCTIONAL.rouletteSpinDuration);
 }
 
-function renderSite() {
+async function checkFileAvailability(url) {
+    try {
+        const response = await fetch(url, { method: 'HEAD' });
+        return response.ok;
+    } catch (e) {
+        return false;
+    }
+}
+
+async function renderSite() {
     document.title = Config.UI.pageTitle;
     const fav = document.createElement('link');
     fav.rel = 'icon';
@@ -338,14 +374,24 @@ function renderSite() {
     document.getElementById('btn-roulette-home').textContent = Config.UI.buttons.home;
     document.getElementById('btn-copy-mods').textContent = Config.UI.buttons.copyList;
     
+    for (let v of Config.SITE.versions) {
+        v.isAvailable = await checkFileAvailability(v.link);
+    }
+
     const versionsContainer = document.getElementById('versions-container');
     versionsContainer.innerHTML = Config.SITE.versions.map(v => `
-        <div class="card">
+        <div class="card ${v.isAvailable ? '' : 'unavailable'}">
             <span class="fabric-badge">Fabric</span>
             <span class="card-title">${Config.UI.title}</span>
             <span class="card-version">${Config.UI.modals.versionPrefix} ${v.versionNum}</span>
             <span class="file-type">${v.fileType}</span>
-            <button class="btn-download btn-trigger-dl" data-ver="${v.versionNum}" data-link="${v.link}" data-file="${v.fileName}">${Config.UI.buttons.download}</button>
+            <button class="btn-download ${v.isAvailable ? 'btn-trigger-dl' : ''}" 
+                    data-ver="${v.versionNum}" 
+                    data-link="${v.link}" 
+                    data-file="${v.fileName}"
+                    ${v.isAvailable ? '' : 'disabled'}>
+                ${v.isAvailable ? Config.UI.buttons.download : 'Файл недоступен'}
+            </button>
             <button class="btn-mods" data-version="${v.versionNum}">${Config.UI.buttons.modsList}</button>
         </div>
     `).join('');
@@ -414,18 +460,19 @@ window.addEventListener('click', (e) => {
     if (e.target === document.getElementById('mods-modal')) closeModsModal();
     if (e.target === document.getElementById('roulette-modal')) closeRouletteModal();
     if (e.target === document.getElementById('download-modal')) closeDownloadModal();
+    if (e.target === document.getElementById('export-modal')) {
+        document.getElementById('export-modal').classList.remove('active');
+    }
 });
 
 document.getElementById('btn-copy-mods').addEventListener('click', () => {
     if (!currentModalVersion) return;
-    const allMods = (Config.MODS && Object.keys(Config.MODS).length > 0) ? Config.MODS : (typeof MODS_DATA !== 'undefined' ? MODS_DATA : {});
+    const targetMods = getModsForCurrentVersion();
     let textToCopy = '';
     
-    for (const versionsObj of Object.values(allMods)) {
-        if (versionsObj[currentModalVersion]) {
-            for (const mod of versionsObj[currentModalVersion]) {
-                textToCopy += mod.name + '\n';
-            }
+    for (const modsArray of Object.values(targetMods)) {
+        for (const mod of modsArray) {
+            textToCopy += mod.name + '\n';
         }
     }
     
@@ -434,7 +481,76 @@ document.getElementById('btn-copy-mods').addEventListener('click', () => {
         const origText = btn.textContent;
         btn.textContent = 'Скопировано!';
         setTimeout(() => { btn.textContent = origText; }, 2000);
-    }).catch(err => console.error('Ошибка копирования:', err));
+    }).catch(err => console.error(err));
+});
+
+document.getElementById('btn-export-txt').addEventListener('click', () => {
+    const listDiv = document.getElementById('export-categories-list');
+    const targetMods = getModsForCurrentVersion();
+    
+    let html = `
+        <label class="export-checkbox-label" style="font-weight: 800; color: var(--primary);">
+            <input type="checkbox" id="export-cat-all" checked> Все категории
+        </label>
+        <hr style="border:0; border-top: 1px solid rgba(255,170,0,0.2); margin: 5px 0;">
+    `;
+
+    Object.keys(targetMods).forEach(cat => {
+        html += `<label class="export-checkbox-label"><input type="checkbox" class="export-cat-cb" value="${cat}" checked> ${cat}</label>`;
+    });
+    listDiv.innerHTML = html;
+
+    document.getElementById('export-cat-all').addEventListener('change', (e) => {
+        document.querySelectorAll('.export-cat-cb').forEach(cb => cb.checked = e.target.checked);
+    });
+
+    document.querySelectorAll('.export-cat-cb').forEach(cb => {
+        cb.addEventListener('change', () => {
+            const allCb = document.getElementById('export-cat-all');
+            const anyUnchecked = Array.from(document.querySelectorAll('.export-cat-cb')).some(c => !c.checked);
+            allCb.checked = !anyUnchecked;
+        });
+    });
+
+    document.getElementById('export-modal').classList.add('active');
+});
+
+document.getElementById('export-close-btn').addEventListener('click', () => {
+    document.getElementById('export-modal').classList.remove('active');
+});
+
+document.getElementById('btn-confirm-export').addEventListener('click', () => {
+    const targetMods = getModsForCurrentVersion();
+    const selectedCats = Array.from(document.querySelectorAll('.export-cat-cb:checked')).map(cb => cb.value);
+
+    if (selectedCats.length === 0) {
+        alert('Выберите хотя бы одну категорию для экспорта.');
+        return;
+    }
+
+    let textContent = `Список модов NATRIUM (Версия: ${currentModalVersion})\n\n`;
+
+    selectedCats.forEach(cat => {
+        if (targetMods[cat]) {
+            textContent += `--- ${cat.toUpperCase()} ---\n`;
+            targetMods[cat].forEach(mod => {
+                textContent += `${mod.name} - ${mod.desc}\n`;
+            });
+            textContent += `\n`;
+        }
+    });
+
+    const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Natrium_Mods_${currentModalVersion}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    document.getElementById('export-modal').classList.remove('active');
 });
 
 let _ib3 = [];
