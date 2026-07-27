@@ -33,6 +33,8 @@
                 <p style="margin-bottom: 8px; font-weight: 600; color: #94a3b8;">© 2026 Natrium Project.</p>
                 Данный ресурс является независимым фанатским проектом. Все права на зарегистрированную торговую марку, наименование и материалы Minecraft принадлежат Mojang AB и Microsoft Corporation. Настоящий сайт не аффилирован с правообладателями и не является их официальным представительством.
             </div>
+        </div>
+
         <div class="modal-overlay" id="mods-modal">
             <div class="modal-window">
                 <div class="modal-header">
@@ -41,9 +43,25 @@
                 </div>
                 <div class="search-container" style="display: flex; flex-direction: column; gap: 10px;">
                     <input type="text" class="search-input" id="mods-search">
-                    <button class="btn-mods" id="btn-copy-mods" style="margin: 0; padding: 12px 20px; width: 100%;">Скопировать список</button>
+                    <div class="category-filters" id="mods-category-filters"></div>
+                    <div style="display: flex; gap: 10px; width: 100%;">
+                        <button class="btn-mods" id="btn-copy-mods" style="margin: 0; padding: 12px 20px; flex: 1;">Скопировать список</button>
+                        <button class="btn-mods" id="btn-export-txt" style="margin: 0; padding: 12px 20px; flex: 1;">Экспорт в .txt</button>
+                    </div>
                 </div>
                 <div class="mods-list" id="modal-mods-list"></div>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="export-modal">
+            <div class="modal-window" style="max-width: 450px;">
+                <div class="modal-header">
+                    <div class="modal-title">Экспорт <span>модов</span></div>
+                    <button class="modal-close" id="export-close-btn">&times;</button>
+                </div>
+                <div style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 15px;">Выберите категории для экспорта списка:</div>
+                <div id="export-categories-list" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;"></div>
+                <button class="btn-download" id="btn-confirm-export" style="margin: 0;">Скачать файл</button>
             </div>
         </div>
 
