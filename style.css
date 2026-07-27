@@ -213,6 +213,29 @@ h1 {
     box-shadow: 0 30px 60px rgba(255, 85, 0, 0.15);
 }
 
+.card.unavailable {
+    opacity: 0.7;
+    filter: grayscale(0.8);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.card.unavailable:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.card.unavailable .btn-download {
+    background: rgba(255, 255, 255, 0.1);
+    color: #64748b;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+.card.unavailable .btn-download:hover {
+    transform: none;
+}
+
 .fabric-badge {
     color: #ffffff;
     background: rgba(255, 255, 255, 0.1);
@@ -605,6 +628,52 @@ h1 {
     box-shadow: 0 0 15px rgba(255, 170, 0, 0.15); 
 }
 
+.category-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.cat-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #94a3b8;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.cat-btn:hover {
+    background: rgba(255, 170, 0, 0.1);
+    color: #ffffff;
+}
+
+.cat-btn.active {
+    background: rgba(255, 170, 0, 0.2);
+    border-color: var(--primary);
+    color: #ffffff;
+}
+
+.export-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #cbd5e1;
+    font-size: 1.05rem;
+    cursor: pointer;
+    padding: 4px 0;
+}
+
+.export-checkbox-label input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
 .mods-list { 
     overflow-y: auto; 
     padding-right: 10px; 
@@ -717,9 +786,70 @@ h1 {
     text-shadow: 0 0 10px rgba(255, 170, 0, 0.3);
 }
 
-.roulette-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 15px; }
-.roulette-result-buttons { display: none; flex-direction: column; gap: 10px; width: 100%; }
-.roulette-result-buttons.active { display: flex; }
+.roulette-actions { 
+    position: relative;
+    display: flex; 
+    flex-direction: column; 
+    width: 100%; 
+    margin-top: 15px; 
+    min-height: 160px;
+}
+
+#btn-spin {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.roulette-result-buttons { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; 
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(20px) scale(0.95);
+    transition: opacity 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), visibility 0.5s;
+}
+
+.roulette-result-buttons.active { 
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+}
+
+.larp-text {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(4rem, 12vw, 10rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, #ff8c00 0%, #ff0040 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 10px 50px rgba(255, 0, 64, 0.5);
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+    letter-spacing: 10px;
+    animation: larpAnim 2.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+@keyframes larpAnim {
+    0% { opacity: 0; transform: translate(-50%, -30%) scale(0.8); filter: blur(10px); }
+    15% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); filter: blur(0px); }
+    30% { transform: translate(-50%, -50%) scale(1); }
+    80% { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0px); }
+    100% { opacity: 0; transform: translate(-50%, -70%) scale(1.2); filter: blur(15px); }
+}
 
 @media (max-width: 1024px) {
     .cards-grid {
