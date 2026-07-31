@@ -1,6 +1,6 @@
 const Config = {
     FUNCTIONAL: {
-        isSiteEnabled: true, // Включение или отключение работоспособности сайта
+        isSiteEnabled: false, // Включение или отключение работоспособности сайта
         isResponsive: true, // Поддержка адаптивности интерфейса под разные экраны
         showTimeWidget: true, // Отображение виджета реального времени в шапке
         showSocialLinks: true, // Отображение блока ссылок на социальные сети
@@ -29,71 +29,71 @@ const Config = {
             modalBg: "rgba(18, 18, 24, 0.95)" // Цвет фона модальных окон
         },
         versions: [
-            { versionNum: "1.21.11", fileType: "Модпак .mrpack", link: "./Natrium_1.21.11.mrpack", fileName: "Natrium_1.21.11.mrpack" }, // 1.21.11
-            { versionNum: "1.21.4", fileType: "Модпак .mrpack", link: "./Natrium_1.21.4.mrpack", fileName: "Natrium_1.21.4.mrpack" }, // 1.21.4
-            { versionNum: "1.20.1", fileType: "Модпак .mrpack", link: "./Natrium_1.20.1.mrpack", fileName: "Natrium_1.20.1.mrpack" }, // 1.20.1
-            { versionNum: "1.18.2", fileType: "Модпак .mrpack", link: "./Natrium_1.18.2.mrpack", fileName: "Natrium_1.18.2.mrpack" }, // 1.18.2
-            { versionNum: "26.1", fileType: "Модпак .mrpack", link: "./Natrium_26.1.mrpack", fileName: "Natrium_26.1.mrpack" }, // 26.1
-            { versionNum: "1.16.5", fileType: "Модпак .mrpack", link: "./Natrium_1.16.5.mrpack", fileName: "Natrium_1.16.5.mrpack" } // 1.16.5
+            { versionNum: "1.21.11", fileType: "Модпак .mrpack", link: "./Natrium_1.21.11.mrpack", fileName: "Natrium_1.21.11.mrpack" },
+            { versionNum: "1.21.4", fileType: "Модпак .mrpack", link: "./Natrium_1.21.4.mrpack", fileName: "Natrium_1.21.4.mrpack" },
+            { versionNum: "1.20.1", fileType: "Модпак .mrpack", link: "./Natrium_1.20.1.mrpack", fileName: "Natrium_1.20.1.mrpack" },
+            { versionNum: "1.18.2", fileType: "Модпак .mrpack", link: "./Natrium_1.18.2.mrpack", fileName: "Natrium_1.18.2.mrpack" },
+            { versionNum: "26.1", fileType: "Модпак .mrpack", link: "./Natrium_26.1.mrpack", fileName: "Natrium_26.1.mrpack" },
+            { versionNum: "1.16.5", fileType: "Модпак .mrpack", link: "./Natrium_1.16.5.mrpack", fileName: "Natrium_1.16.5.mrpack" }
         ],
         socials: [
-            { text: "Наш Telegram-канал:", span: "@NatriumProject", url: "https://telegram.me/NatriumProject" }, // Канал Telegram
-            { text: "Наш Telegram-чат:", span: "@NatriumChat", url: "https://telegram.me/NatriumChat" }, // Чат Telegram
-            { text: "Нашли баг или краш? Пишите в бота:", span: "@JavaFixerTEXbot", url: "https://telegram.me/JavaFixerTEXbot" } // Бот поддержки
+            { text: "Наш Telegram-канал:", span: "@NatriumProject", url: "https://telegram.me/NatriumProject" },
+            { text: "Наш Telegram-чат:", span: "@NatriumChat", url: "https://telegram.me/NatriumChat" },
+            { text: "Нашли баг или краш? Пишите в бота:", span: "@JavaFixerTEXbot", url: "https://telegram.me/JavaFixerTEXbot" }
         ]
     },
     UI: {
-        pageTitle: "NATRIUM", // Заголовок вкладки в браузере
-        title: "NATRIUM", // Главный заголовок на странице
-        subtitle: "Сборка-каркас для Minecraft, обеспечивающая максимальную оптимизацию", // Подзаголовок с описанием
-        maintenanceText: "Сайт временно недоступен. Ведутся технические работы.", // Текст технических работ
-        timePrefix: "", // Префикс перед часами
-        timeZoneLabel: "GMT", // Метка часового пояса
+        pageTitle: "NATRIUM",
+        title: "NATRIUM",
+        subtitle: "Сборка-каркас для Minecraft, обеспечивающая максимальную оптимизацию",
+        maintenanceText: "Сайт временно недоступен. Ведутся технические работы.",
+        timePrefix: "",
+        timeZoneLabel: "GMT",
         greetings: {
-            night: "Доброй ночи.", // Приветствие ночью
-            morning: "Доброе утро.", // Приветствие утром
-            day: "Добрый день.", // Приветствие днем
-            evening: "Добрый вечер." // Приветствие вечером
+            night: "Доброй ночи.",
+            morning: "Доброе утро.",
+            day: "Добрый день.",
+            evening: "Добрый вечер."
         },
         buttons: {
-            rouletteOpen: "Рулетка версий", // Кнопка открытия рулетки
-            download: "Скачать сборку", // Кнопка скачивания
-            modsList: "Список модов", // Кнопка списка модов
-            copyList: "Скопировать список", // Кнопка копирования
-            spin: "Крутить рулетку", // Кнопка вращения рулетки
-            spinAgain: "Крутить еще раз", // Кнопка повтора рулетки
-            home: "На главную", // Кнопка возврата на главную
-            downloadRoulette: "Скачать NATRIUM" // Кнопка скачивания из рулетки
+            rouletteOpen: "Рулетка версий",
+            download: "Скачать сборку",
+            modsList: "Список модов",
+            copyList: "Скопировать список",
+            spin: "Крутить рулетку",
+            spinAgain: "Крутить еще раз",
+            home: "На главную",
+            downloadRoulette: "Скачать NATRIUM"
         },
         modals: {
-            modsTitlePrefix: "Моды сборки", // Префикс заголовка модов
-            modsTitleHighlight: "NATRIUM", // Акцент в заголовке модов
-            searchPlaceholder: "Поиск мода...", // Плейсхолдер поиска
-            rouletteTitlePrefix: "Рулетка версий", // Префикс заголовка рулетки
-            rouletteTitleHighlight: "NATRIUM", // Акцент в заголовке рулетки
-            versionPrefix: "Версия", // Префикс версии
-            rouletteItemHighlight: "NATRIUM", // Метка в рулетке
-            downloadTitlePrefix: "Начало загрузки:" // Префикс загрузки
+            modsTitlePrefix: "Моды сборки",
+            modsTitleHighlight: "NATRIUM",
+            searchPlaceholder: "Поиск мода...",
+            rouletteTitlePrefix: "Рулетка версий",
+            rouletteTitleHighlight: "NATRIUM",
+            versionPrefix: "Версия",
+            rouletteItemHighlight: "NATRIUM",
+            downloadTitlePrefix: "Начало загрузки:"
         }
     },
     WHY_NATRIUM: {
-        title: "Почему Natrium", // Заголовок блока преимуществ
+        title: "Почему Natrium",
         facts: [
-            { title: "Тотальная оптимизация", desc: "Глубокая переработка алгоритмов игры с помощью движков Sodium, Lithium и Krypton для достижения максимального FPS." }, // Факт 1
-            { title: "Экстремальная экономия ОЗУ", desc: "За счет FerriteCore и систем исправления утечек памяти, сборка потребляет значительно меньше оперативной памяти." }, // Факт 2
-            { title: "Стабильность и фиксы", desc: "Интеграция ModernFix и Debugify избавляет игру от микрофризов, долгих загрузок и сотен ванильных багов." }, // Факт 3
-            { title: "Универсальный фундамент", desc: "Сборка является идеальным каркасом. Вы можете легко добавлять любые свои моды поверх готовой оптимизированной базы." } // Факт 4
+            { title: "Тотальная оптимизация", desc: "Глубокая переработка алгоритмов игры с помощью движков Sodium, Lithium и Krypton для достижения максимального FPS." },
+            { title: "Экстремальная экономия ОЗУ", desc: "За счет FerriteCore и систем исправления утечек памяти, сборка потребляет значительно меньше оперативной памяти." },
+            { title: "Стабильность и фиксы", desc: "Интеграция ModernFix и Debugify избавляет игру от микрофризов, долгих загрузок и сотен ванильных багов." },
+            { title: "Универсальный фундамент", desc: "Сборка является идеальным каркасом. Вы можете легко добавлять любые свои моды поверх готовой оптимизированной базы." }
         ]
     },
     INSTRUCTION: {
-        buttonText: "Как установить", // Кнопка инструкции
-        title: "Как установить сборку Natrium:", // Заголовок инструкции
+        buttonText: "Как установить",
+        title: "Как установить сборку Natrium:",
         steps: [
-            "Скачай файл сборки в формате .mrpack под нужную версию с нашего сайта.", // Шаг 1
-            "Установи современный лаунчер с поддержкой Modrinth (например: <a href='https://elyprism.ru/' target='_blank'>PineconeMC (Elyprism)</a>, <a href='https://atlauncher.com/' target='_blank'>ATLauncher</a>, <a href='https://prismlauncher.org/' target='_blank'>Prism Launcher</a> или <a href='https://modrinth.com/app' target='_blank'>Modrinth App</a>).", // Шаг 2
-            "В лаунчере нажми кнопку «Добавить экземпляр» (или «Импорт») и выбери скачанный ранее файл .mrpack.", // Шаг 3
-            "Дождись, пока лаунчер автоматически скачает все необходимые моды из конфига сборки, и запусти игру." // Шаг 4
+            "Скачай файл сборки в формате .mrpack под нужную версию с нашего сайта.",
+            "Установи современный лаунчер с поддержкой Modrinth (например: <a href='https://elyprism.ru/' target='_blank'>PineconeMC (Elyprism)</a>, <a href='https://atlauncher.com/' target='_blank'>ATLauncher</a>, <a href='https://prismlauncher.org/' target='_blank'>Prism Launcher</a> или <a href='https://modrinth.com/app' target='_blank'>Modrinth App</a>).",
+            "В лаунчере нажми кнопку «Добавить экземпляр» (или «Импорт») и выбери скачанный ранее файл .mrpack.",
+            "Дождись, пока лаунчер автоматически скачает все необходимые моды из конфига сборки, и запусти игру."
         ]
     },
-    MODS: typeof MODS_DATA !== 'undefined' ? MODS_DATA : {} // Подключение списка всех модификаций из mods.js
+    MODS: typeof MODS_DATA !== 'undefined' ? MODS_DATA : {}
 };
