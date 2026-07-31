@@ -1,6 +1,6 @@
 const Config = {
     FUNCTIONAL: {
-        isSiteEnabled: false, // Включение или отключение работоспособности сайта
+        isSiteEnabled: true, // Включение или отключение работоспособности сайта
         isResponsive: true, // Поддержка адаптивности интерфейса под разные экраны
         showTimeWidget: true, // Отображение виджета реального времени в шапке
         showSocialLinks: true, // Отображение блока ссылок на социальные сети
