@@ -274,6 +274,24 @@ function closeDownloadModal() {
 }
 
 let isSpinning = false;
+let currentRouletteIndex = 0;
+
+function generateTapeItems(count) {
+    let html = '';
+    const versions = Config.SITE.versions.filter(v => v.isAvailable !== false);
+    if (versions.length === 0) return '';
+    
+    for (let i = 0; i < count; i++) {
+        const randomVer = versions[Math.floor(Math.random() * versions.length)];
+        html += `
+            <div class="roulette-item" data-version="${randomVer.versionNum}">
+                <div class="roulette-version">${randomVer.versionNum}</div>
+                <div class="roulette-natrium">${Config.UI.modals.rouletteItemHighlight}</div>
+            </div>
+        `;
+    }
+    return html;
+}
 
 function openRouletteModal() {
     document.getElementById('roulette-result-ui').classList.remove('active');
@@ -286,21 +304,9 @@ function openRouletteModal() {
     const tape = document.getElementById('roulette-tape');
     tape.style.transition = 'none';
     tape.style.transform = 'translateX(0px)';
-    let tapeHTML = '';
-    const versions = Config.SITE.versions.filter(v => v.isAvailable !== false);
     
-    if(versions.length === 0) return;
-
-    for (let i = 0; i < 35; i++) {
-        const randomVer = versions[Math.floor(Math.random() * versions.length)];
-        tapeHTML += `
-            <div class="roulette-item" data-version="${randomVer.versionNum}">
-                <div class="roulette-version">${randomVer.versionNum}</div>
-                <div class="roulette-natrium">${Config.UI.modals.rouletteItemHighlight}</div>
-            </div>
-        `;
-    }
-    tape.innerHTML = tapeHTML;
+    currentRouletteIndex = 0;
+    tape.innerHTML = generateTapeItems(150);
     document.getElementById('roulette-modal').classList.add('active');
 }
 
@@ -319,11 +325,13 @@ function spinRoulette() {
     btnSpin.style.transform = 'scale(0.95)';
     
     const tape = document.getElementById('roulette-tape');
-    tape.style.transition = 'none';
-    tape.style.transform = 'translateX(0px)';
-    tape.offsetHeight; 
+    const advanceBy = Math.floor(Math.random() * 8) + 25;
+    const winIndex = currentRouletteIndex + advanceBy;
     
-    const winIndex = Math.floor(Math.random() * 5) + 25;
+    if (winIndex >= tape.children.length - 10) {
+        tape.innerHTML += generateTapeItems(100);
+    }
+    
     const targetItem = tape.children[winIndex];
     const winVersionNum = targetItem.getAttribute('data-version');
     const itemWidth = isMobile ? 130 : 150; 
@@ -331,12 +339,14 @@ function spinRoulette() {
     const centerOffset = containerWidth / 2 - itemWidth / 2;
     const targetX = -(winIndex * itemWidth) + centerOffset;
     
-    tape.style.transition = `transform ${Config.FUNCTIONAL.rouletteSpinDuration}ms cubic-bezier(0.4, -0.2, 0.1, 1)`;
+    tape.style.transition = `transform ${Config.FUNCTIONAL.rouletteSpinDuration}ms cubic-bezier(0.15, 0.85, 0.35, 1)`;
     tape.style.transform = `translateX(${targetX}px)`;
+    
+    currentRouletteIndex = winIndex;
     
     setTimeout(() => {
         isSpinning = false;
-        const configVersion = Config.SITE.versions.find(v => v.versionNum === winVersionNum);
+        const configVersion = Config.SITE.versions.find(v => v.versionNum === winVersionNum) || { versionNum: winVersionNum, link: '#', fileName: '' };
         const dlBtn = document.getElementById('roulette-download-btn');
         dlBtn.innerText = `${Config.UI.buttons.downloadRoulette} ${configVersion.versionNum}`;
         dlBtn.onclick = () => {
@@ -356,7 +366,7 @@ async function checkFileAvailability(url) {
     }
 }
 
-async function renderSite() {
+function renderSite() {
     document.title = Config.UI.pageTitle;
     const fav = document.createElement('link');
     fav.rel = 'icon';
@@ -373,10 +383,10 @@ async function renderSite() {
     document.getElementById('btn-spin-again').textContent = Config.UI.buttons.spinAgain;
     document.getElementById('btn-roulette-home').textContent = Config.UI.buttons.home;
     document.getElementById('btn-copy-mods').textContent = Config.UI.buttons.copyList;
-    
-    for (let v of Config.SITE.versions) {
-        v.isAvailable = await checkFileAvailability(v.link);
-    }
+
+    Config.SITE.versions.forEach(v => {
+        if (v.isAvailable === undefined) v.isAvailable = true;
+    });
 
     const versionsContainer = document.getElementById('versions-container');
     versionsContainer.innerHTML = Config.SITE.versions.map(v => `
@@ -454,6 +464,22 @@ async function renderSite() {
             </a>
         `).join('');
     }
+
+    Promise.all(Config.SITE.versions.map(v => 
+        checkFileAvailability(v.link).then(avail => {
+            v.isAvailable = avail;
+            if (!avail) {
+                const btn = document.querySelector(`.btn-download[data-ver="${v.versionNum}"]`);
+                if (btn) {
+                    btn.disabled = true;
+                    btn.classList.remove('btn-trigger-dl');
+                    btn.textContent = 'Файл недоступен';
+                    const card = btn.closest('.card');
+                    if (card) card.classList.add('unavailable');
+                }
+            }
+        })
+    ));
 }
 
 window.addEventListener('click', (e) => {
