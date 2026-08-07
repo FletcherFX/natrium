@@ -29,10 +29,10 @@
 
 ## 🔗 Официальные ресурсы проекта
 
-* **🌐 Официальный сайт:** [fletcherfx.github.io/natrium](https://fletcherfx.github.io/natrium/)
-* **🟢 Страница на Minecraft Inside:** [minecraft-inside.ru/modpacks/194696](https://minecraft-inside.ru/modpacks/194696-natrium.html)
-* **💬 Наш чат для обсуждения:** [Telegram @NatriumChat](https://t.me/NatriumChat)
-* **🤖 Сообщить о багах:** [Telegram-бот @JavaFixerTEXbot](https://t.me)
-* **💎 Поддержать автора:** [Donation Alerts](https://www.donationalerts.com/r/fletcherfx)
-* **🌌 Modrinth:** *Скоро появится*
+• 🌐 Официальный сайт: https://github.io
+• 🟢 Страница на Minecraft Inside: https://minecraft-inside.ru
+• 💬 Наш чат для обсуждения: https://t.me
+• 🤖 Сообщить о багах: https://t.me
+• 💎 Поддержать автора: https://donationalerts.com
+• 🌌 Modrinth: Скоро появится
 
