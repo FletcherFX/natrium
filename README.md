@@ -27,12 +27,12 @@
 
 ---
 
-## 🔗 Официальные ресурсы проекта
+## 📦 Официальные ресурсы проекта
 
-• 🌐 Официальный сайт: https://github.io
-• 🟢 Страница на Minecraft Inside: https://minecraft-inside.ru
-• 💬 Наш чат для обсуждения: https://t.me
-• 🤖 Сообщить о багах: https://t.me
-• 💎 Поддержать автора: https://donationalerts.com
-• 🌌 Modrinth: Скоро появится
+• 🛠️ Официальный сайт: https://github.io <br>
+• 📦 Страница на Minecraft Inside: https://minecraft-inside.ru <br>
+• 💬 Наш чат для обсуждения: https://t.me <br>
+• 🤖 Сообщить о багах: https://t.me <br>
+• 📦 Поддержать автора: https://donationalerts.com <br>
+• 📦 Modrinth: Скоро появится
 
