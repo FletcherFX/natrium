@@ -46,7 +46,7 @@
                     <div class="category-filters" id="mods-category-filters"></div>
                     <div style="display: flex; gap: 10px; width: 100%;">
                         <button class="btn-mods" id="btn-copy-mods" style="margin: 0; padding: 12px 20px; flex: 1;">Скопировать список</button>
-                        <button class="btn-mods" id="btn-export-txt" style="margin: 0; padding: 12px 20px; flex: 1;">Экспорт в .txt</button>
+                        <button class="btn-mods" id="btn-export-txt" style="margin: 0; padding: 12px 20px; flex: 1;">Экспорт</button>
                     </div>
                 </div>
                 <div class="mods-list" id="modal-mods-list"></div>
@@ -59,8 +59,15 @@
                     <div class="modal-title">Экспорт <span>модов</span></div>
                     <button class="modal-close" id="export-close-btn">&times;</button>
                 </div>
-                <div style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 15px;">Выберите категории для экспорта списка:</div>
-                <div id="export-categories-list" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;"></div>
+                <div style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 10px;">Выберите формат экспорта:</div>
+                <div class="export-format-options" style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <label class="export-radio-label"><input type="radio" name="export-format" value="txt" checked> TXT</label>
+                    <label class="export-radio-label"><input type="radio" name="export-format" value="json"> JSON</label>
+                    <label class="export-radio-label"><input type="radio" name="export-format" value="csv"> CSV</label>
+                    <label class="export-radio-label"><input type="radio" name="export-format" value="md"> Markdown</label>
+                </div>
+                <div style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 10px;">Категории для экспорта:</div>
+                <div id="export-categories-list" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 25px;"></div>
                 <button class="btn-download" id="btn-confirm-export" style="margin: 0;">Скачать файл</button>
             </div>
         </div>
@@ -72,6 +79,9 @@
                     <button class="modal-close" id="roulette-close-btn">&times;</button>
                 </div>
                 
+                <div style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 10px; text-align: center;">Участвующие версии:</div>
+                <div id="roulette-version-toggles" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 20px;"></div>
+
                 <div class="roulette-container">
                     <div class="roulette-marker"></div>
                     <div class="roulette-tape" id="roulette-tape"></div>
