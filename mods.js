@@ -223,6 +223,7 @@ const MODS_DATA = {
     "Интерфейс": {
         "26.1": [
             { name: "Borderless Mining Updated", desc: "Окно без рамок для удобной игры." },
+            { name: "Crash Assistant", desc: "Полезный помощник при вылетах и крашах игры." },
             { name: "Language Reload", desc: "Быстрая перезагрузка языковых пакетов." },
             { name: "Mod Menu", desc: "Удобное внутригровое меню списка модов." },
             { name: "Mouse Tweaks", desc: "Улучшенное и ускоренное управление инвентарем мышью." },
